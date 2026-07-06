@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>GitHub UI Translator - 設定</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    max-width: 480px;
+    margin: 32px auto;
+    padding: 0 16px;
+    color: #1f2328;
+    background-color: #ffffff;
+  }
+  h1 { font-size: 18px; }
+  h2 { font-size: 14px; margin-top: 24px; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th {
+    text-align: left;
+    padding: 4px 8px;
+    border-bottom: 1px solid #d0d7de;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+  <h1>GitHub UI Translator - 設定</h1>
+
+  <h2>辞書情報</h2>
+  <table>
+    <thead><tr><th>言語</th><th>収録件数</th></tr></thead>
+    <tbody id="dict-info"></tbody>
+  </table>
+
+  <h2>バージョン情報</h2>
+  <p id="version"></p>
+
+  <script src="options.js"></script>
+</body>
+</html>
