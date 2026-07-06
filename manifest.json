@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "GitHub UI Translator",
   "version": "0.1.0",
-  "description": "A Chrome extension that translates the GitHub UI into multiple languages using local dictionaries.",
+  "description": "Translates the GitHub UI using local dictionaries. Designed for multiple languages (Japanese only for now).",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -16,8 +16,14 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "background": {
-    "service_worker": "background.js"
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "github-ui-translator@nobuo-miura.github.io",
+      "strict_min_version": "109.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
   },
   "permissions": ["storage", "activeTab"],
   "content_scripts": [

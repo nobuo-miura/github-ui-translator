@@ -19,27 +19,39 @@
     '[aria-label]'
   ];
 
-  // Settings画面（リポジトリ/Organization共通）や、Organizationのメンバー管理画面
-  // （/orgs/<org>/people等、URLに"settings"を含まないが実質的に管理画面）は
-  // 見出し・ラベルも重点的に翻訳対象にする。README/Issue本文等のコンテンツ領域には
-  // これらのURLパターンは出現しないため、対象を広げても大丈夫
-  const isSettingsPage =
+  // Settings、Organization管理、リポジトリ作成、Issue/PR画面では
+  // 見出しやラベルにも固定UI文言が多いため、翻訳対象を広げる。
+  // README/Issue本文などのコンテンツ領域は .markdown-body で除外する。
+  const isExtendedScopePage =
     /\/settings(\/|$)/.test(location.pathname) ||
-    /^\/orgs\/[^/]+\/(people|teams|security-managers)(\/|$)/.test(location.pathname);
-  const SETTINGS_EXTRA_SELECTOR = ['label', 'legend', 'h1', 'h2', 'h3', 'dt'];
+    /^\/orgs\/[^/]+\/(people|teams|security-managers)(\/|$)/.test(location.pathname) ||
+    /^\/new(\/|$)/.test(location.pathname) ||
+    /^\/organizations\/[^/]+\/repositories\/new$/.test(location.pathname) ||
+    /^\/[^/]+\/[^/]+\/(issues|pulls)(\/|$)/.test(location.pathname);
+  const EXTRA_SELECTOR = ['label', 'legend', 'h1', 'h2', 'h3', 'dt', 'strong'];
   // 万一Settings画面内にMarkdown本文的な領域があっても対象から除外する安全策
   const EXCLUDE_SELECTOR = '.markdown-body, .markdown-body *';
 
-  const ALLOWLIST_SELECTOR = (isSettingsPage
-    ? BASE_SELECTOR.concat(SETTINGS_EXTRA_SELECTOR)
+  const ALLOWLIST_SELECTOR = (isExtendedScopePage
+    ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
     : BASE_SELECTOR
   ).join(',');
 
-  async function loadDictionary() {
+  // 辞書ファイルは画面ごとの区切りが分かるよう "//" 行コメント付き(JSONC風)で
+  // 管理しているため、標準のJSON.parseに渡す前にコメント行を取り除く。
+  function stripJsonComments(text) {
+    return text
+      .split('\n')
+      .filter((line) => !/^\s*\/\//.test(line))
+      .join('\n');
+  }
+
+  async function loadDictionary(language) {
     try {
-      const url = chrome.runtime.getURL('dictionaries/ja.json');
+      const url = chrome.runtime.getURL(`dictionaries/${language}.json`);
       const res = await fetch(url);
-      const data = await res.json();
+      const text = await res.text();
+      const data = JSON.parse(stripJsonComments(text));
       return data.translations || {};
     } catch (e) {
       console.error('[GitHub UI Translator] 辞書の読み込みに失敗しました', e);
@@ -47,9 +59,9 @@
     }
   }
 
-  function getEnabled() {
+  function getSettings() {
     return new Promise((resolve) => {
-      chrome.storage.local.get({ enabled: true }, (items) => resolve(items.enabled));
+      chrome.storage.local.get({ enabled: true, language: 'ja' }, (items) => resolve(items));
     });
   }
 
@@ -102,10 +114,10 @@
   }
 
   (async () => {
-    const enabled = await getEnabled();
+    const { enabled, language } = await getSettings();
     if (!enabled) return;
 
-    const dict = await loadDictionary();
+    const dict = await loadDictionary(language);
     if (Object.keys(dict).length === 0) return;
 
     translateAll(document.body, dict);

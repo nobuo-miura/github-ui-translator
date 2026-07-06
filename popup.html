@@ -63,6 +63,37 @@
   input:checked + .slider::before {
     transform: translateX(18px);
   }
+  .lang-row {
+    margin-top: 12px;
+  }
+  .lang-row label {
+    display: block;
+    font-size: 12px;
+    color: #57606a;
+    margin-bottom: 4px;
+  }
+  select#language {
+    width: 100%;
+    padding: 4px 6px;
+    font-size: 13px;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #1f2328;
+  }
+  .footer {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #d0d7de;
+    font-size: 12px;
+  }
+  .footer a {
+    color: #57606a;
+    text-decoration: none;
+  }
+  .footer a:hover {
+    text-decoration: underline;
+  }
 </style>
 </head>
 <body>
@@ -75,6 +106,13 @@
     </label>
   </div>
   <p class="status" id="status"></p>
+  <div class="lang-row">
+    <label for="language">言語 / Language</label>
+    <select id="language"></select>
+  </div>
+  <div class="footer">
+    <a id="repo-link" href="https://github.com/nobuo-miura/github-ui-translator" target="_blank" rel="noopener noreferrer">GitHub UI Translator on GitHub</a>
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
