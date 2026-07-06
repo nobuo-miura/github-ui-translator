@@ -13,17 +13,24 @@ const AVAILABLE_LANGUAGES = [{ code: 'ja', name: '日本語' }];
 
 async function loadDictInfo() {
   const tbody = document.getElementById('dict-info');
-  for (const { code } of AVAILABLE_LANGUAGES) {
-    const url = chrome.runtime.getURL(`dictionaries/${code}.json`);
-    const res = await fetch(url);
-    const text = await res.text();
-    const data = JSON.parse(stripJsonComments(text));
+  for (const { code, name } of AVAILABLE_LANGUAGES) {
     const tr = document.createElement('tr');
-    const count = Object.keys(data.translations || {}).length;
     const tdName = document.createElement('td');
-    tdName.textContent = data.name;
     const tdCount = document.createElement('td');
-    tdCount.textContent = `${count} 件`;
+    try {
+      const url = chrome.runtime.getURL(`dictionaries/${code}.json`);
+      const res = await fetch(url);
+      const text = await res.text();
+      const data = JSON.parse(stripJsonComments(text));
+      const count = Object.keys(data.translations || {}).length;
+      tdName.textContent = data.name;
+      tdCount.textContent = `${count} 件`;
+    } catch (e) {
+      // 辞書が壊れていても他の言語の表示は続行し、エラー行として見えるようにする
+      console.error(`[GitHub UI Translator] 辞書(${code})の読み込みに失敗しました`, e);
+      tdName.textContent = name;
+      tdCount.textContent = '読み込みエラー';
+    }
     tr.append(tdName, tdCount);
     tbody.appendChild(tr);
   }
