@@ -13,16 +13,23 @@
     'button',
     '[role="tab"]',
     '[role="menuitem"]',
+    '[role="menuitemradio"]',
+    '[role="menuitemcheckbox"]',
     '[role="menu"]',
     '[role="dialog"]',
     '[role="listbox"]',
+    '[role="button"]',
     '[aria-label]'
   ];
 
   // Settings、Organization管理、リポジトリ作成、Issue/PR画面では
   // 見出しやラベルにも固定UI文言が多いため、翻訳対象を広げる。
+  // "a"は、GitHubが<button>ではなくPrimerのButtonクラスを当てた<a>タグで
+  // ボタンを実装しているケース（例: 「New pull request」）に対応するために追加。
+  // roleもaria-labelも付いていないためaria-labelでは拾えないが、<a>自体は
+  // CSSクラスに依存しない正規のセマンティックHTMLタグなので方針上問題ない。
   // README/Issue本文などのコンテンツ領域は .markdown-body で除外する。
-  const EXTRA_SELECTOR = ['label', 'legend', 'h1', 'h2', 'h3', 'dt', 'strong'];
+  const EXTRA_SELECTOR = ['label', 'legend', 'h1', 'h2', 'h3', 'dt', 'strong', 'a'];
   // 万一Settings画面内にMarkdown本文的な領域があっても対象から除外する安全策
   const EXCLUDE_SELECTOR = '.markdown-body, .markdown-body *';
 
@@ -32,7 +39,9 @@
       /^\/orgs\/[^/]+\/(people|teams|security-managers)(\/|$)/.test(location.pathname) ||
       /^\/new(\/|$)/.test(location.pathname) ||
       /^\/organizations\/[^/]+\/repositories\/new$/.test(location.pathname) ||
-      /^\/[^/]+\/[^/]+\/(issues|pulls)(\/|$)/.test(location.pathname);
+      // 個別PRページはURLが/pull/123（単数形）、一覧ページは/pulls（複数形）と
+      // GitHub側でURL規則が不統一なため、両方にマッチさせる（pulls?）
+      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare)(\/|$)/.test(location.pathname);
 
     return (isExtendedScopePage
       ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
