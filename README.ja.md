@@ -20,26 +20,37 @@ GitHubの英語UIを、ローカル辞書を使って日本語に翻訳するブ
 - `github.com` 以外のドメイン（GitHub Enterprise等）には対応していません
 - Chrome・Firefoxで動作確認済みです。その他のChromium系ブラウザ（Edge・Brave等）も動くと思われますが、明示的な検証はしていません
 
-## インストール方法（開発者モード）
+## インストール方法
 
-1. このリポジトリをクローンまたはダウンロードする
-   ```
-   git clone https://github.com/nobuo-miura/github-ui-translator.git
-   ```
-
-### Chrome
-
-2. Chromeで `chrome://extensions` を開く
-3. 右上の「デベロッパーモード」をONにする
-4. 「パッケージ化されていない拡張機能を読み込む」をクリックし、クローンしたフォルダ（`manifest.json` があるフォルダ）を選択する
-5. GitHubのページ（`https://github.com/...`）を開くと、自動的にUIが日本語化される
+[最新リリース](https://github.com/nobuo-miura/github-ui-translator/releases/latest)のページから、お使いのブラウザに合わせてインストールしてください。
 
 ### Firefox
 
-2. Firefoxで `about:debugging#/runtime/this-firefox` を開く
-3. 「一時的なアドオンを読み込む…」をクリックし、このリポジトリ内の `manifest.json` を選択する
-4. GitHubのページ（`https://github.com/...`）を開くと、自動的にUIが日本語化される
-5. 注意: 一時的なアドオンはFirefoxを再起動すると消えます。addons.mozilla.orgで署名・インストールしない限り、セッションごとに`about:debugging`から読み込み直す必要があります
+1. リリースページに添付されている `.xpi` ファイルをFirefoxでクリックする
+2. インストールの確認ダイアログが表示されたら「追加」を選択する
+
+ダイアログが表示されない場合は、ダウンロードした `.xpi` ファイルを `about:addons` の画面にドラッグ&ドロップしてください。署名済みのため、インストール後はFirefoxを再起動しても有効なままです。
+
+### Chrome
+
+1. リリースページに添付されている `.zip` ファイルをダウンロードして展開する
+2. Chromeで `chrome://extensions` を開き、右上の「デベロッパーモード」をONにする
+3. 「パッケージ化されていない拡張機能を読み込む」をクリックし、展開したフォルダを選択する
+
+※ この方法でインストールした場合、自動更新はされません。新しいバージョンが出たら同じ手順で入れ替えてください。
+
+インストール後、GitHubのページ（`https://github.com/...`）を開くと自動的にUIが日本語化されます。
+
+### 開発用（リポジトリから直接読み込む）
+
+辞書のカスタマイズや開発に参加する場合は、リポジトリをクローンして読み込みます。
+
+```
+git clone https://github.com/nobuo-miura/github-ui-translator.git
+```
+
+- **Chrome**: `chrome://extensions` →「デベロッパーモード」ON →「パッケージ化されていない拡張機能を読み込む」でクローンしたフォルダ（`manifest.json` があるフォルダ）を選択
+- **Firefox**: `about:debugging#/runtime/this-firefox` →「一時的なアドオンを読み込む…」でリポジトリ内の `manifest.json` を選択（一時的なアドオンはFirefoxを再起動すると消えるため、セッションごとに読み込み直す必要があります）
 
 ## 使い方
 

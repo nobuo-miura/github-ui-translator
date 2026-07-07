@@ -22,24 +22,35 @@ This project is currently an MVP (Minimum Viable Product).
 
 ## Installation
 
-1. Clone or download this repository.
-   ```sh
-   git clone https://github.com/nobuo-miura/github-ui-translator.git
-   ```
-
-### Chrome
-
-2. Open `chrome://extensions` in Chrome.
-3. Turn on Developer mode.
-4. Click "Load unpacked" and select the folder that contains `manifest.json`.
-5. Open a GitHub page such as `https://github.com/...`. Supported UI text will be translated automatically.
+Install from the [latest release](https://github.com/nobuo-miura/github-ui-translator/releases/latest) page for your browser.
 
 ### Firefox
 
-2. Open `about:debugging#/runtime/this-firefox` in Firefox.
-3. Click "Load Temporary Add-on…" and select the `manifest.json` file inside this repository.
-4. Open a GitHub page such as `https://github.com/...`. Supported UI text will be translated automatically.
-5. Note: a temporary add-on is removed when Firefox restarts. It needs to be reloaded from `about:debugging` each session unless it is signed and installed via addons.mozilla.org.
+1. Click the `.xpi` file attached to the release page in Firefox.
+2. When the installation confirmation dialog appears, click "Add".
+
+If the dialog does not appear, drag and drop the downloaded `.xpi` file onto the `about:addons` page. The file is signed, so the extension stays installed across Firefox restarts.
+
+### Chrome
+
+1. Download the `.zip` file attached to the release page and extract it.
+2. Open `chrome://extensions` in Chrome and turn on Developer mode.
+3. Click "Load unpacked" and select the extracted folder.
+
+Note: extensions installed this way do not auto-update. When a new version is released, repeat the same steps to replace it.
+
+After installation, open a GitHub page such as `https://github.com/...` and supported UI text will be translated automatically.
+
+### Development install (load from the repository)
+
+To customize the dictionary or contribute, clone the repository and load it directly.
+
+```sh
+git clone https://github.com/nobuo-miura/github-ui-translator.git
+```
+
+- **Chrome**: open `chrome://extensions`, turn on Developer mode, click "Load unpacked", and select the cloned folder (the one that contains `manifest.json`).
+- **Firefox**: open `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on…", and select `manifest.json` inside the repository. A temporary add-on is removed when Firefox restarts, so it needs to be reloaded each session.
 
 ## Usage
 
