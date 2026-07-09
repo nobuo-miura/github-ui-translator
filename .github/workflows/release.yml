@@ -1,0 +1,39 @@
+# vX.Y.Z形式のタグをpushすると、zipをビルドしてドラフトのGitHub Releaseに添付するワークフロー
+name: Build release zip
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # タグとmanifest.jsonのバージョンの食い違い（上げ忘れ）を検出
+      - name: Verify tag matches manifest version
+        run: |
+          manifest_version=$(node -p "require('./manifest.json').version")
+          tag_version="${GITHUB_REF_NAME#v}"
+          if [ "$manifest_version" != "$tag_version" ]; then
+            echo "manifest.json version (${manifest_version}) does not match tag (${tag_version})" >&2
+            exit 1
+          fi
+
+      - name: Build zip
+        run: ./build.sh
+
+      - name: Create draft release with zip attached
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --draft \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            github-ui-translator-v*.zip
