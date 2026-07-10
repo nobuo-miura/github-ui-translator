@@ -41,7 +41,7 @@
       /^\/organizations\/[^/]+\/repositories\/new$/.test(location.pathname) ||
       // 個別PRページはURLが/pull/123（単数形）、一覧ページは/pulls（複数形）と
       // GitHub側でURL規則が不統一なため、両方にマッチさせる（pulls?）
-      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare)(\/|$)/.test(location.pathname);
+      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security)(\/|$)/.test(location.pathname);
 
     return (isExtendedScopePage
       ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
