@@ -11,6 +11,9 @@
     'nav',
     'header',
     'button',
+    'input[type="submit"]',
+    'input[type="button"]',
+    'input[type="reset"]',
     '[role="tab"]',
     '[role="menuitem"]',
     '[role="menuitemradio"]',
@@ -29,7 +32,21 @@
   // roleもaria-labelも付いていないためaria-labelでは拾えないが、<a>自体は
   // CSSクラスに依存しない正規のセマンティックHTMLタグなので方針上問題ない。
   // README/Issue本文などのコンテンツ領域は .markdown-body で除外する。
-  const EXTRA_SELECTOR = ['label', 'legend', 'h1', 'h2', 'h3', 'dt', 'strong', 'a'];
+  const EXTRA_SELECTOR = [
+    'label',
+    'legend',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'dt',
+    'strong',
+    'a',
+    'input[placeholder]',
+    'textarea[placeholder]'
+  ];
   // 万一Settings画面内にMarkdown本文的な領域があっても対象から除外する安全策
   const EXCLUDE_SELECTOR = '.markdown-body, .markdown-body *';
 
@@ -41,7 +58,7 @@
       /^\/organizations\/[^/]+\/repositories\/new$/.test(location.pathname) ||
       // 個別PRページはURLが/pull/123（単数形）、一覧ページは/pulls（複数形）と
       // GitHub側でURL規則が不統一なため、両方にマッチさせる（pulls?）
-      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security)(\/|$)/.test(location.pathname);
+      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network)(\/|$)/.test(location.pathname);
 
     return (isExtendedScopePage
       ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
@@ -91,8 +108,42 @@
       }
     }
 
+    // placeholder属性もテキストノードではないため個別に処理する
+    const placeholder = el.getAttribute('placeholder');
+    if (placeholder) {
+      const trimmed = placeholder.trim();
+      const translated = dict[trimmed];
+      if (translated) {
+        el.setAttribute('placeholder', placeholder.replace(trimmed, () => translated));
+      }
+    }
+
     // <select>の<option>群（国名一覧など巨大な参照データ）は翻訳対象外
     if (el.tagName === 'SELECT') return;
+
+    // <input type="submit"/"button"/"reset">はテキストノードではなくvalue属性が
+    // ボタンラベルとして表示されるため、個別に処理する。
+    // data-disable-withは送信中に一時的に表示されるラベルなのであわせて処理する。
+    // valueの翻訳はボタン系typeに限定する。テキスト入力欄のvalueはユーザーの
+    // 入力内容そのものであり、翻訳すると入力中の値を書き換えてしまうため
+    if (el.tagName === 'INPUT') {
+      if (el.type !== 'submit' && el.type !== 'button' && el.type !== 'reset') return;
+      const value = el.value;
+      const trimmed = value.trim();
+      const translated = dict[trimmed];
+      if (translated) {
+        el.value = value.replace(trimmed, () => translated);
+      }
+      const disableWith = el.getAttribute('data-disable-with');
+      if (disableWith) {
+        const disableWithTrimmed = disableWith.trim();
+        const disableWithTranslated = dict[disableWithTrimmed];
+        if (disableWithTranslated) {
+          el.setAttribute('data-disable-with', disableWith.replace(disableWithTrimmed, () => disableWithTranslated));
+        }
+      }
+      return;
+    }
 
     // role="menu"/"listbox"は国名・タイムゾーン一覧のような巨大な参照データが
     // 丸ごと隠し要素として含まれることがあるため、件数上限を設ける。
