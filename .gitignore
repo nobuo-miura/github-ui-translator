@@ -2,3 +2,4 @@
 *.pem
 *.zip
 node_modules/
+docs/
