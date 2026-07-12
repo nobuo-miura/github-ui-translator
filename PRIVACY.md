@@ -2,7 +2,7 @@
 
 [English](PRIVACY.md) | [日本語](PRIVACY.ja.md)
 
-Last updated: July 11, 2026
+Last updated: July 12, 2026
 
 ## Summary
 
@@ -14,9 +14,11 @@ Last updated: July 11, 2026
 
 This extension does not collect any personal information, browsing history, page content, or usage analytics. There is no telemetry of any kind.
 
-### No external communication
+### No external communication for translation
 
-All translation is performed entirely within your browser using dictionary files bundled with the extension. The extension makes no network requests to external servers, translation APIs, or cloud services. The content of the pages you view never leaves your browser.
+All translation is performed entirely within your browser using dictionary files bundled with the extension. The extension makes no network requests to translation APIs, analytics services, or cloud services, and the content of the pages you view never leaves your browser.
+
+Firefox may periodically request update metadata from GitHub to check for a newer signed version of the extension. This standard browser update request does not include page content, browsing history, or extension settings.
 
 ### Page content is processed locally only
 

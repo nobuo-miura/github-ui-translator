@@ -1,0 +1,12 @@
+{
+  "addons": {
+    "github-ui-translator@nobuo-miura.github.io": {
+      "updates": [
+        {
+          "version": "0.1.1",
+          "update_link": "https://github.com/nobuo-miura/github-ui-translator/releases/download/v0.1.1/Firefox-github-ui-translator-0.1.1.xpi"
+        }
+      ]
+    }
+  }
+}
