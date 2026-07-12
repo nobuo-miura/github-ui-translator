@@ -22,22 +22,24 @@ This project is currently an MVP (Minimum Viable Product).
 
 ## Installation
 
-Install from the [latest release](https://github.com/nobuo-miura/github-ui-translator/releases/latest) page for your browser.
-
-### Firefox
-
-1. Click the `.xpi` file attached to the release page in Firefox.
-2. When the installation confirmation dialog appears, click "Add".
-
-If the dialog does not appear, drag and drop the downloaded `.xpi` file onto the `about:addons` page. The file is signed, so the extension stays installed across Firefox restarts.
-
 ### Chrome
 
-1. Download the `.zip` file attached to the release page and extract it.
+Install [GitHub UI Translator from the Chrome Web Store](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk).
+
+If the Chrome Web Store is unavailable in your environment, such as on a company-managed device:
+
+1. Download the `.zip` file from the [latest release](https://github.com/nobuo-miura/github-ui-translator/releases/latest) and extract it.
 2. Open `chrome://extensions` in Chrome and turn on Developer mode.
 3. Click "Load unpacked" and select the extracted folder.
 
-Note: extensions installed this way do not auto-update. When a new version is released, repeat the same steps to replace it.
+Extensions installed manually do not update automatically. Repeat these steps when a new version is released. Your organization may also block Developer mode or manually installed extensions; in that case, contact your administrator.
+
+### Firefox
+
+1. Open the [latest release](https://github.com/nobuo-miura/github-ui-translator/releases/latest) page in Firefox and click the attached `.xpi` file.
+2. When the installation confirmation dialog appears, click "Add".
+
+If the dialog does not appear, drag and drop the downloaded `.xpi` file onto the `about:addons` page. The file is signed, so the extension stays installed across Firefox restarts.
 
 After installation, open a GitHub page such as `https://github.com/...` and supported UI text will be translated automatically.
 
@@ -55,7 +57,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ## Usage
 
 - Click the extension icon in the toolbar to open the on/off toggle and the language selector. Only Japanese is bundled today; the dropdown is ready for additional languages once more dictionaries are added.
-- Changing the toggle or the language reloads the active GitHub tab.
+- Changing the toggle or the language reloads open GitHub tabs so the new setting takes effect.
 - The popup also has a link to this repository.
 - Open the extension options page (`chrome://extensions` on Chrome, `about:addons` on Firefox) to view the bundled dictionary information and extension version.
 

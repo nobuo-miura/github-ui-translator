@@ -22,22 +22,24 @@ GitHubの英語UIを、ローカル辞書を使って日本語に翻訳するブ
 
 ## インストール方法
 
-[最新リリース](https://github.com/nobuo-miura/github-ui-translator/releases/latest)のページから、お使いのブラウザに合わせてインストールしてください。
-
-### Firefox
-
-1. リリースページに添付されている `.xpi` ファイルをFirefoxでクリックする
-2. インストールの確認ダイアログが表示されたら「追加」を選択する
-
-ダイアログが表示されない場合は、ダウンロードした `.xpi` ファイルを `about:addons` の画面にドラッグ&ドロップしてください。署名済みのため、インストール後はFirefoxを再起動しても有効なままです。
-
 ### Chrome
 
-1. リリースページに添付されている `.zip` ファイルをダウンロードして展開する
+[Chrome ウェブストア](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)からインストールしてください。
+
+社内端末など、Chrome ウェブストアを利用できない環境では、以下の手順で手動インストールできます。
+
+1. [最新リリース](https://github.com/nobuo-miura/github-ui-translator/releases/latest)から `.zip` ファイルをダウンロードして展開する
 2. Chromeで `chrome://extensions` を開き、右上の「デベロッパーモード」をONにする
 3. 「パッケージ化されていない拡張機能を読み込む」をクリックし、展開したフォルダを選択する
 
-※ この方法でインストールした場合、自動更新はされません。新しいバージョンが出たら同じ手順で入れ替えてください。
+手動でインストールした拡張機能は自動更新されません。新しいバージョンが公開されたら、同じ手順で入れ替えてください。組織のポリシーによってデベロッパーモードや手動インストールも禁止されている場合は、管理者に確認してください。
+
+### Firefox
+
+1. Firefoxで[最新リリース](https://github.com/nobuo-miura/github-ui-translator/releases/latest)ページを開き、添付されている `.xpi` ファイルをクリックする
+2. インストールの確認ダイアログが表示されたら「追加」を選択する
+
+ダイアログが表示されない場合は、ダウンロードした `.xpi` ファイルを `about:addons` の画面にドラッグ&ドロップしてください。署名済みのため、インストール後はFirefoxを再起動しても有効なままです。
 
 インストール後、GitHubのページ（`https://github.com/...`）を開くと自動的にUIが日本語化されます。
 
@@ -55,7 +57,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ## 使い方
 
 - ツールバーの拡張機能アイコンをクリックすると、翻訳のON/OFFトグルと言語選択が表示される（現時点では日本語のみ）
-- トグルまたは言語を変更すると、そのタブが自動的に再読み込みされる
+- トグルまたは言語を変更すると、開いているGitHubのタブが自動的に再読み込みされ、設定が反映される
 - Popup下部にはこのリポジトリへのリンクがある
 - 拡張機能のオプション画面（Chromeは`chrome://extensions`の詳細から、Firefoxは`about:addons`から開く）で、同梱している辞書の情報とバージョンを確認できる
 
