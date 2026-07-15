@@ -82,6 +82,7 @@
     // ==== Issue/PR詳細サイドバー（担当者・ラベル等） ====
     "Assignees": "担当者",
     "Labels": "ラベル",
+    "Label": "ラベル",
     "Milestone": "マイルストーン",
     "Milestones": "マイルストーン",
     "Linked pull requests": "リンクされたプルリクエスト",
@@ -937,6 +938,38 @@
     "Sign GitHub customer terms": "GitHubカスタマー利用規約に署名",
     "Delete this organization": "このOrganizationを削除する",
 
+    // ==== Discussions画面 ====
+    "Categories": "カテゴリ",
+    "View all discussions": "すべてのディスカッションを表示",
+    "Announcements": "お知らせ",
+    "Ideas": "アイデア",
+    "Polls": "投票",
+    "Q&A": "Q&A",
+    "Show and tell": "共有・紹介",
+    "Most helpful": "最も役立つ",
+    "Community insights": "コミュニティインサイト",
+    "Welcome to discussions!": "ディスカッションへようこそ！",
+    "New discussion": "新しいディスカッション",
+    "Sort by:": "並び替え:",
+    "Select a discussion category": "ディスカッションのカテゴリを選択",
+    "Get started": "はじめる",
+    "Answers enabled": "回答機能が有効",
+    "Start a new discussion": "新しいディスカッションを開始",
+    "Add a body": "本文を追加",
+    "Helpful resources": "役立つリソース",
+    "Markdown is supported": "Markdown記法に対応しています",
+    "Start discussion": "ディスカッションを開始",
+
+    // ==== Discussion詳細画面 ====
+    "Category": "カテゴリ",
+    "Lock conversation": "会話をロック",
+    "Transfer this discussion": "このディスカッションを移譲",
+    "Edit pinned discussion": "ピン留めディスカッションを編集",
+    "Unpin discussion": "ピン留めを解除",
+    "Create issue from discussion": "ディスカッションからイシューを作成",
+    "Delete discussion": "ディスカッションを削除",
+    "Close discussion": "ディスカッションをクローズ",
+
     // ==== Organizationナビゲーション（トップバー） ====
     "Overview": "概要",
     "Teams": "チーム",
@@ -1041,6 +1074,80 @@
     "This file is hidden.": "このファイルは非表示です。",
     "We don’t support that file type.": "そのファイル形式には対応していません。",
 
+    // ==== Organizationトップページ（オンボーディング, /組織名） ====
+    "View as:": "表示形式:",
+    "Create a pull request": "プルリクエストを作成",
+    "Propose and collaborate on changes to a repository.": "リポジトリへの変更を提案し、共同作業します。",
+    "Create a branch protection rule": "ブランチ保護ルールを作成",
+    "Enforce certain workflows for one or more branches.": "1つ以上のブランチに特定のワークフローを強制します。",
+    "Auto-assign new issues": "新しいイシューを自動アサイン",
+    "Try automatically assigning work with GitHub Actions.": "GitHub Actionsで作業の自動アサインを試してみましょう。",
+    "Run a continuous integration test": "継続的インテグレーションのテストを実行",
+    "Validate your code using a CI workflow.": "CIワークフローでコードを検証します。",
+    "Invite someone": "招待する",
+
+    // ==== Organization Actions Insights画面（/orgs/xxx/actions/metrics/xxx） ====
+    "Actions Usage Metrics": "Actionsの使用状況指標",
+    "Actions Performance Metrics": "Actionsのパフォーマンス指標",
+    "Total minutes": "合計時間（分）",
+    "Total job runs": "ジョブ実行回数の合計",
+    "Workflows": "ワークフロー",
+    "Jobs": "ジョブ",
+    "Runtime OS": "実行環境のOS",
+    "Runner type": "ランナーの種類",
+    "Search or filter": "検索・フィルター",
+    "No table data available yet.": "まだ表示できるデータがありません。",
+    "Get started with GitHub Actions": "GitHub Actionsを使ってみる",
+
+    // ==== Organization People画面（/orgs/xxx/people） ====
+    "Organization permissions": "Organizationの権限",
+    "Members": "メンバー",
+    "Follow": "フォロー",
+    "Find a member…": "メンバーを検索…",
+    "Outside collaborators": "外部コラボレーター",
+    "Pending collaborators": "招待中のコラボレーター",
+    "Invitations": "招待",
+    "Failed invitations": "失敗した招待",
+    "Security Managers": "セキュリティマネージャー",
+    "Export": "エクスポート",
+    "Invite member": "メンバーを招待",
+    "Membership": "メンバーシップ",
+
+    // ==== Organization Repositories画面（/orgs/xxx/repositories） ====
+    "Contributed by me": "自分がコントリビュートしたリポジトリ",
+    "Admin access": "管理者アクセス",
+    "Sources": "フォークではないリポジトリ",
+    "Archived": "アーカイブ済み",
+    "Templates": "テンプレート",
+    "Last pushed": "最終プッシュ",
+    "Search repositories": "リポジトリを検索",
+
+    // ==== Organization Sponsoring画面（/orgs/xxx/sponsoring） ====
+    "Sponsoring": "スポンサー",
+    "Current sponsorships": "現在のスポンサー",
+    "Past sponsorships": "過去のスポンサー",
+    "Sponsor": "スポンサーになる",
+    "Search users": "ユーザーを検索",
+
+    // ==== Organization Packages画面（/orgs/xxx/packages） ====
+    "Linked artifacts": "リンクされたアーティファクト",
+    "Type:": "種類:",
+    "Visibility:": "公開範囲:",
+    "Search packages…": "パッケージを検索…",
+    "Select type": "種類を選択",
+    "Select visibility": "公開範囲を選択",
+    "Select sort view": "並び替えを選択",
+    "Most downloads": "ダウンロード数が多い順",
+    "Least downloads": "ダウンロード数が少ない順",
+    "Internal": "内部",
+
+    // ==== Models画面（/models） ====
+    "Models": "モデル",
+    "Prompts": "プロンプト",
+    "Playground": "プレイグラウンド",
+    "Catalog": "カタログ",
+    "Add AI to your project now": "プロジェクトにAIを今すぐ追加",
+
     // ==== Security画面（/security） ====
     "Security policy": "セキュリティポリシー",
     "Advisories": "アドバイザリー",
@@ -1056,6 +1163,30 @@
     "Enable Dependabot alerts": "Dependabotアラートを有効化",
     "Set up code scanning": "コードスキャンを設定",
     "View detected secrets": "検出されたシークレットを表示",
+
+    // ==== Actions画面（/actions） ====
+    "New workflow": "新しいワークフロー",
+    "All workflows": "すべてのワークフロー",
+    "Management": "管理",
+    "Caches": "キャッシュ",
+    "Attestations": "証明書",
+    "Usage metrics": "使用状況の指標",
+    "Performance metrics": "パフォーマンスの指標",
+    "Workflow": "ワークフロー",
+    "Event": "イベント",
+    "Actor": "実行者",
+
+    // ==== CI実行詳細画面（/actions/runs/xxx） ====
+    "Summary": "サマリー",
+    "All jobs": "すべてのジョブ",
+    "Run details": "実行の詳細",
+    "Workflow file": "ワークフローファイル",
+    "Total duration": "合計時間",
+    "Artifacts": "アーティファクト",
+    "Success": "成功",
+    "Re-run all jobs": "すべてのジョブを再実行",
+    "Annotations": "アノテーション",
+    "Show more": "もっと見る",
 
     // ==== リポジトリSettings > Collaborators and teams（/settings/access） ====
     "Collaborators and teams": "コラボレーターとチーム",

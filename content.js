@@ -48,17 +48,17 @@
     'textarea[placeholder]'
   ];
   // 万一Settings画面内にMarkdown本文的な領域があっても対象から除外する安全策
-  const EXCLUDE_SELECTOR = '.markdown-body, .markdown-body *';
+  const EXCLUDE_SELECTOR = '.markdown-body, .markdown-body *, [data-hovercard-type="repository"]';
 
   function getAllowlistSelector() {
     const isExtendedScopePage =
       /\/settings(\/|$)/.test(location.pathname) ||
-      /^\/orgs\/[^/]+\/(people|teams|security-managers)(\/|$)/.test(location.pathname) ||
+      /^\/orgs\/[^/]+\/(people|teams|security-managers|packages|sponsoring|repositories|actions)(\/|$)/.test(location.pathname) ||
       /^\/new(\/|$)/.test(location.pathname) ||
       /^\/organizations\/[^/]+\/repositories\/new$/.test(location.pathname) ||
       // 個別PRページはURLが/pull/123（単数形）、一覧ページは/pulls（複数形）と
       // GitHub側でURL規則が不統一なため、両方にマッチさせる（pulls?）
-      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network)(\/|$)/.test(location.pathname);
+      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models)(\/|$)/.test(location.pathname);
 
     return (isExtendedScopePage
       ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
