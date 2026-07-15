@@ -9,7 +9,7 @@ This project is currently an MVP (Minimum Viable Product).
 
 ## Features
 
-- Runs entirely locally, with no external network requests
+- Performs all translation locally without sending page content or settings to external services
 - Translates fixed GitHub UI text such as navigation items and buttons while avoiding content areas such as READMEs, issues, comments, and code blocks
 - Lets you turn translation on or off from the extension popup
 
@@ -40,6 +40,8 @@ Extensions installed manually do not update automatically. Repeat these steps wh
 2. When the installation confirmation dialog appears, click "Add".
 
 If the dialog does not appear, drag and drop the downloaded `.xpi` file onto the `about:addons` page. The file is signed, so the extension stays installed across Firefox restarts.
+
+Firefox versions that include automatic update support check `updates.json` in this repository and install newer signed XPI releases automatically. If you installed version 0.1.1 or earlier, manually install the first version that includes this support once to enable future automatic updates.
 
 After installation, open a GitHub page such as `https://github.com/...` and supported UI text will be translated automatically.
 
@@ -95,6 +97,7 @@ github-ui-translator/
 ├─ content.js       # Translation engine that scans the DOM using an allowlist
 ├─ popup.html/js    # Toolbar popup with the translation toggle
 ├─ options.html/js  # Dictionary information and version display
+├─ updates.json     # Update manifest for the self-distributed Firefox extension
 ├─ dictionaries/
 │  └─ ja.json       # Japanese dictionary
 └─ icons/
