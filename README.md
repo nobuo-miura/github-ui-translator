@@ -41,7 +41,7 @@ Extensions installed manually do not update automatically. Repeat these steps wh
 
 If the dialog does not appear, drag and drop the downloaded `.xpi` file onto the `about:addons` page. The file is signed, so the extension stays installed across Firefox restarts.
 
-Firefox versions that include automatic update support check `updates.json` in this repository and install newer signed XPI releases automatically. If you installed version 0.1.1 or earlier, manually install the first version that includes this support once to enable future automatic updates.
+Version 0.1.2 and later of the extension check `updates.json` in this repository and install newer signed XPI releases automatically. If you installed version 0.1.1 or earlier, manually install v0.1.2 once to enable future automatic updates.
 
 After installation, open a GitHub page such as `https://github.com/...` and supported UI text will be translated automatically.
 
