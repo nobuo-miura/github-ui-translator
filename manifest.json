@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GitHub UI Translator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Translates the GitHub UI using local dictionaries. Designed for multiple languages (Japanese only for now).",
   "action": {
     "default_popup": "popup.html",
