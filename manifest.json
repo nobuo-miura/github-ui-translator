@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "GitHub UI Translator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Translates the GitHub UI using local dictionaries. Designed for multiple languages (Japanese only for now).",
   "action": {
     "default_popup": "popup.html",
@@ -20,6 +20,7 @@
     "gecko": {
       "id": "github-ui-translator@nobuo-miura.github.io",
       "strict_min_version": "142.0",
+      "update_url": "https://raw.githubusercontent.com/nobuo-miura/github-ui-translator/main/updates.json",
       "data_collection_permissions": {
         "required": ["none"]
       }
