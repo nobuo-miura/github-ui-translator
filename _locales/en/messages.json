@@ -1,0 +1,66 @@
+{
+  "extensionName": {
+    "message": "GitHub UI Translator"
+  },
+  "extensionDescription": {
+    "message": "Translates the GitHub UI locally using bundled language dictionaries."
+  },
+  "actionTitle": {
+    "message": "GitHub UI Translator"
+  },
+  "translationLabel": {
+    "message": "Translation"
+  },
+  "translationToggleLabel": {
+    "message": "Enable or disable translation"
+  },
+  "translationEnabledStatus": {
+    "message": "ON: Translate the GitHub UI"
+  },
+  "translationDisabledStatus": {
+    "message": "OFF: Show the original English UI"
+  },
+  "languageLabel": {
+    "message": "Language"
+  },
+  "repositoryLink": {
+    "message": "GitHub UI Translator on GitHub"
+  },
+  "settingsTitle": {
+    "message": "GitHub UI Translator - Settings"
+  },
+  "dictionaryInfoHeading": {
+    "message": "Dictionary information"
+  },
+  "languageColumn": {
+    "message": "Language"
+  },
+  "entryCountColumn": {
+    "message": "Entries"
+  },
+  "versionInfoHeading": {
+    "message": "Version information"
+  },
+  "dictionaryCount": {
+    "message": "$COUNT$ entries",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "dictionaryLoadError": {
+    "message": "Load error"
+  },
+  "languageListLoadError": {
+    "message": "Unable to load the language list"
+  },
+  "versionLabel": {
+    "message": "Version: $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  }
+}

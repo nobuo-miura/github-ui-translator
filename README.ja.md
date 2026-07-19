@@ -10,7 +10,7 @@ GitHubの英語UIを、ローカル辞書を使って日本語に翻訳するブ
 ## 特徴
 
 - 翻訳は完全ローカルで動作し、ページ内容や設定を外部サービスへ送信しない
-- GitHub本文（README・Issue・コメント・コードブロックなど）には一切手を加えず、ナビゲーションやボタンなど固定UI文言のみを翻訳
+- README・Issue・コメント・コードブロックなど、ユーザーが作成したコンテンツを対象外にし、ナビゲーションやボタンなどの固定UI文言のみを翻訳するよう設計
 - 翻訳のON/OFFをワンクリックで切り替え可能
 
 ## できないこと（MVPの制限事項）
@@ -87,19 +87,27 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ### 新しい言語を追加する場合
 
 1. 同じ形式で`dictionaries/<言語コード>.json`（例: `dictionaries/en.json`）を追加する
-2. `popup.js`と`options.js`の両方にある`AVAILABLE_LANGUAGES`配列に`{ code: '<言語コード>', name: '<表示名>' }`を追加する。拡張機能は実行時に`dictionaries/`フォルダの中身を一覧取得できないため、この配列は手動で管理する必要がある
+2. `languages.json`に`{ "code": "<言語コード>", "name": "<表示名>" }`を追加する。Popupとオプション画面はこの共通一覧を読み込む
+3. `node scripts/validate.mjs`を実行し、辞書形式、重複キー、メタデータ、同梱辞書間のキー一致を確認する
+
+Popup、オプション画面、拡張機能の名前・説明は、GitHub翻訳用辞書とは別にブラウザ拡張標準の`_locales`で多言語化しています。拡張機能自身のUIにも新しい言語を追加する場合は、`_locales/en/messages.json`と同じメッセージキーを持つ`_locales/<言語コード>/messages.json`も追加してください。
 
 ## ディレクトリ構成
 
 ```
 github-ui-translator/
 ├─ manifest.json
+├─ shared.js        … 言語一覧・拡張機能UIローカライズの共通処理
+├─ languages.json   … 同梱するGitHub翻訳言語の一覧
 ├─ content.js       … 翻訳エンジン本体（許可リスト方式でDOMを走査）
 ├─ popup.html/js    … ツールバーのON/OFFトグル
 ├─ options.html/js  … 辞書情報・バージョン表示
 ├─ updates.json     … Firefox自己配布版の更新マニフェスト
+├─ _locales/        … Popup・設定・拡張機能メタデータの翻訳
 ├─ dictionaries/
 │  └─ ja.json       … 日本語辞書
+├─ scripts/
+│  └─ validate.mjs  … 辞書・ローカライズの検証
 └─ icons/
 ```
 
