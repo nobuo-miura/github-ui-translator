@@ -30,7 +30,7 @@
     // ==== 新規作成・インポート（"+"メニュー等） ====
     "New issue": "新しいイシュー",
     "New pull request": "新しいプルリクエスト",
-    "New project": "New project",
+    "New project": "新しいプロジェクト",
     "New repository": "新しいリポジトリ",
     "Create new repository": "新しいリポジトリを作成",
     "Create new...": "新規作成...",
@@ -57,7 +57,7 @@
     "Clone": "クローン",
     "Download ZIP": "ZIPをダウンロード",
     "Compare": "比較",
-    "Compare & pull request": "Compare & pull request",
+    "Compare & pull request": "比較してプルリクエストを作成",
 
     // ==== Issue/PRのマージ・クローズ操作 ====
     "Merge pull request": "プルリクエストをマージ",
@@ -110,6 +110,11 @@
     "Filter by milestone": "マイルストーンで絞り込む",
     "Filter by project": "プロジェクトで絞り込む",
     "Issue filters": "イシューフィルター",
+    "Issues sidebar navigation": "イシューのサイドバーナビゲーション",
+    "Pages": "ページ",
+    "All issues": "すべてのイシュー",
+    "Filter all issues": "すべてのイシューを絞り込む",
+    "Search results": "検索結果",
     "Newest": "新しい順",
     "Search Issues": "イシューを検索",
     "Sort by": "並び替え",
@@ -298,6 +303,15 @@
     "Sign up": "サインアップ",
 
     // ==== グローバルヘッダーの各種リンク（未ログイン時のトップページ等） ====
+    "Navigation Menu": "ナビゲーションメニュー",
+    "Toggle navigation": "ナビゲーションを切り替え",
+    "Homepage": "ホームページ",
+    "Global": "グローバル",
+    "Platform": "プラットフォーム",
+    "Solutions": "ソリューション",
+    "Resources": "リソース",
+    "Open Source": "オープンソース",
+    "Appearance settings": "外観設定",
     "Home": "ホーム",
     "Explore": "探索",
     "Marketplace": "マーケットプレイス",
@@ -327,7 +341,13 @@
     // ==== 検索 ====
     "Search": "検索",
     "Search or jump to…": "検索またはジャンプ...",
+    "Search or jump to...": "検索またはジャンプ...",
     "Search syntax tips": "検索構文のヒント",
+    "Suggestions": "候補",
+    "Saved searches": "保存済み検索",
+    "Use saved searches to filter your results more quickly": "保存済み検索を使って結果をすばやく絞り込めます",
+    "Create saved search": "保存済み検索を作成",
+    "Clear": "クリア",
     "Filter": "フィルター",
     "Sort": "並び替え",
 
@@ -448,6 +468,9 @@
     "Do not share my personal information": "個人情報を共有しない",
 
     // ==== フッター（全画面共通） ====
+    "Footer": "フッター",
+    "GitHub Homepage": "GitHubホームページ",
+    "Dismiss error": "エラーを閉じる",
     "Docs": "ドキュメント",
     "Community": "コミュニティ",
     "Contact": "お問い合わせ",
@@ -1073,6 +1096,35 @@
     "This file is empty.": "このファイルは空です。",
     "This file is hidden.": "このファイルは非表示です。",
     "We don’t support that file type.": "そのファイル形式には対応していません。",
+
+    // ==== マイルストーン作成・編集画面（/milestones/new, /milestones/xxx/edit） ====
+    "Create milestone": "マイルストーンを作成",
+    "Milestone name": "マイルストーン名",
+    "Edit milestone": "マイルストーンを編集",
+    "Due date": "期限日",
+    "(optional)": "(任意)",
+    "Choose date...": "日付を選択...",
+    "Close milestone": "マイルストーンをクローズ",
+    "Reopen milestone": "マイルストーンを再オープン",
+    "Save changes": "変更を保存",
+    "Describe your milestone": "マイルストーンの説明を入力",
+
+    // ==== マイルストーン一覧画面（/milestones） ====
+    "New milestone": "新しいマイルストーン",
+
+    // ==== マイルストーン詳細画面（/milestone/xxx） ====
+    "Back to milestones": "マイルストーン一覧に戻る",
+    "Close Milestone": "マイルストーンをクローズ",
+    "There are no open issues in this milestone": "このマイルストーンにはオープン中のイシューがありません",
+
+    // ==== ラベル画面（/labels） ====
+    "New label": "新しいラベル",
+    "Search all labels": "すべてのラベルを検索",
+    "Label preview": "ラベルのプレビュー",
+    "Color": "カラー",
+    "Create label": "ラベルを作成",
+    "Label name": "ラベル名",
+    "Optionally add a description": "説明を入力（任意）",
 
     // ==== Organizationトップページ（オンボーディング, /組織名） ====
     "View as:": "表示形式:",

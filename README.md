@@ -10,7 +10,7 @@ This project is currently an MVP (Minimum Viable Product).
 ## Features
 
 - Performs all translation locally without sending page content or settings to external services
-- Translates fixed GitHub UI text such as navigation items and buttons while avoiding content areas such as READMEs, issues, comments, and code blocks
+- Translates fixed GitHub UI text such as navigation items and buttons while excluding user-created content such as READMEs, issues, comments, and code blocks
 - Lets you turn translation on or off from the extension popup
 
 ## Current Limitations
@@ -87,19 +87,27 @@ Entries are grouped into sections by GitHub screen (repository navigation, repos
 ### Adding a new language
 
 1. Add `dictionaries/<code>.json` (e.g. `dictionaries/en.json`) in the same format.
-2. Add `{ code: '<code>', name: '<display name>' }` to the `AVAILABLE_LANGUAGES` array in both `popup.js` and `options.js`. The extension cannot list the `dictionaries/` folder at runtime, so this list is maintained by hand.
+2. Add `{ "code": "<code>", "name": "<display name>" }` to `languages.json`. The popup and options page both load this shared list.
+3. Run `node scripts/validate.mjs` to check the dictionary format, duplicate keys, metadata, and key parity with the other bundled dictionaries.
+
+The popup, options page, and extension metadata use the browser extension `_locales` mechanism independently of the GitHub translation dictionaries. To add a new language for the extension's own UI, also add `_locales/<code>/messages.json` with the same message keys as `_locales/en/messages.json`.
 
 ## Project Structure
 
 ```text
 github-ui-translator/
 ├─ manifest.json
+├─ shared.js        # Shared language list and extension UI localization helpers
+├─ languages.json   # Bundled GitHub translation languages
 ├─ content.js       # Translation engine that scans the DOM using an allowlist
 ├─ popup.html/js    # Toolbar popup with the translation toggle
 ├─ options.html/js  # Dictionary information and version display
 ├─ updates.json     # Update manifest for the self-distributed Firefox extension
+├─ _locales/        # Localized popup, options, and extension metadata messages
 ├─ dictionaries/
 │  └─ ja.json       # Japanese dictionary
+├─ scripts/
+│  └─ validate.mjs  # Dictionary and localization validation
 └─ icons/
 ```
 

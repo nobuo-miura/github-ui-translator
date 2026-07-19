@@ -1,23 +1,31 @@
-// 同梱している辞書の一覧。新しい言語辞書(dictionaries/xx.json)を追加したら
-// ここにも追記する（拡張機能はディレクトリ一覧を動的に取得できないため）。
-const AVAILABLE_LANGUAGES = [{ code: 'ja', name: '日本語' }];
+const { getMessage, loadLanguages, localizeDocument } = globalThis.GitHubUITranslator;
 
 const toggle = document.getElementById('toggle');
 const status = document.getElementById('status');
 const languageSelect = document.getElementById('language');
 
-AVAILABLE_LANGUAGES.forEach(({ code, name }) => {
-  const option = document.createElement('option');
-  option.value = code;
-  option.textContent = name;
-  languageSelect.appendChild(option);
-});
+async function initialize() {
+  localizeDocument();
 
-chrome.storage.local.get({ enabled: true, language: 'ja' }, (items) => {
-  toggle.checked = items.enabled;
-  updateStatus(items.enabled);
-  languageSelect.value = items.language;
-});
+  try {
+    const languages = await loadLanguages();
+    languages.forEach(({ code, name }) => {
+      const option = document.createElement('option');
+      option.value = code;
+      option.textContent = name;
+      languageSelect.appendChild(option);
+    });
+  } catch (e) {
+    console.error('[GitHub UI Translator] Failed to load languages', e);
+    languageSelect.disabled = true;
+  }
+
+  chrome.storage.local.get({ enabled: true, language: 'ja' }, (items) => {
+    toggle.checked = items.enabled;
+    updateStatus(items.enabled);
+    languageSelect.value = items.language;
+  });
+}
 
 toggle.addEventListener('change', () => {
   const enabled = toggle.checked;
@@ -35,9 +43,11 @@ languageSelect.addEventListener('change', () => {
 
 function updateStatus(enabled) {
   status.textContent = enabled
-    ? 'ON: GitHubのUIを翻訳します'
-    : 'OFF: 原文（英語）を表示します';
+    ? getMessage('translationEnabledStatus')
+    : getMessage('translationDisabledStatus');
 }
+
+initialize();
 
 // 開いている全ウィンドウのGitHubタブをリロードして設定変更を反映する。
 // tab.urlはホスト権限のあるタブ（content_scriptsのmatches由来）でのみ参照できるため、

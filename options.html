@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>GitHub UI Translator - 設定</title>
+<title data-i18n="settingsTitle">GitHub UI Translator - Settings</title>
 <style>
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -24,17 +24,18 @@
 </style>
 </head>
 <body>
-  <h1>GitHub UI Translator - 設定</h1>
+  <h1 data-i18n="settingsTitle">GitHub UI Translator - Settings</h1>
 
-  <h2>辞書情報</h2>
+  <h2 data-i18n="dictionaryInfoHeading">Dictionary information</h2>
   <table>
-    <thead><tr><th>言語</th><th>収録件数</th></tr></thead>
+    <thead><tr><th data-i18n="languageColumn">Language</th><th data-i18n="entryCountColumn">Entries</th></tr></thead>
     <tbody id="dict-info"></tbody>
   </table>
 
-  <h2>バージョン情報</h2>
+  <h2 data-i18n="versionInfoHeading">Version information</h2>
   <p id="version"></p>
 
+  <script src="shared.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

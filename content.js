@@ -47,8 +47,18 @@
     'input[placeholder]',
     'textarea[placeholder]'
   ];
-  // 万一Settings画面内にMarkdown本文的な領域があっても対象から除外する安全策
-  const EXCLUDE_SELECTOR = '.markdown-body, .markdown-body *, [data-hovercard-type="repository"]';
+  // ユーザーが作成した本文・タイトル・識別子を翻訳しないための安全策。
+  // 親要素（navやdialog）を走査するときも、各テキストノードに対してこの判定を行う。
+  const EXCLUDE_SELECTOR = [
+    '.markdown-body',
+    'p',
+    'pre',
+    'code',
+    'bdi',
+    '[contenteditable="true"]',
+    '[data-hovercard-type="repository"]',
+    '[data-hovercard-type="user"]'
+  ].join(',');
 
   function getAllowlistSelector() {
     const isExtendedScopePage =
@@ -58,7 +68,9 @@
       /^\/organizations\/[^/]+\/repositories\/new$/.test(location.pathname) ||
       // 個別PRページはURLが/pull/123（単数形）、一覧ページは/pulls（複数形）と
       // GitHub側でURL規則が不統一なため、両方にマッチさせる（pulls?）
-      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models)(\/|$)/.test(location.pathname);
+      // マイルストーン詳細ページはURLが/milestone/2（単数形）、一覧ページは
+      // /milestones（複数形）とGitHub側でURL規則が不統一なため、両方にマッチさせる
+      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models|milestones?|labels)(\/|$)/.test(location.pathname);
 
     return (isExtendedScopePage
       ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
@@ -66,13 +78,23 @@
     ).join(',');
   }
 
-  // 辞書ファイルは画面ごとの区切りが分かるよう "//" 行コメント付き(JSONC風)で
-  // 管理しているため、標準のJSON.parseに渡す前にコメント行を取り除く。
-  function stripJsonComments(text) {
-    return text
-      .split('\n')
-      .filter((line) => !/^\s*\/\//.test(line))
-      .join('\n');
+  function isUserContentLink(el) {
+    const link = el.closest('a[href]');
+    if (!link) return false;
+
+    let path;
+    try {
+      path = new URL(link.getAttribute('href'), location.href).pathname;
+    } catch {
+      return false;
+    }
+
+    return /^\/[^/]+\/[^/]+\/(issues|pull|discussions)\/\d+(\/|$)/.test(path) ||
+      /^\/[^/]+\/[^/]+\/commit\/[0-9a-f]+(\/|$)/i.test(path);
+  }
+
+  function isExcludedElement(el) {
+    return !el || Boolean(el.closest(EXCLUDE_SELECTOR)) || isUserContentLink(el);
   }
 
   async function loadDictionary(language) {
@@ -80,7 +102,7 @@
       const url = chrome.runtime.getURL(`dictionaries/${language}.json`);
       const res = await fetch(url);
       const text = await res.text();
-      const data = JSON.parse(stripJsonComments(text));
+      const data = JSON.parse(globalThis.GitHubUITranslator.stripJsonComments(text));
       // プロトタイプなしオブジェクトに詰め替える。通常オブジェクトだと画面上の
       // テキストが "toString" や "hasOwnProperty" のときObject.prototypeの
       // 継承プロパティが辞書ヒット扱いになり、テキスト破壊や例外の原因になる
@@ -161,6 +183,7 @@
     }
 
     for (const textNode of textNodes) {
+      if (isExcludedElement(textNode.parentElement)) continue;
       const value = textNode.nodeValue;
       const trimmed = value.trim();
       if (!trimmed) continue;
@@ -174,11 +197,11 @@
 
   function translateAll(root, dict) {
     const allowlistSelector = getAllowlistSelector();
-    if (root.matches && root.matches(allowlistSelector) && !root.closest(EXCLUDE_SELECTOR)) {
+    if (root.matches && root.matches(allowlistSelector) && !isExcludedElement(root)) {
       translateElement(root, dict);
     }
     root.querySelectorAll(allowlistSelector).forEach((el) => {
-      if (!el.closest(EXCLUDE_SELECTOR)) translateElement(el, dict);
+      if (!isExcludedElement(el)) translateElement(el, dict);
     });
   }
 

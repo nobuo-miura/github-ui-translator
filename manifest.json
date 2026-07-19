@@ -1,10 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "GitHub UI Translator",
+  "name": "__MSG_extensionName__",
   "version": "0.1.2",
-  "description": "Translates the GitHub UI using local dictionaries. Designed for multiple languages (Japanese only for now).",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
   "action": {
     "default_popup": "popup.html",
+    "default_title": "__MSG_actionTitle__",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",
@@ -30,7 +32,7 @@
   "content_scripts": [
     {
       "matches": ["https://github.com/*"],
-      "js": ["content.js"],
+      "js": ["shared.js", "content.js"],
       "run_at": "document_idle"
     }
   ],
