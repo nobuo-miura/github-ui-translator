@@ -92,6 +92,10 @@ for (const language of Array.isArray(languages) ? languages : []) {
 
   for (const [source, translation] of Object.entries(dictionary.translations)) {
     if (!source.trim()) errors.push(`${dictionaryPath}: translation source must not be empty`);
+    // content.jsは辞書照合前に原文をtrim()するため、前後に空白のあるキーは絶対に一致しない
+    else if (source !== source.trim()) {
+      errors.push(`${dictionaryPath}: translation source "${source}" has leading/trailing whitespace and will never match (content.js trims before lookup)`);
+    }
     if (typeof translation !== 'string' || !translation.trim()) {
       errors.push(`${dictionaryPath}: translation for "${source}" must be a non-empty string`);
     }
