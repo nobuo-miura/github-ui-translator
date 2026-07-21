@@ -1,0 +1,66 @@
+{
+  "extensionName": {
+    "message": "GitHub UI Translator"
+  },
+  "extensionDescription": {
+    "message": "同梱した言語辞書を使って、GitHubのUIをブラウザ内で翻訳します。"
+  },
+  "actionTitle": {
+    "message": "GitHub UI Translator"
+  },
+  "translationLabel": {
+    "message": "翻訳"
+  },
+  "translationToggleLabel": {
+    "message": "翻訳の有効・無効を切り替える"
+  },
+  "translationEnabledStatus": {
+    "message": "ON: GitHubのUIを翻訳します"
+  },
+  "translationDisabledStatus": {
+    "message": "OFF: 原文（英語）を表示します"
+  },
+  "languageLabel": {
+    "message": "言語"
+  },
+  "repositoryLink": {
+    "message": "GitHubでGitHub UI Translatorを見る"
+  },
+  "settingsTitle": {
+    "message": "GitHub UI Translator - 設定"
+  },
+  "dictionaryInfoHeading": {
+    "message": "辞書情報"
+  },
+  "languageColumn": {
+    "message": "言語"
+  },
+  "entryCountColumn": {
+    "message": "収録件数"
+  },
+  "versionInfoHeading": {
+    "message": "バージョン情報"
+  },
+  "dictionaryCount": {
+    "message": "$COUNT$ 件",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "dictionaryLoadError": {
+    "message": "読み込みエラー"
+  },
+  "languageListLoadError": {
+    "message": "言語一覧を読み込めませんでした"
+  },
+  "versionLabel": {
+    "message": "バージョン: $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  }
+}

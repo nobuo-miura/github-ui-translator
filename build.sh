@@ -10,9 +10,10 @@ out="github-ui-translator-v${version}.zip"
 rm -f "$out"
 zip -r "$out" \
   manifest.json \
-  content.js \
+  content.js shared.js languages.json \
   popup.html popup.js \
   options.html options.js \
+  _locales \
   dictionaries \
   icons \
   -x "*.DS_Store"

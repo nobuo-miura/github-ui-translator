@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>GitHub UI Translator</title>
@@ -99,20 +99,21 @@
 <body>
   <h1>GitHub UI Translator</h1>
   <div class="row">
-    <span>翻訳</span>
+    <span data-i18n="translationLabel">Translation</span>
     <label class="switch">
-      <input type="checkbox" id="toggle">
+      <input type="checkbox" id="toggle" data-i18n-aria-label="translationToggleLabel">
       <span class="slider"></span>
     </label>
   </div>
   <p class="status" id="status"></p>
   <div class="lang-row">
-    <label for="language">言語 / Language</label>
+    <label for="language" data-i18n="languageLabel">Language</label>
     <select id="language"></select>
   </div>
   <div class="footer">
-    <a id="repo-link" href="https://github.com/nobuo-miura/github-ui-translator" target="_blank" rel="noopener noreferrer">GitHub UI Translator on GitHub</a>
+    <a id="repo-link" href="https://github.com/nobuo-miura/github-ui-translator" target="_blank" rel="noopener noreferrer" data-i18n="repositoryLink">GitHub UI Translator on GitHub</a>
   </div>
+  <script src="shared.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

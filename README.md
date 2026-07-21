@@ -10,7 +10,7 @@ This project is currently an MVP (Minimum Viable Product).
 ## Features
 
 - Performs all translation locally without sending page content or settings to external services
-- Translates fixed GitHub UI text such as navigation items and buttons while avoiding content areas such as READMEs, issues, comments, and code blocks
+- Translates fixed GitHub UI text such as navigation items and buttons while avoiding user-created content areas such as READMEs, issues, comments, and code blocks
 - Lets you turn translation on or off from the extension popup
 
 ## Current Limitations
@@ -81,25 +81,33 @@ Entries are grouped into sections by GitHub screen (repository navigation, repos
 ```
 
 - The file is JSON with `//` line comments (JSONC-style). Only whole-line comments are supported — trailing comments after a value on the same line are not. The extension strips comment lines before parsing, since standard `JSON.parse`/`fetch().json()` do not support comments.
-- Dictionary keys must match the original English text exactly. Leading and trailing whitespace is ignored.
+- Dictionary keys must match the original English text exactly. Whitespace around GitHub's displayed text is ignored, but dictionary keys themselves must not contain leading or trailing whitespace.
 - After editing the dictionary, reload the extension (`chrome://extensions` on Chrome, `about:debugging` on Firefox).
 
 ### Adding a new language
 
 1. Add `dictionaries/<code>.json` (e.g. `dictionaries/en.json`) in the same format.
-2. Add `{ code: '<code>', name: '<display name>' }` to the `AVAILABLE_LANGUAGES` array in both `popup.js` and `options.js`. The extension cannot list the `dictionaries/` folder at runtime, so this list is maintained by hand.
+2. Add `{ "code": "<code>", "name": "<display name>" }` to `languages.json`. The popup and options page both load this shared list.
+3. Run `node scripts/validate.mjs` to check the dictionary format, duplicate keys, metadata, and key parity with the other bundled dictionaries.
+
+The popup, options page, and extension metadata use the browser extension `_locales` mechanism independently of the GitHub translation dictionaries. To add a new language for the extension's own UI, also add `_locales/<code>/messages.json` with the same message keys as `_locales/en/messages.json`.
 
 ## Project Structure
 
 ```text
 github-ui-translator/
 ├─ manifest.json
+├─ shared.js        # Shared language list and extension UI localization helpers
+├─ languages.json   # Bundled GitHub translation languages
 ├─ content.js       # Translation engine that scans the DOM using an allowlist
 ├─ popup.html/js    # Toolbar popup with the translation toggle
 ├─ options.html/js  # Dictionary information and version display
 ├─ updates.json     # Update manifest for the self-distributed Firefox extension
+├─ _locales/        # Localized popup, options, and extension metadata messages
 ├─ dictionaries/
 │  └─ ja.json       # Japanese dictionary
+├─ scripts/
+│  └─ validate.mjs  # Dictionary and localization validation
 └─ icons/
 ```
 
