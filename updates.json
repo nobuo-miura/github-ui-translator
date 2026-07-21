@@ -3,8 +3,8 @@
     "github-ui-translator@nobuo-miura.github.io": {
       "updates": [
         {
-          "version": "0.1.2",
-          "update_link": "https://github.com/nobuo-miura/github-ui-translator/releases/download/v0.1.2/Firefox-github-ui-translator-0.1.2.xpi"
+          "version": "0.1.3",
+          "update_link": "https://github.com/nobuo-miura/github-ui-translator/releases/download/v0.1.3/Firefox-github-ui-translator-0.1.3.xpi"
         }
       ]
     }
