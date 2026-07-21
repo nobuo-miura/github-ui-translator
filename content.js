@@ -2,7 +2,8 @@
 //
 // 実装方針:
 // - 走査対象は許可リスト方式（nav, header, button, role=tab, role=menuitem, aria-label）のみ
-// - CSSクラス名やdata-testidには依存しない
+// - 走査対象（許可リスト）はCSSクラス名やdata-testidには依存しない
+//   （ユーザー作成コンテンツの除外のみ、CSSクラス名への限定的な例外あり）
 // - 辞書に完全一致した文字列のみ置換し、動的文字列（数値・日付混じり）は対象外
 // - 一致しない場合は原文表示のまま（翻訳失敗時のフォールバック）
 
@@ -49,16 +50,75 @@
   ];
   // ユーザーが作成した本文・タイトル・識別子を翻訳しないための安全策。
   // 親要素（navやdialog）を走査するときも、各テキストノードに対してこの判定を行う。
-  const EXCLUDE_SELECTOR = [
+  // "p"は原則除外だが、個別に安全性を確認したページ（EXACT_PATH_EXTRA_SELECTOR）
+  // でのみ、そのページ限定で許可リスト側に回す。
+  const EXCLUDE_SELECTOR_BASE = [
     '.markdown-body',
-    'p',
     'pre',
     'code',
     'bdi',
     '[contenteditable="true"]',
     '[data-hovercard-type="repository"]',
-    '[data-hovercard-type="user"]'
-  ].join(',');
+    '[data-hovercard-type="user"]',
+    // Wikiページの見出し（ページ名そのもの）。issue/PRのタイトルとは異なりbdiで
+    // 保護されておらず、Wiki固有のクラスのためこのタグ自体はaria/role等を
+    // 持たない。.markdown-body同様、除外専用の目印としてCSSクラスに頼る例外とする
+    '.gh-header-title',
+    // カスタムサイドバーがないWikiページで自動生成される目次。現在のページ自身の
+    // 見出しをそのままアンカーリンクとして列挙するため、ページ内フラグメントへの
+    // リンク（#見出し名）となりisUserContentLinkのURLパターンでは捕捉できない
+    '.js-wiki-sidebar-toc-container'
+  ];
+
+  // URLパスプレフィックス単位ではなく、中身を個別に確認した画面（完全一致）
+  // でのみ翻訳範囲を広げるための対応表。例えば/settings配下は画面によって
+  // ユーザー入力（bio、トークン名等）が<p>に出るか異なるため、確認済みの
+  // 画面だけをここに追記していく方針とする。
+  const EXACT_PATH_EXTRA_SELECTOR = {
+    '/settings/profile': ['p'],
+    '/settings/admin': ['p'],
+    '/settings/notifications': ['p'],
+    '/settings/security_analysis': ['p'],
+    '/settings/keys': ['p'],
+    '/settings/repositories': ['p'],
+    '/settings/codespaces': ['p'],
+    '/settings/packages': ['p']
+  };
+
+  // owner/repoのように可変のパスセグメントを含むため完全一致では表現できない
+  // 画面向け。末尾を$で固定し、確認済みのサブページ以外へ意図せず広がらないようにする。
+  const PATTERN_EXTRA_SELECTOR = [
+    // リポジトリSettings > General。リポジトリのフルネームが素のテキストとして
+    // 出現するが、常に"owner/repo"の複合形か長文中への埋め込みでしか現れず、
+    // 単語単位の辞書キーと衝突する実質的なリスクはないため許可する。
+    { pattern: /^\/(?!orgs\/)[^/]+\/[^/]+\/settings$/, selectors: ['p'] },
+    // リポジトリSettings > Rules（ルールセット作成・編集画面）。各ルールの説明文は
+    // <p>ではなくPrimerの[data-component="FormControl.Caption"]という素の<span>で
+    // 実装されており、拾うにはこの属性が必須。data-testidと同種の依存だが、
+    // Primerの公開コンポーネント仕様の一部でありCSSクラスや内部実装用の
+    // testidより変更されにくいと判断し、この画面限定で許可する。
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/rules\/(new|\d+)$/, selectors: ['[data-component="FormControl.Caption"]'] },
+    // Wikiのトップページ（/wiki自体、個別ページの/wiki/Xは対象外）。ページが
+    // 1つもない場合の案内文のみを想定しており、実際のWiki本文は.markdown-body
+    // 側で常に保護されるため安全。
+    { pattern: /^\/[^/]+\/[^/]+\/wiki$/, selectors: ['p'] },
+    // リポジトリSettings > Actions（一般設定）。フォーク許可等の一部説明文には
+    // オーナー名が埋め込まれるが、それらは辞書キーと衝突しない完全な単語単位では
+    // ないため許可する
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/actions$/, selectors: ['p'] },
+    // リポジトリSettings > Pages
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/pages$/, selectors: ['p'] },
+    // リポジトリSettings > 高度なセキュリティ
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/security_analysis$/, selectors: ['p'] }
+  ];
+
+  function getPathExtraSelector() {
+    const exact = EXACT_PATH_EXTRA_SELECTOR[location.pathname] || [];
+    const pattern = PATTERN_EXTRA_SELECTOR
+      .filter((rule) => rule.pattern.test(location.pathname))
+      .flatMap((rule) => rule.selectors);
+    return [...new Set([...exact, ...pattern])];
+  }
 
   function getAllowlistSelector() {
     const isExtendedScopePage =
@@ -72,10 +132,19 @@
       // /milestones（複数形）とGitHub側でURL規則が不統一なため、両方にマッチさせる
       /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models|milestones?|labels)(\/|$)/.test(location.pathname);
 
-    return (isExtendedScopePage
+    const selector = isExtendedScopePage
       ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
-      : BASE_SELECTOR
-    ).join(',');
+      : BASE_SELECTOR.slice();
+
+    return selector.concat(getPathExtraSelector()).join(',');
+  }
+
+  function getExcludeSelector() {
+    const pathExtra = getPathExtraSelector();
+    const exclude = EXCLUDE_SELECTOR_BASE.slice();
+    // このページでpを許可リスト側に回した場合のみ、除外リストからは外す
+    if (!pathExtra.includes('p')) exclude.push('p');
+    return exclude.join(',');
   }
 
   function isUserContentLink(el) {
@@ -90,11 +159,17 @@
     }
 
     return /^\/[^/]+\/[^/]+\/(issues|pull|discussions)\/\d+(\/|$)/.test(path) ||
-      /^\/[^/]+\/[^/]+\/commit\/[0-9a-f]+(\/|$)/i.test(path);
+      /^\/[^/]+\/[^/]+\/commit\/[0-9a-f]+(\/|$)/i.test(path) ||
+      // Wikiページ名へのリンク（サイドバーのページ一覧等）。ページ名はユーザーが
+      // 付けたタイトルであり、辞書のキーと偶然完全一致すると誤訳されうる。
+      // Homeページ自体へのリンクは末尾にページ名が付かず/wikiのみになるため、
+      // ページ名部分を省略可能にする。"_new"は新規ページ作成への固定リンクで
+      // ページ名ではないため除外する
+      /^\/[^/]+\/[^/]+\/wiki(\/(?!_new$)[^/]+)?$/.test(path);
   }
 
   function isExcludedElement(el) {
-    return !el || Boolean(el.closest(EXCLUDE_SELECTOR)) || isUserContentLink(el);
+    return !el || Boolean(el.closest(getExcludeSelector())) || isUserContentLink(el);
   }
 
   async function loadDictionary(language) {
@@ -143,6 +218,12 @@
     // <select>の<option>群（国名一覧など巨大な参照データ）は翻訳対象外
     if (el.tagName === 'SELECT') return;
 
+    // <textarea>の子テキストノードは表示用のテキストではなくユーザーの入力内容
+    // （例: 自己紹介欄）そのものであり、placeholder属性を持つ場合は許可リストの
+    // textarea[placeholder]にマッチしてここまで到達しうる。INPUTのvalueと同様、
+    // 完全一致すると入力内容を書き換えてしまうため、placeholder処理後は必ず抜ける
+    if (el.tagName === 'TEXTAREA') return;
+
     // <input type="submit"/"button"/"reset">はテキストノードではなくvalue属性が
     // ボタンラベルとして表示されるため、個別に処理する。
     // data-disable-withは送信中に一時的に表示されるラベルなのであわせて処理する。
@@ -187,7 +268,11 @@
       const value = textNode.nodeValue;
       const trimmed = value.trim();
       if (!trimmed) continue;
-      const translated = dict[trimmed];
+      // 改行やインデントを含む複数行のテキストノードも辞書の1行キーと
+      // 一致させるため、辞書引き用にのみ連続空白を単一スペースに正規化する
+      // （置換対象は元のtrimmedのままなので、余分な改行も訳文で解消される）
+      const lookupText = trimmed.replace(/\s+/g, ' ');
+      const translated = dict[lookupText];
       if (translated) {
         // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
         textNode.nodeValue = value.replace(trimmed, () => translated);

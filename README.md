@@ -10,7 +10,7 @@ This project is currently an MVP (Minimum Viable Product).
 ## Features
 
 - Performs all translation locally without sending page content or settings to external services
-- Translates fixed GitHub UI text such as navigation items and buttons while excluding user-created content such as READMEs, issues, comments, and code blocks
+- Translates fixed GitHub UI text such as navigation items and buttons while avoiding user-created content areas such as READMEs, issues, comments, and code blocks
 - Lets you turn translation on or off from the extension popup
 
 ## Current Limitations
@@ -81,7 +81,7 @@ Entries are grouped into sections by GitHub screen (repository navigation, repos
 ```
 
 - The file is JSON with `//` line comments (JSONC-style). Only whole-line comments are supported — trailing comments after a value on the same line are not. The extension strips comment lines before parsing, since standard `JSON.parse`/`fetch().json()` do not support comments.
-- Dictionary keys must match the original English text exactly. Leading and trailing whitespace is ignored.
+- Dictionary keys must match the original English text exactly. Whitespace around GitHub's displayed text is ignored, but dictionary keys themselves must not contain leading or trailing whitespace.
 - After editing the dictionary, reload the extension (`chrome://extensions` on Chrome, `about:debugging` on Firefox).
 
 ### Adding a new language
