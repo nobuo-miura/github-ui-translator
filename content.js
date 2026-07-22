@@ -60,6 +60,11 @@
     '[contenteditable="true"]',
     '[data-hovercard-type="repository"]',
     '[data-hovercard-type="user"]',
+    // GitHubの遅延読み込み用カスタム要素。読み込み中はaria-label="Loading ..."が
+    // 付いており、[aria-label]に無条件でマッチしてしまう。中身は読み込み完了後に
+    // Ajaxで丸ごと置き換わる仮のプレースホルダーなので、翻訳しても意味がなく、
+    // 一瞬翻訳されてすぐ元の英語コンテンツに置き換わる点滅の原因になっていた
+    'include-fragment',
     // Wikiページの見出し（ページ名そのもの）。issue/PRのタイトルとは異なりbdiで
     // 保護されておらず、Wiki固有のクラスのためこのタグ自体はaria/role等を
     // 持たない。.markdown-body同様、除外専用の目印としてCSSクラスに頼る例外とする
@@ -165,7 +170,16 @@
       // Homeページ自体へのリンクは末尾にページ名が付かず/wikiのみになるため、
       // ページ名部分を省略可能にする。"_new"は新規ページ作成への固定リンクで
       // ページ名ではないため除外する
-      /^\/[^/]+\/[^/]+\/wiki(\/(?!_new$)[^/]+)?$/.test(path);
+      /^\/[^/]+\/[^/]+\/wiki(\/(?!_new$)[^/]+)?$/.test(path) ||
+      // ファイル・ディレクトリ一覧の各行へのリンク（/tree/ブランチ/パス、/blob/ブランチ/パス）。
+      // ファイル名・フォルダ名はユーザーが付けたものであり、"Code"や"Packages"の
+      // ように辞書キーと偶然完全一致することがある。これらの行はGitHub側で
+      // aria-label="Packages, (Directory)"のような形式が付与されており、
+      // [aria-label]自体はBASE_SELECTORで無条件に許可されているため、
+      // ファイル名・フォルダ名のテキストノードまでTreeWalkerで走査され誤訳が
+      // 発生していた。isExcludedElementはtranslateElement呼び出し自体を止める
+      // ため、この行はaria-label属性・可視テキストとも一切書き換えなくなる
+      /^\/[^/]+\/[^/]+\/(tree|blob)\/.+/.test(path);
   }
 
   function isExcludedElement(el) {
