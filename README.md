@@ -5,18 +5,20 @@
 GitHub UI Translator is a browser extension (Chrome and Firefox) that translates GitHub's English UI into Japanese using a local dictionary.
 It does not rely on external translation APIs or cloud services; all translation runs locally in the browser.
 
-This project is currently an MVP (Minimum Viable Product).
-
 ## Features
 
 - Performs all translation locally without sending page content or settings to external services
 - Translates fixed GitHub UI text such as navigation items and buttons while avoiding user-created content areas such as READMEs, issues, comments, and code blocks
 - Lets you turn translation on or off from the extension popup
 
-## Current Limitations
+## Documentation
 
-- Only Japanese is supported.
-- Dynamic text that includes numbers, dates, or user names, such as "3 commits" or "opened 2 days ago", is not translated.
+- [Translation scope](docs/translation-scope.md) ([Japanese](docs/translation-scope.ja.md))
+
+## Limitations
+
+- Japanese is currently the only supported language. Additional languages are planned after Japanese coverage is more complete.
+- Dynamic text containing numbers or dates, such as "3 commits" or "opened 2 days ago", is not translated. User-created content such as user names is also excluded. See [Translation scope](docs/translation-scope.md) for details.
 - Only `github.com` is supported. GitHub Enterprise and other custom domains are not supported.
 - Tested on Chrome and Firefox. Other Chromium-based browsers (Edge, Brave, etc.) should also work but have not been explicitly tested.
 
@@ -35,6 +37,8 @@ If the Chrome Web Store is unavailable in your environment, such as on a company
 Extensions installed manually do not update automatically. Repeat these steps when a new version is released. Your organization may also block Developer mode or manually installed extensions; in that case, contact your administrator.
 
 ### Firefox
+
+Firefox 142 or later is required.
 
 1. Open the [latest release](https://github.com/nobuo-miura/github-ui-translator/releases/latest) page in Firefox and click the attached `.xpi` file.
 2. When the installation confirmation dialog appears, click "Add".
@@ -81,7 +85,7 @@ Entries are grouped into sections by GitHub screen (repository navigation, repos
 ```
 
 - The file is JSON with `//` line comments (JSONC-style). Only whole-line comments are supported — trailing comments after a value on the same line are not. The extension strips comment lines before parsing, since standard `JSON.parse`/`fetch().json()` do not support comments.
-- Dictionary keys must match the original English text exactly. Whitespace around GitHub's displayed text is ignored, but dictionary keys themselves must not contain leading or trailing whitespace.
+- Dictionary keys must match the original English text exactly. Before matching, leading and trailing whitespace is ignored and consecutive whitespace—including line breaks—is collapsed to a single space. Dictionary keys themselves must not contain leading or trailing whitespace.
 - After editing the dictionary, reload the extension (`chrome://extensions` on Chrome, `about:debugging` on Firefox).
 
 ### Adding a new language
@@ -106,6 +110,9 @@ github-ui-translator/
 ├─ _locales/        # Localized popup, options, and extension metadata messages
 ├─ dictionaries/
 │  └─ ja.json       # Japanese dictionary
+├─ docs/
+│  ├─ translation-scope.md     # English version
+│  └─ translation-scope.ja.md  # Japanese version
 ├─ scripts/
 │  └─ validate.mjs  # Dictionary and localization validation
 └─ icons/

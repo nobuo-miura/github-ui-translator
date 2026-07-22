@@ -5,18 +5,20 @@
 GitHubの英語UIを、ローカル辞書を使って日本語に翻訳するブラウザ拡張機能です（Chrome / Firefox対応）。
 外部の翻訳APIやクラウドサービスには一切依存せず、すべてブラウザ内で完結します。
 
-現在はMVP（Minimum Viable Product）です。
-
 ## 特徴
 
 - 翻訳は完全ローカルで動作し、ページ内容や設定を外部サービスへ送信しない
 - README・Issue・コメント・コードブロックなど、ユーザーが作成したコンテンツ領域を避けつつ、ナビゲーションやボタンなどの固定UI文言のみを翻訳するよう設計
 - 翻訳のON/OFFをワンクリックで切り替え可能
 
-## できないこと（MVPの制限事項）
+## ドキュメント
 
-- 日本語以外の言語には対応していません
-- "3 commits" や "opened 2 days ago" のような、数値・日付・ユーザー名を含む動的な文言は翻訳されません（英語のまま表示されます）
+- [翻訳対象の範囲](docs/translation-scope.ja.md)（[English](docs/translation-scope.md)）
+
+## 制限事項
+
+- 現在対応している言語は日本語のみです。日本語の対応範囲がある程度整った後、ほかの言語も追加する予定です
+- "3 commits" や "opened 2 days ago" のような、数値・日付を含む動的な文言は翻訳されません。ユーザー名などのユーザー作成コンテンツも対象外です。詳しくは[翻訳対象の範囲](docs/translation-scope.ja.md)を参照してください
 - `github.com` 以外のドメイン（GitHub Enterprise等）には対応していません
 - Chrome・Firefoxで動作確認済みです。その他のChromium系ブラウザ（Edge・Brave等）も動くと思われますが、明示的な検証はしていません
 
@@ -35,6 +37,8 @@ GitHubの英語UIを、ローカル辞書を使って日本語に翻訳するブ
 手動でインストールした拡張機能は自動更新されません。新しいバージョンが公開されたら、同じ手順で入れ替えてください。組織のポリシーによってデベロッパーモードや手動インストールも禁止されている場合は、管理者に確認してください。
 
 ### Firefox
+
+Firefox 142以降が必要です。
 
 1. Firefoxで[最新リリース](https://github.com/nobuo-miura/github-ui-translator/releases/latest)ページを開き、添付されている `.xpi` ファイルをクリックする
 2. インストールの確認ダイアログが表示されたら「追加」を選択する
@@ -81,7 +85,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ```
 
 - このファイルは`//`行コメント付きのJSON（JSONC形式）です。行全体がコメントである場合のみ対応しており、値の後ろに続けて書くコメントには対応していません。標準の`JSON.parse`/`fetch().json()`はコメントを解釈できないため、拡張機能側でコメント行を除去してから読み込んでいます
-- キーは英語の原文と**完全一致**している必要があります。GitHub側の表示テキストの前後の空白は無視されますが、辞書のキー自体に前後の空白を含めることはできません
+- キーは英語の原文と**完全一致**している必要があります。照合時は表示テキストの前後の空白を無視し、改行を含む連続空白を単一スペースに正規化します。辞書のキー自体に前後の空白を含めることはできません
 - 編集後は拡張機能を再読み込みしてください（Chromeは`chrome://extensions`、Firefoxは`about:debugging`から）
 
 ### 新しい言語を追加する場合
@@ -106,6 +110,9 @@ github-ui-translator/
 ├─ _locales/        … Popup・設定・拡張機能メタデータの翻訳
 ├─ dictionaries/
 │  └─ ja.json       … 日本語辞書
+├─ docs/
+│  ├─ translation-scope.md     … 英語版
+│  └─ translation-scope.ja.md  … 日本語版
 ├─ scripts/
 │  └─ validate.mjs  … 辞書・ローカライズの検証
 └─ icons/
