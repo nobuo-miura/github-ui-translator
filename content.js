@@ -60,6 +60,11 @@
     '[contenteditable="true"]',
     '[data-hovercard-type="repository"]',
     '[data-hovercard-type="user"]',
+    // GitHubの遅延読み込み用カスタム要素。読み込み中はaria-label="Loading ..."が
+    // 付いており、[aria-label]に無条件でマッチしてしまう。中身は読み込み完了後に
+    // Ajaxで丸ごと置き換わる仮のプレースホルダーなので、翻訳しても意味がなく、
+    // 一瞬翻訳されてすぐ元の英語コンテンツに置き換わる点滅の原因になっていた
+    'include-fragment',
     // Wikiページの見出し（ページ名そのもの）。issue/PRのタイトルとは異なりbdiで
     // 保護されておらず、Wiki固有のクラスのためこのタグ自体はaria/role等を
     // 持たない。.markdown-body同様、除外専用の目印としてCSSクラスに頼る例外とする
@@ -82,7 +87,13 @@
     '/settings/keys': ['p'],
     '/settings/repositories': ['p'],
     '/settings/codespaces': ['p'],
-    '/settings/packages': ['p']
+    '/settings/packages': ['p'],
+    // .FormControl-captionはdata-component="FormControl.Caption"と同様、
+    // 古い世代のPrimer CSSクラスだがハッシュ化されていない安定した公式クラス名。
+    // このページの権限選択欄の説明文（例:「Read-only access to public
+    // repositories.」）がこの構造で実装されているため、この画面限定で許可する。
+    '/settings/personal-access-tokens/new': ['p', '.FormControl-caption'],
+    '/settings/tokens/new': ['p']
   };
 
   // owner/repoのように可変のパスセグメントを含むため完全一致では表現できない
@@ -112,9 +123,41 @@
     { pattern: /^\/[^/]+\/[^/]+\/settings\/security_analysis$/, selectors: ['p'] }
   ];
 
+  // 許可リストを広げたページのうち、その画面固有のユーザー作成コンテンツ
+  // （トークン名、リソースの所有者名等）が同じ拡張スコープ内に現れる場合、
+  // 個別に確認したうえでその要素だけを除外リストに追加する対応表。
+  // "Events"/"Plan"/"Metadata"等、権限名の翻訳に使った短い単語は
+  // Organization名やユーザー名としても有効なため、この保護がないと
+  // 誤訳されるおそれがある。
+  const EXACT_PATH_EXTRA_EXCLUDE_SELECTOR = {
+    // 「リソースの所有者」選択ボタンのラベルは選択中のユーザー/Organization名
+    // そのものであり、select-panel（GitHub共通の選択パネル用カスタム要素）の
+    // ボタンラベルとして表示される
+    '/settings/personal-access-tokens/new': ['select-panel .Button-label']
+  };
+
+  const PATTERN_EXTRA_EXCLUDE_SELECTOR = [
+    // Fine-grained tokenの詳細画面。トークン名はh2.Subhead-heading見出しとして
+    // ユーザーがつけた名前がそのまま表示される。「Access on」見出し（h3、f3修飾
+    // クラス付き）配下のリンクはリソースの所有者名（ユーザー/Organization名）で、
+    // data-hovercard-type等は付与されていないため専用の除外が必要
+    {
+      pattern: /^\/settings\/personal-access-tokens\/\d+$/,
+      selectors: ['form.js-user-programmatic-access-form h2.Subhead-heading', 'h3.Subhead-heading a']
+    }
+  ];
+
   function getPathExtraSelector() {
     const exact = EXACT_PATH_EXTRA_SELECTOR[location.pathname] || [];
     const pattern = PATTERN_EXTRA_SELECTOR
+      .filter((rule) => rule.pattern.test(location.pathname))
+      .flatMap((rule) => rule.selectors);
+    return [...new Set([...exact, ...pattern])];
+  }
+
+  function getPathExtraExcludeSelector() {
+    const exact = EXACT_PATH_EXTRA_EXCLUDE_SELECTOR[location.pathname] || [];
+    const pattern = PATTERN_EXTRA_EXCLUDE_SELECTOR
       .filter((rule) => rule.pattern.test(location.pathname))
       .flatMap((rule) => rule.selectors);
     return [...new Set([...exact, ...pattern])];
@@ -141,7 +184,7 @@
 
   function getExcludeSelector() {
     const pathExtra = getPathExtraSelector();
-    const exclude = EXCLUDE_SELECTOR_BASE.slice();
+    const exclude = EXCLUDE_SELECTOR_BASE.concat(getPathExtraExcludeSelector());
     // このページでpを許可リスト側に回した場合のみ、除外リストからは外す
     if (!pathExtra.includes('p')) exclude.push('p');
     return exclude.join(',');
@@ -165,7 +208,16 @@
       // Homeページ自体へのリンクは末尾にページ名が付かず/wikiのみになるため、
       // ページ名部分を省略可能にする。"_new"は新規ページ作成への固定リンクで
       // ページ名ではないため除外する
-      /^\/[^/]+\/[^/]+\/wiki(\/(?!_new$)[^/]+)?$/.test(path);
+      /^\/[^/]+\/[^/]+\/wiki(\/(?!_new$)[^/]+)?$/.test(path) ||
+      // ファイル・ディレクトリ一覧の各行へのリンク（/tree/ブランチ/パス、/blob/ブランチ/パス）。
+      // ファイル名・フォルダ名はユーザーが付けたものであり、"Code"や"Packages"の
+      // ように辞書キーと偶然完全一致することがある。これらの行はGitHub側で
+      // aria-label="Packages, (Directory)"のような形式が付与されており、
+      // [aria-label]自体はBASE_SELECTORで無条件に許可されているため、
+      // ファイル名・フォルダ名のテキストノードまでTreeWalkerで走査され誤訳が
+      // 発生していた。isExcludedElementはtranslateElement呼び出し自体を止める
+      // ため、この行はaria-label属性・可視テキストとも一切書き換えなくなる
+      /^\/[^/]+\/[^/]+\/(tree|blob)\/.+/.test(path);
   }
 
   function isExcludedElement(el) {
