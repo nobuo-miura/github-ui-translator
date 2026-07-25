@@ -3,7 +3,7 @@
 # Translation Scope
 
 This document explains what GitHub UI Translator translates and what it intentionally leaves unchanged.
-For implementation details, see `content.js` and `dictionaries/ja.json`.
+For implementation details, see `content.js` and `dictionaries/ja.json` (other language dictionaries follow the same format).
 
 The extension uses its dictionary only for fixed GitHub UI text. User-created content and dynamic text are generally left in the original language.
 
@@ -15,7 +15,7 @@ The extension uses its dictionary only for fixed GitHub UI text. User-created co
 
 ## What is translated
 
-Fixed GitHub UI text—such as navigation items, buttons, headings, labels, and form descriptions—is added to the dictionary after being verified on each supported page. As of July 2026, the Japanese dictionary contains **1,293 entries**. Run `node scripts/validate.mjs` to confirm the current count.
+Fixed GitHub UI text—such as navigation items, buttons, headings, labels, and form descriptions—is added to the dictionary after being verified on each supported page. As of July 2026, the Japanese dictionary contains **1,369 entries**. Run `node scripts/validate.mjs` to confirm the current count; every bundled language dictionary is validated to match this count exactly.
 
 The main supported areas, corresponding to section headings in `dictionaries/ja.json`, include:
 

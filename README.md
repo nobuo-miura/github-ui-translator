@@ -2,7 +2,7 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
-GitHub UI Translator is a browser extension (Chrome and Firefox) that translates GitHub's English UI into Japanese using a local dictionary.
+GitHub UI Translator is a browser extension (Chrome and Firefox) that translates GitHub's English UI into Japanese or Simplified Chinese using a local dictionary.
 It does not rely on external translation APIs or cloud services; all translation runs locally in the browser.
 
 ## Features
@@ -17,7 +17,7 @@ It does not rely on external translation APIs or cloud services; all translation
 
 ## Limitations
 
-- Japanese is currently the only supported language. Additional languages are planned after Japanese coverage is more complete.
+- Japanese and Simplified Chinese are currently supported. Additional languages are planned as coverage expands.
 - Dynamic text containing numbers or dates, such as "3 commits" or "opened 2 days ago", is not translated. User-created content such as user names is also excluded. See [Translation scope](docs/translation-scope.md) for details.
 - Only `github.com` is supported. GitHub Enterprise and other custom domains are not supported.
 - Tested on Chrome and Firefox. Other Chromium-based browsers (Edge, Brave, etc.) should also work but have not been explicitly tested.
@@ -62,14 +62,14 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## Usage
 
-- Click the extension icon in the toolbar to open the on/off toggle and the language selector. Only Japanese is bundled today; the dropdown is ready for additional languages once more dictionaries are added.
+- Click the extension icon in the toolbar to open the on/off toggle and the language selector. Japanese and Simplified Chinese are bundled today; the dropdown is ready for additional languages once more dictionaries are added.
 - Changing the toggle or the language reloads open GitHub tabs so the new setting takes effect.
 - The popup also has a link to this repository.
 - Open the extension options page (`chrome://extensions` on Chrome, `about:addons` on Firefox) to view the bundled dictionary information and extension version.
 
 ## Customizing the Dictionary
 
-You can add or change translations by editing `dictionaries/ja.json` directly.
+You can add or change translations by editing the dictionary file for the language you want to change directly (e.g. `dictionaries/ja.json`, `dictionaries/zh-CN.json`).
 Entries are grouped into sections by GitHub screen (repository navigation, repository Settings, organization Settings, etc.), each preceded by a `// ====` comment line, so you can tell at a glance which screen an entry belongs to and quickly spot when GitHub's UI text changes.
 
 ```jsonc
@@ -109,7 +109,8 @@ github-ui-translator/
 ├─ updates.json     # Update manifest for the self-distributed Firefox extension
 ├─ _locales/        # Localized popup, options, and extension metadata messages
 ├─ dictionaries/
-│  └─ ja.json       # Japanese dictionary
+│  ├─ ja.json       # Japanese dictionary
+│  └─ zh-CN.json    # Simplified Chinese dictionary
 ├─ docs/
 │  ├─ translation-scope.md     # English version
 │  └─ translation-scope.ja.md  # Japanese version

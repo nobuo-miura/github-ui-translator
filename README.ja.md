@@ -2,7 +2,7 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
-GitHubの英語UIを、ローカル辞書を使って日本語に翻訳するブラウザ拡張機能です（Chrome / Firefox対応）。
+GitHubの英語UIを、ローカル辞書を使って日本語または簡体字中国語に翻訳するブラウザ拡張機能です（Chrome / Firefox対応）。
 外部の翻訳APIやクラウドサービスには一切依存せず、すべてブラウザ内で完結します。
 
 ## 特徴
@@ -17,7 +17,7 @@ GitHubの英語UIを、ローカル辞書を使って日本語に翻訳するブ
 
 ## 制限事項
 
-- 現在対応している言語は日本語のみです。日本語の対応範囲がある程度整った後、ほかの言語も追加する予定です
+- 現在対応している言語は日本語・簡体字中国語です。今後も対応範囲が整い次第、ほかの言語を追加する予定です
 - "3 commits" や "opened 2 days ago" のような、数値・日付を含む動的な文言は翻訳されません。ユーザー名などのユーザー作成コンテンツも対象外です。詳しくは[翻訳対象の範囲](docs/translation-scope.ja.md)を参照してください
 - `github.com` 以外のドメイン（GitHub Enterprise等）には対応していません
 - Chrome・Firefoxで動作確認済みです。その他のChromium系ブラウザ（Edge・Brave等）も動くと思われますが、明示的な検証はしていません
@@ -62,14 +62,14 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## 使い方
 
-- ツールバーの拡張機能アイコンをクリックすると、翻訳のON/OFFトグルと言語選択が表示される（現時点では日本語のみ）
+- ツールバーの拡張機能アイコンをクリックすると、翻訳のON/OFFトグルと言語選択が表示される（現時点では日本語・簡体字中国語に対応）
 - トグルまたは言語を変更すると、開いているGitHubのタブが自動的に再読み込みされ、設定が反映される
 - Popup下部にはこのリポジトリへのリンクがある
 - 拡張機能のオプション画面（Chromeは`chrome://extensions`の詳細から、Firefoxは`about:addons`から開く）で、同梱している辞書の情報とバージョンを確認できる
 
 ## 辞書のカスタマイズ
 
-`dictionaries/ja.json` を直接編集することで、翻訳される文言を追加・変更できます。
+変更したい言語の辞書ファイル（例: `dictionaries/ja.json`、`dictionaries/zh-CN.json`）を直接編集することで、翻訳される文言を追加・変更できます。
 エントリはGitHubの画面（リポジトリナビゲーション、リポジトリSettings、Organization Settingsなど）ごとにセクション分けされており、各セクションの先頭に `// ====` というコメント行を入れています。どの文言がどの画面のものか一目で分かり、GitHub側のUI変更にも気付きやすくなっています。
 
 ```jsonc
@@ -109,7 +109,8 @@ github-ui-translator/
 ├─ updates.json     … Firefox自己配布版の更新マニフェスト
 ├─ _locales/        … Popup・設定・拡張機能メタデータの翻訳
 ├─ dictionaries/
-│  └─ ja.json       … 日本語辞書
+│  ├─ ja.json       … 日本語辞書
+│  └─ zh-CN.json    … 簡体字中国語辞書
 ├─ docs/
 │  ├─ translation-scope.md     … 英語版
 │  └─ translation-scope.ja.md  … 日本語版
