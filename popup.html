@@ -81,6 +81,22 @@
     background-color: #ffffff;
     color: #1f2328;
   }
+  .option-section {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #d0d7de;
+  }
+  .option-label {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-right: 8px;
+  }
+  .warning {
+    margin: 6px 0 0;
+    color: #9a6700;
+    font-size: 11px;
+    line-height: 1.4;
+  }
   .footer {
     margin-top: 12px;
     padding-top: 8px;
@@ -109,6 +125,16 @@
   <div class="lang-row">
     <label for="language" data-i18n="languageLabel">Language</label>
     <select id="language"></select>
+  </div>
+  <div class="option-section">
+    <div class="row">
+      <label class="option-label" for="global-header-toggle" data-i18n="globalHeaderTranslationLabel">Translate global header</label>
+      <label class="switch">
+        <input type="checkbox" id="global-header-toggle" data-i18n-aria-label="globalHeaderTranslationToggleLabel">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <p class="warning" data-i18n="globalHeaderTranslationWarning">Caution: GitHub's global search may not open correctly when enabled.</p>
   </div>
   <div class="footer">
     <a id="repo-link" href="https://github.com/nobuo-miura/github-ui-translator" target="_blank" rel="noopener noreferrer" data-i18n="repositoryLink">GitHub UI Translator on GitHub</a>

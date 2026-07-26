@@ -52,7 +52,8 @@ The following content is intentionally excluded even when its text exactly match
 | Links to individual issues, pull requests, discussions, and commits | Exclude matching URL patterns such as `/issues/N` |
 | Wiki page names in headings, sidebars, and tables of contents | Exclude `.gh-header-title`, `.js-wiki-sidebar-toc-container`, and matching internal Wiki links |
 | File and directory names in repository listings | Exclude links matching `/tree/` and `/blob/` URL patterns |
-| Global search suggestions modal | Exclude `modal-dialog#search-suggestions-dialog` to prevent interference with display control and protect user, organization, and repository names |
+| Global navigation header | Exclude `header[role="banner"]` by default. Translation can be enabled from the popup, but it may interfere with React reconciliation and prevent the global search interface from opening |
+| Global search UI | Exclude the search trigger button, `qbsearch-input`, and `modal-dialog#search-suggestions-dialog` to prevent interference with initialization and protect user, organization, and repository names |
 | Inline code and code blocks | Exclude `pre` and `code` elements |
 | Editable fields such as bios and comment bodies | Exclude `[contenteditable="true"]` and text inside `<textarea>` elements |
 
@@ -91,7 +92,8 @@ The extension generally avoids CSS class names and `data-testid` attributes, but
 - `.gh-header-title` for Wiki page titles
 - `.js-wiki-sidebar-toc-container` for automatically generated Wiki tables of contents
 - `include-fragment`, GitHub's custom element for deferred content, to prevent mistranslation and flickering of loading placeholders
-- `modal-dialog#search-suggestions-dialog` to prevent interference with global search display control and mistranslation of search suggestions
+- `header[role="banner"]` to prevent interference with React reconciliation in the global header. Translation can be enabled from the popup when explicitly desired
+- The global search trigger button, `qbsearch-input`, and `modal-dialog#search-suggestions-dialog` to prevent interference with initialization and display control and to avoid mistranslating search suggestions
 
 These safeguards reduce the risk of mistranslation; they do not guarantee that user-created content can never be translated. If a GitHub DOM change causes an exclusion to stop matching, a string inside an allowlisted ancestor or element could be translated when it matches a dictionary key.
 

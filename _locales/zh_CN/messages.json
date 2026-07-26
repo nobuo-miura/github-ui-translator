@@ -23,6 +23,15 @@
   "languageLabel": {
     "message": "语言"
   },
+  "globalHeaderTranslationLabel": {
+    "message": "翻译全局页眉"
+  },
+  "globalHeaderTranslationToggleLabel": {
+    "message": "启用或禁用全局页眉翻译"
+  },
+  "globalHeaderTranslationWarning": {
+    "message": "注意：启用后，GitHub 全局搜索界面可能无法正常显示。"
+  },
   "repositoryLink": {
     "message": "在 GitHub 上查看 GitHub UI Translator"
   },

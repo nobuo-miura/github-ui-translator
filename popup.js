@@ -3,6 +3,7 @@ const { getMessage, loadLanguages, localizeDocument } = globalThis.GitHubUITrans
 const toggle = document.getElementById('toggle');
 const status = document.getElementById('status');
 const languageSelect = document.getElementById('language');
+const globalHeaderToggle = document.getElementById('global-header-toggle');
 
 // ポップアップを開いた直後（＝ポップアップが生きていることが保証されている間）に
 // GitHubタブのIDを確定させておく。変更イベントの発生時にchrome.tabs.query()の
@@ -33,11 +34,15 @@ async function initialize() {
     languageSelect.disabled = true;
   }
 
-  chrome.storage.local.get({ enabled: true, language: 'ja' }, (items) => {
-    toggle.checked = items.enabled;
-    updateStatus(items.enabled);
-    languageSelect.value = items.language;
-  });
+  chrome.storage.local.get(
+    { enabled: true, language: 'ja', translateGlobalHeader: false },
+    (items) => {
+      toggle.checked = items.enabled;
+      updateStatus(items.enabled);
+      languageSelect.value = items.language;
+      globalHeaderToggle.checked = items.translateGlobalHeader;
+    }
+  );
 }
 
 toggle.addEventListener('change', () => {
@@ -49,6 +54,11 @@ toggle.addEventListener('change', () => {
 
 languageSelect.addEventListener('change', () => {
   chrome.storage.local.set({ language: languageSelect.value });
+  reloadGithubTabs();
+});
+
+globalHeaderToggle.addEventListener('change', () => {
+  chrome.storage.local.set({ translateGlobalHeader: globalHeaderToggle.checked });
   reloadGithubTabs();
 });
 

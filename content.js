@@ -8,6 +8,9 @@
 // - 一致しない場合は原文表示のまま（翻訳失敗時のフォールバック）
 
 (() => {
+  const GLOBAL_HEADER_SELECTOR = 'header[role="banner"]';
+  let translateGlobalHeader = false;
+
   const BASE_SELECTOR = [
     'nav',
     'header',
@@ -65,10 +68,17 @@
     // Ajaxで丸ごと置き換わる仮のプレースホルダーなので、翻訳しても意味がなく、
     // 一瞬翻訳されてすぐ元の英語コンテンツに置き換わる点滅の原因になっていた
     'include-fragment',
-    // グローバル検索の候補モーダル。GitHubのquery-builder初期化中に内部の
-    // テキストやaria-labelを書き換えると、表示・フォーカス制御と競合することが
-    // ある。また、候補にはユーザー名・Organization名・リポジトリ名も含まれるため、
-    // モーダル全体を翻訳対象から除外する
+    // グローバルヘッダーはReact管理下にあり、検索ボタンを押したときにヘッダー全体が
+    // 再描画される。配下の兄弟要素を翻訳で直接書き換えていると、検索ボタンだけが
+    // 非表示になりモーダルが開かない状態になるため、ヘッダー全体を除外する
+    GLOBAL_HEADER_SELECTOR,
+    // グローバル検索はReact製の起動ボタンとquery-builder製の候補モーダルが
+    // 別々に初期化される。GitHub側で配置が変わりヘッダー外へ移動した場合も
+    // 書き換えないよう、検索UI自体も個別に除外する。候補に含まれるユーザー名・
+    // Organization名・リポジトリ名の誤訳防止も兼ねる
+    'button[aria-label="Search or jump to…"]',
+    'button[aria-label="Search or jump to..."]',
+    'qbsearch-input',
     'modal-dialog#search-suggestions-dialog',
     // Wikiページの見出し（ページ名そのもの）。issue/PRのタイトルとは異なりbdiで
     // 保護されておらず、Wiki固有のクラスのためこのタグ自体はaria/role等を
@@ -189,7 +199,9 @@
 
   function getExcludeSelector() {
     const pathExtra = getPathExtraSelector();
-    const exclude = EXCLUDE_SELECTOR_BASE.concat(getPathExtraExcludeSelector());
+    const exclude = EXCLUDE_SELECTOR_BASE
+      .filter((selector) => !translateGlobalHeader || selector !== GLOBAL_HEADER_SELECTOR)
+      .concat(getPathExtraExcludeSelector());
     // このページでpを許可リスト側に回した場合のみ、除外リストからは外す
     if (!pathExtra.includes('p')) exclude.push('p');
     return exclude.join(',');
@@ -247,7 +259,10 @@
 
   function getSettings() {
     return new Promise((resolve) => {
-      chrome.storage.local.get({ enabled: true, language: 'ja' }, (items) => resolve(items));
+      chrome.storage.local.get(
+        { enabled: true, language: 'ja', translateGlobalHeader: false },
+        (items) => resolve(items)
+      );
     });
   }
 
@@ -348,8 +363,9 @@
   }
 
   (async () => {
-    const { enabled, language } = await getSettings();
+    const { enabled, language, translateGlobalHeader: globalHeaderEnabled } = await getSettings();
     if (!enabled) return;
+    translateGlobalHeader = globalHeaderEnabled;
 
     const dict = await loadDictionary(language);
     if (Object.keys(dict).length === 0) return;
@@ -362,12 +378,43 @@
     // GitHubのTurboナビゲーション（特に「戻る/進む」の履歴復元）は<body>要素ごと
     // 置き換えるため、bodyを監視していると置換後に一切検知できなくなる。
     let scheduled = false;
-    const observer = new MutationObserver(() => {
-      if (scheduled) return;
+    const pendingRoots = new Set();
+
+    function addPendingRoot(node) {
+      const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+      if (!(element instanceof Element) || !element.isConnected || isExcludedElement(element)) return;
+
+      // 許可リスト要素の内側に追加された通常のspan等も拾うため、最も近い
+      // 許可リスト祖先を走査起点にする。該当祖先がなければ追加された部分木だけを
+      // 起点にし、内部にあるbutton等の許可リスト要素をtranslateAllで探索する。
+      const root = element.closest(getAllowlistSelector()) || element;
+
+      // 同じフレーム内で親子両方が変更された場合は、より外側の起点だけを残す。
+      for (const pending of pendingRoots) {
+        if (pending.contains(root)) return;
+        if (root.contains(pending)) pendingRoots.delete(pending);
+      }
+      pendingRoots.add(root);
+    }
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'characterData') {
+          addPendingRoot(mutation.target);
+          continue;
+        }
+        mutation.addedNodes.forEach(addPendingRoot);
+      }
+
+      if (scheduled || pendingRoots.size === 0) return;
       scheduled = true;
       requestAnimationFrame(() => {
         scheduled = false;
-        translateAll(document.body, dict);
+        const roots = [...pendingRoots];
+        pendingRoots.clear();
+        for (const root of roots) {
+          if (root.isConnected) translateAll(root, dict);
+        }
       });
     });
     // 初回翻訳より先に監視を開始し、その間のDOM変更を取りこぼさないようにする
@@ -398,7 +445,7 @@
   // リロードが重複するだけで害はない）
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
-    if ('enabled' in changes || 'language' in changes) {
+    if ('enabled' in changes || 'language' in changes || 'translateGlobalHeader' in changes) {
       location.reload();
     }
   });
