@@ -30,7 +30,7 @@
     "message": "Enable or disable global header translation"
   },
   "globalHeaderTranslationWarning": {
-    "message": "Caution: GitHub's global search may not open correctly when enabled."
+    "message": "If the global search stops opening (e.g. right after the browser starts), turn this off."
   },
   "repositoryLink": {
     "message": "GitHub UI Translator on GitHub"

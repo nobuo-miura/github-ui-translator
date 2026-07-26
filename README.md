@@ -10,7 +10,7 @@ It does not rely on external translation APIs or cloud services; all translation
 - Performs all translation locally without sending page content or settings to external services
 - Translates fixed GitHub UI text such as navigation items and buttons while avoiding user-created content areas such as READMEs, issues, comments, and code blocks
 - Lets you turn translation on or off from the extension popup
-- Lets you optionally translate the global header; this is off by default because enabling it may prevent GitHub's global search from opening correctly
+- Translates the global header after GitHub's React hydration completes to reduce the risk of interfering with the global search; this can be turned off from the popup
 
 ## Documentation
 
@@ -65,7 +65,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 - Click the extension icon in the toolbar to open the on/off toggle and the language selector. Japanese and Simplified Chinese are bundled today; the dropdown is ready for additional languages once more dictionaries are added.
 - Changing the toggle or the language reloads open GitHub tabs so the new setting takes effect.
-- The popup also lets you select whether to translate the global header and has a link to this repository. Changing this option reloads open GitHub tabs. Global header translation is off by default because enabling it may prevent the global search interface from opening correctly.
+- The popup also lets you select whether to translate the global header and has a link to this repository. Changing this option reloads open GitHub tabs. Global header translation is on by default and waits for GitHub's React hydration to finish before translating; turn it off if the global search ever fails to open.
 - Open the extension options page (`chrome://extensions` on Chrome, `about:addons` on Firefox) to view the bundled dictionary information and extension version.
 
 ## Customizing the Dictionary

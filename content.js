@@ -68,9 +68,17 @@
     // Ajaxで丸ごと置き換わる仮のプレースホルダーなので、翻訳しても意味がなく、
     // 一瞬翻訳されてすぐ元の英語コンテンツに置き換わる点滅の原因になっていた
     'include-fragment',
-    // グローバルヘッダーはReact管理下にあり、検索ボタンを押したときにヘッダー全体が
-    // 再描画される。配下の兄弟要素を翻訳で直接書き換えていると、検索ボタンだけが
-    // 非表示になりモーダルが開かない状態になるため、ヘッダー全体を除外する
+    // GitHubのReactパーシャル（グローバルヘッダー全体を含むreact-partial要素）は、
+    // サーバーレンダリング済みHTMLをクライアント側でhydrateする。hydration完了前に
+    // 内部のテキストやaria-labelを書き換えるとサーバーHTMLとの不一致でhydrationが
+    // 失敗し、検索ボタンが消えて検索画面が開かなくなる（ブラウザ冷間起動時など
+    // GitHubのJS初期化より翻訳が先に走った場合のみ発生）。hydration完了時に
+    // GitHubが付与するloadedクラスを目印に、完了前のパーシャルには一切触れない。
+    // 完了後の書き換えは安全（Reactは自分の仮想DOMと差分が出ない限りテキストを
+    // 戻さない）で、loadedクラスの付与は下のhydration監視で検知して翻訳する
+    'react-partial:not(.loaded)',
+    // グローバルヘッダーの翻訳を設定でOFFにした場合のみ除外する
+    // （既定はON。hydration完了後にのみ翻訳するため検索UIとは競合しない）
     GLOBAL_HEADER_SELECTOR,
     // グローバル検索はReact製の起動ボタンとquery-builder製の候補モーダルが
     // 別々に初期化される。GitHub側で配置が変わりヘッダー外へ移動した場合も
@@ -260,7 +268,7 @@
   function getSettings() {
     return new Promise((resolve) => {
       chrome.storage.local.get(
-        { enabled: true, language: 'ja', translateGlobalHeader: false },
+        { enabled: true, language: 'ja', translateGlobalHeader: true },
         (items) => resolve(items)
       );
     });
@@ -397,13 +405,41 @@
       pendingRoots.add(root);
     }
 
+    // hydration未完了のReactパーシャルは除外リストで翻訳を保留しているため、
+    // loadedクラスが付いた時点（＝hydration完了）を検知してそこから翻訳する。
+    // クラス変化は属性ミューテーションで、メインのobserverはchildList/
+    // characterDataしか監視していないため、パーシャルごとに専用のobserverを張る。
+    // loadedが付かないままの場合は翻訳されないだけで、動作は壊れない
+    const watchedPartials = new WeakSet();
+
+    function watchPartialHydration(partial) {
+      if (watchedPartials.has(partial)) return;
+      watchedPartials.add(partial);
+      const hydrationObserver = new MutationObserver(() => {
+        if (!partial.classList.contains('loaded')) return;
+        hydrationObserver.disconnect();
+        translateAll(partial, dict);
+      });
+      hydrationObserver.observe(partial, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    function watchPendingPartials(node) {
+      if (!(node instanceof Element)) return;
+      const selector = 'react-partial:not(.loaded)';
+      if (node.matches(selector)) watchPartialHydration(node);
+      node.querySelectorAll(selector).forEach(watchPartialHydration);
+    }
+
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.type === 'characterData') {
           addPendingRoot(mutation.target);
           continue;
         }
-        mutation.addedNodes.forEach(addPendingRoot);
+        mutation.addedNodes.forEach((node) => {
+          watchPendingPartials(node);
+          addPendingRoot(node);
+        });
       }
 
       if (scheduled || pendingRoots.size === 0) return;
@@ -424,6 +460,8 @@
       characterData: true
     });
 
+    // 初回翻訳の時点で既に存在するhydration待ちパーシャルにも監視を張る
+    watchPendingPartials(document.body);
     translateAll(document.body, dict);
 
     // ブラウザの「戻る/進む」でbfcacheからページが復元された場合、

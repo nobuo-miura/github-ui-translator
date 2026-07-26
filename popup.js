@@ -35,7 +35,7 @@ async function initialize() {
   }
 
   chrome.storage.local.get(
-    { enabled: true, language: 'ja', translateGlobalHeader: false },
+    { enabled: true, language: 'ja', translateGlobalHeader: true },
     (items) => {
       toggle.checked = items.enabled;
       updateStatus(items.enabled);

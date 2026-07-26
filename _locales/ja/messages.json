@@ -30,7 +30,7 @@
     "message": "グローバルヘッダー翻訳の有効・無効を切り替える"
   },
   "globalHeaderTranslationWarning": {
-    "message": "注意: 有効にすると、グローバル検索画面が表示されない可能性があります。"
+    "message": "起動直後などにグローバル検索画面が開かない場合は、この設定をオフにしてください。"
   },
   "repositoryLink": {
     "message": "GitHubでGitHub UI Translatorを見る"
