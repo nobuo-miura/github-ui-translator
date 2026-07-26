@@ -383,4 +383,18 @@
       }
     });
   })();
+
+  // ポップアップで設定（ON/OFF・言語）を変更したら、このタブ自身をリロードして
+  // 反映する。ポップアップ側でもchrome.tabs.reload()を呼んでいるが、<select>操作時に
+  // ポップアップがフォーカスを失って閉じるとchrome.storage.local.set()のコールバックが
+  // 実行されずリロードされないことがあるため、その保険としてここでも検知する。
+  // （ポップアップ側のリロードは、拡張機能更新直後などまだ新しいcontent.jsが
+  // 注入されていないタブを救うために残してある。両方が発火しても単に
+  // リロードが重複するだけで害はない）
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'local') return;
+    if ('enabled' in changes || 'language' in changes) {
+      location.reload();
+    }
+  });
 })();

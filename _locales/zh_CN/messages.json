@@ -1,0 +1,66 @@
+{
+  "extensionName": {
+    "message": "GitHub UI Translator"
+  },
+  "extensionDescription": {
+    "message": "使用内置语言词典在浏览器中翻译 GitHub UI。"
+  },
+  "actionTitle": {
+    "message": "GitHub UI Translator"
+  },
+  "translationLabel": {
+    "message": "翻译"
+  },
+  "translationToggleLabel": {
+    "message": "启用或禁用翻译"
+  },
+  "translationEnabledStatus": {
+    "message": "已开启：翻译 GitHub UI"
+  },
+  "translationDisabledStatus": {
+    "message": "已关闭：显示原始英文 UI"
+  },
+  "languageLabel": {
+    "message": "语言"
+  },
+  "repositoryLink": {
+    "message": "在 GitHub 上查看 GitHub UI Translator"
+  },
+  "settingsTitle": {
+    "message": "GitHub UI Translator - 设置"
+  },
+  "dictionaryInfoHeading": {
+    "message": "词典信息"
+  },
+  "languageColumn": {
+    "message": "语言"
+  },
+  "entryCountColumn": {
+    "message": "条目数"
+  },
+  "versionInfoHeading": {
+    "message": "版本信息"
+  },
+  "dictionaryCount": {
+    "message": "$COUNT$ 条",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "dictionaryLoadError": {
+    "message": "加载错误"
+  },
+  "languageListLoadError": {
+    "message": "无法加载语言列表"
+  },
+  "versionLabel": {
+    "message": "版本：$VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  }
+}
