@@ -52,6 +52,7 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 | Issue/PR/Discussion/commitへの個別ページリンク | URLパターン（`/issues/N` 等）で除外 |
 | Wikiページ名（見出し・サイドバーのページ一覧・目次） | `.gh-header-title`、`.js-wiki-sidebar-toc-container`、Wikiページ内部リンクのURLパターンで除外 |
 | ファイル・ディレクトリ一覧の各行（ファイル名・フォルダ名） | `/tree/`・`/blob/` へのリンクをURLパターンで除外 |
+| グローバル検索の候補モーダル | `modal-dialog#search-suggestions-dialog` を除外（表示制御との競合防止、およびユーザー名・Organization名・リポジトリ名の保護） |
 | インラインコード・コードブロック | `pre`、`code` タグを除外 |
 | 編集中の入力欄（bio、コメント本文等） | `[contenteditable="true"]`、`<textarea>` の子テキストを除外 |
 
@@ -89,6 +90,7 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 - `.gh-header-title`（Wikiページ見出し）
 - `.js-wiki-sidebar-toc-container`（Wiki自動目次）
 - `include-fragment`（GitHubの遅延読み込みカスタム要素。読み込み中プレースホルダーの誤訳・点滅を防止）
+- `modal-dialog#search-suggestions-dialog`（グローバル検索の表示制御との競合、および検索候補の誤訳を防止）
 
 これらは誤翻訳のリスクを低減するための防御策であり、ユーザー作成コンテンツが翻訳されないことを完全に保証するものではない。GitHub側のDOM変更で除外が効かなくなると、許可リストに含まれる祖先要素やタグの内側で辞書に一致した文字列が翻訳される可能性がある。
 
