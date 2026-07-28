@@ -23,6 +23,15 @@
   "languageLabel": {
     "message": "言語"
   },
+  "globalHeaderTranslationLabel": {
+    "message": "グローバルヘッダーを翻訳"
+  },
+  "globalHeaderTranslationToggleLabel": {
+    "message": "グローバルヘッダー翻訳の有効・無効を切り替える"
+  },
+  "globalHeaderTranslationWarning": {
+    "message": "起動直後などにグローバル検索画面が開かない場合は、この設定をオフにしてください。"
+  },
   "repositoryLink": {
     "message": "GitHubでGitHub UI Translatorを見る"
   },

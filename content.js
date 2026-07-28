@@ -8,6 +8,9 @@
 // - 一致しない場合は原文表示のまま（翻訳失敗時のフォールバック）
 
 (() => {
+  const GLOBAL_HEADER_SELECTOR = 'header[role="banner"]';
+  let translateGlobalHeader = false;
+
   const BASE_SELECTOR = [
     'nav',
     'header',
@@ -65,6 +68,26 @@
     // Ajaxで丸ごと置き換わる仮のプレースホルダーなので、翻訳しても意味がなく、
     // 一瞬翻訳されてすぐ元の英語コンテンツに置き換わる点滅の原因になっていた
     'include-fragment',
+    // GitHubのReactパーシャル（グローバルヘッダー全体を含むreact-partial要素）は、
+    // サーバーレンダリング済みHTMLをクライアント側でhydrateする。hydration完了前に
+    // 内部のテキストやaria-labelを書き換えるとサーバーHTMLとの不一致でhydrationが
+    // 失敗し、検索ボタンが消えて検索画面が開かなくなる（ブラウザ冷間起動時など
+    // GitHubのJS初期化より翻訳が先に走った場合のみ発生）。hydration完了時に
+    // GitHubが付与するloadedクラスを目印に、完了前のパーシャルには一切触れない。
+    // 完了後の書き換えは安全（Reactは自分の仮想DOMと差分が出ない限りテキストを
+    // 戻さない）で、loadedクラスの付与は下のhydration監視で検知して翻訳する
+    'react-partial:not(.loaded)',
+    // グローバルヘッダーの翻訳を設定でOFFにした場合のみ除外する
+    // （既定はON。hydration完了後にのみ翻訳するため検索UIとは競合しない）
+    GLOBAL_HEADER_SELECTOR,
+    // グローバル検索はReact製の起動ボタンとquery-builder製の候補モーダルが
+    // 別々に初期化される。GitHub側で配置が変わりヘッダー外へ移動した場合も
+    // 書き換えないよう、検索UI自体も個別に除外する。候補に含まれるユーザー名・
+    // Organization名・リポジトリ名の誤訳防止も兼ねる
+    'button[aria-label="Search or jump to…"]',
+    'button[aria-label="Search or jump to..."]',
+    'qbsearch-input',
+    'modal-dialog#search-suggestions-dialog',
     // Wikiページの見出し（ページ名そのもの）。issue/PRのタイトルとは異なりbdiで
     // 保護されておらず、Wiki固有のクラスのためこのタグ自体はaria/role等を
     // 持たない。.markdown-body同様、除外専用の目印としてCSSクラスに頼る例外とする
@@ -184,7 +207,9 @@
 
   function getExcludeSelector() {
     const pathExtra = getPathExtraSelector();
-    const exclude = EXCLUDE_SELECTOR_BASE.concat(getPathExtraExcludeSelector());
+    const exclude = EXCLUDE_SELECTOR_BASE
+      .filter((selector) => !translateGlobalHeader || selector !== GLOBAL_HEADER_SELECTOR)
+      .concat(getPathExtraExcludeSelector());
     // このページでpを許可リスト側に回した場合のみ、除外リストからは外す
     if (!pathExtra.includes('p')) exclude.push('p');
     return exclude.join(',');
@@ -242,7 +267,10 @@
 
   function getSettings() {
     return new Promise((resolve) => {
-      chrome.storage.local.get({ enabled: true, language: 'ja' }, (items) => resolve(items));
+      chrome.storage.local.get(
+        { enabled: true, language: 'ja', translateGlobalHeader: true },
+        (items) => resolve(items)
+      );
     });
   }
 
@@ -343,8 +371,9 @@
   }
 
   (async () => {
-    const { enabled, language } = await getSettings();
+    const { enabled, language, translateGlobalHeader: globalHeaderEnabled } = await getSettings();
     if (!enabled) return;
+    translateGlobalHeader = globalHeaderEnabled;
 
     const dict = await loadDictionary(language);
     if (Object.keys(dict).length === 0) return;
@@ -357,12 +386,71 @@
     // GitHubのTurboナビゲーション（特に「戻る/進む」の履歴復元）は<body>要素ごと
     // 置き換えるため、bodyを監視していると置換後に一切検知できなくなる。
     let scheduled = false;
-    const observer = new MutationObserver(() => {
-      if (scheduled) return;
+    const pendingRoots = new Set();
+
+    function addPendingRoot(node) {
+      const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+      if (!(element instanceof Element) || !element.isConnected || isExcludedElement(element)) return;
+
+      // 許可リスト要素の内側に追加された通常のspan等も拾うため、最も近い
+      // 許可リスト祖先を走査起点にする。該当祖先がなければ追加された部分木だけを
+      // 起点にし、内部にあるbutton等の許可リスト要素をtranslateAllで探索する。
+      const root = element.closest(getAllowlistSelector()) || element;
+
+      // 同じフレーム内で親子両方が変更された場合は、より外側の起点だけを残す。
+      for (const pending of pendingRoots) {
+        if (pending.contains(root)) return;
+        if (root.contains(pending)) pendingRoots.delete(pending);
+      }
+      pendingRoots.add(root);
+    }
+
+    // hydration未完了のReactパーシャルは除外リストで翻訳を保留しているため、
+    // loadedクラスが付いた時点（＝hydration完了）を検知してそこから翻訳する。
+    // クラス変化は属性ミューテーションで、メインのobserverはchildList/
+    // characterDataしか監視していないため、パーシャルごとに専用のobserverを張る。
+    // loadedが付かないままの場合は翻訳されないだけで、動作は壊れない
+    const watchedPartials = new WeakSet();
+
+    function watchPartialHydration(partial) {
+      if (watchedPartials.has(partial)) return;
+      watchedPartials.add(partial);
+      const hydrationObserver = new MutationObserver(() => {
+        if (!partial.classList.contains('loaded')) return;
+        hydrationObserver.disconnect();
+        translateAll(partial, dict);
+      });
+      hydrationObserver.observe(partial, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    function watchPendingPartials(node) {
+      if (!(node instanceof Element)) return;
+      const selector = 'react-partial:not(.loaded)';
+      if (node.matches(selector)) watchPartialHydration(node);
+      node.querySelectorAll(selector).forEach(watchPartialHydration);
+    }
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'characterData') {
+          addPendingRoot(mutation.target);
+          continue;
+        }
+        mutation.addedNodes.forEach((node) => {
+          watchPendingPartials(node);
+          addPendingRoot(node);
+        });
+      }
+
+      if (scheduled || pendingRoots.size === 0) return;
       scheduled = true;
       requestAnimationFrame(() => {
         scheduled = false;
-        translateAll(document.body, dict);
+        const roots = [...pendingRoots];
+        pendingRoots.clear();
+        for (const root of roots) {
+          if (root.isConnected) translateAll(root, dict);
+        }
       });
     });
     // 初回翻訳より先に監視を開始し、その間のDOM変更を取りこぼさないようにする
@@ -372,6 +460,8 @@
       characterData: true
     });
 
+    // 初回翻訳の時点で既に存在するhydration待ちパーシャルにも監視を張る
+    watchPendingPartials(document.body);
     translateAll(document.body, dict);
 
     // ブラウザの「戻る/進む」でbfcacheからページが復元された場合、
@@ -393,7 +483,7 @@
   // リロードが重複するだけで害はない）
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
-    if ('enabled' in changes || 'language' in changes) {
+    if ('enabled' in changes || 'language' in changes || 'translateGlobalHeader' in changes) {
       location.reload();
     }
   });

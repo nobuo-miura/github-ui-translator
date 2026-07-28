@@ -23,6 +23,15 @@
   "languageLabel": {
     "message": "Language"
   },
+  "globalHeaderTranslationLabel": {
+    "message": "Translate global header"
+  },
+  "globalHeaderTranslationToggleLabel": {
+    "message": "Enable or disable global header translation"
+  },
+  "globalHeaderTranslationWarning": {
+    "message": "If the global search stops opening (e.g. right after the browser starts), turn this off."
+  },
   "repositoryLink": {
     "message": "GitHub UI Translator on GitHub"
   },
