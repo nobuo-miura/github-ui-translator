@@ -86,7 +86,7 @@ Entries are grouped into sections by GitHub screen (repository navigation, repos
 ```
 
 - The file is JSON with `//` line comments (JSONC-style). Only whole-line comments are supported — trailing comments after a value on the same line are not. The extension strips comment lines before parsing, since standard `JSON.parse`/`fetch().json()` do not support comments.
-- Dictionary keys must match the original English text exactly. Before matching, leading and trailing whitespace is ignored and consecutive whitespace—including line breaks—is collapsed to a single space. Dictionary keys themselves must not contain leading or trailing whitespace.
+- Dictionary keys must match the original English text exactly. Leading and trailing whitespace is ignored for both visible text and supported attribute values. For visible text only, consecutive whitespace—including line breaks—is collapsed to a single space. Attribute values such as `aria-label`, `placeholder`, button `value`, and `data-disable-with` retain their internal whitespace when matched. Dictionary keys themselves must not contain leading or trailing whitespace.
 - After editing the dictionary, reload the extension (`chrome://extensions` on Chrome, `about:debugging` on Firefox).
 
 ### Adding a new language
