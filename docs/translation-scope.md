@@ -10,7 +10,7 @@ The extension uses its dictionary only for fixed GitHub UI text. User-created co
 ## Core principles
 
 - **Allowlist-based scanning**: The extension scans only semantic HTML elements and ARIA roles such as `nav`, `header`, `button`, and `role="tab"`. The allowlist generally does not rely on CSS class names or `data-testid` attributes.
-- **Exact matches only**: Text is replaced only when the string, after trimming leading and trailing whitespace and collapsing consecutive whitespace to a single space, exactly matches a dictionary key. If there is no match, the original text remains unchanged.
+- **Exact matches only**: Visible text and supported attribute values are replaced only when they exactly match a dictionary key after trimming leading and trailing whitespace. For visible text only, consecutive whitespace—including line breaks—is also collapsed to a single space before lookup. Attribute values such as `aria-label`, `placeholder`, button `value`, and `data-disable-with` retain their internal whitespace. If there is no match, the original value remains unchanged.
 - **User-created content is excluded**: The extension actively excludes content such as READMEs, issue bodies, comments, code blocks, file names, repository names, user names, and Wiki page titles, even when the text exactly matches a dictionary key.
 
 ## What is translated
