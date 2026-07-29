@@ -3,55 +3,55 @@
     "message": "GitHub UI Translator"
   },
   "extensionDescription": {
-    "message": "Translates the GitHub UI locally using bundled language dictionaries."
+    "message": "使用内置语言词典在浏览器中翻译 GitHub UI。"
   },
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
   "translationLabel": {
-    "message": "Translation"
+    "message": "翻译"
   },
   "translationToggleLabel": {
-    "message": "Enable or disable translation"
+    "message": "启用或禁用翻译"
   },
   "translationEnabledStatus": {
-    "message": "ON: Translate the GitHub UI"
+    "message": "已开启：翻译 GitHub UI"
   },
   "translationDisabledStatus": {
-    "message": "OFF: Show the original English UI"
+    "message": "已关闭：显示原始英文 UI"
   },
   "languageLabel": {
-    "message": "Language"
+    "message": "语言"
   },
   "globalHeaderTranslationLabel": {
-    "message": "Translate global header"
+    "message": "翻译全局页眉"
   },
   "globalHeaderTranslationToggleLabel": {
-    "message": "Enable or disable global header translation"
+    "message": "启用或禁用全局页眉翻译"
   },
   "globalHeaderTranslationWarning": {
-    "message": "If the global search stops opening (e.g. right after the browser starts), turn this off."
+    "message": "如果全局搜索界面无法打开（例如浏览器刚启动时），请关闭此选项。"
   },
   "repositoryLink": {
-    "message": "GitHub UI Translator on GitHub"
+    "message": "在 GitHub 上查看 GitHub UI Translator"
   },
   "settingsTitle": {
-    "message": "GitHub UI Translator - Settings"
+    "message": "GitHub UI Translator - 设置"
   },
   "dictionaryInfoHeading": {
-    "message": "Dictionary information"
+    "message": "词典信息"
   },
   "languageColumn": {
-    "message": "Language"
+    "message": "语言"
   },
   "entryCountColumn": {
-    "message": "Entries"
+    "message": "条目数"
   },
   "versionInfoHeading": {
-    "message": "Version information"
+    "message": "版本信息"
   },
   "dictionaryCount": {
-    "message": "$COUNT$ entries",
+    "message": "$COUNT$ 条",
     "placeholders": {
       "count": {
         "content": "$1"
@@ -59,13 +59,13 @@
     }
   },
   "dictionaryLoadError": {
-    "message": "Load error"
+    "message": "加载错误"
   },
   "languageListLoadError": {
-    "message": "Unable to load the language list"
+    "message": "无法加载语言列表"
   },
   "versionLabel": {
-    "message": "Version: $VERSION$",
+    "message": "版本：$VERSION$",
     "placeholders": {
       "version": {
         "content": "$1"

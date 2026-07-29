@@ -3,7 +3,7 @@
 # Translation Scope
 
 This document explains what GitHub UI Translator translates and what it intentionally leaves unchanged.
-For implementation details, see `content.js` and `dictionaries/ja.json`.
+For implementation details, see `content.js` and `dictionaries/ja.json` (other language dictionaries follow the same format).
 
 The extension uses its dictionary only for fixed GitHub UI text. User-created content and dynamic text are generally left in the original language.
 
@@ -15,7 +15,7 @@ The extension uses its dictionary only for fixed GitHub UI text. User-created co
 
 ## What is translated
 
-Fixed GitHub UI text—such as navigation items, buttons, headings, labels, and form descriptions—is added to the dictionary after being verified on each supported page. As of July 2026, the Japanese dictionary contains **1,293 entries**. Run `node scripts/validate.mjs` to confirm the current count.
+Fixed GitHub UI text—such as navigation items, buttons, headings, labels, and form descriptions—is added to the dictionary after being verified on each supported page. As of July 2026, the Japanese dictionary contains **1,369 entries**. Run `node scripts/validate.mjs` to confirm the current count; every bundled language dictionary is validated to match this count exactly.
 
 The main supported areas, corresponding to section headings in `dictionaries/ja.json`, include:
 
@@ -52,6 +52,9 @@ The following content is intentionally excluded even when its text exactly match
 | Links to individual issues, pull requests, discussions, and commits | Exclude matching URL patterns such as `/issues/N` |
 | Wiki page names in headings, sidebars, and tables of contents | Exclude `.gh-header-title`, `.js-wiki-sidebar-toc-container`, and matching internal Wiki links |
 | File and directory names in repository listings | Exclude links matching `/tree/` and `/blob/` URL patterns |
+| React partials during hydration | Exclude `react-partial:not(.loaded)`. Rewriting server-rendered HTML before React hydration completes causes a hydration mismatch that can break the partial (e.g. the global search button disappearing on a cold browser start). Once GitHub marks a partial with the `loaded` class, it is translated |
+| Global navigation header | Translated by default, but only after its `react-partial` finishes hydration (see above). Translation can be turned off from the popup, which excludes `header[role="banner"]` entirely |
+| Global search UI | Exclude the search trigger button, `qbsearch-input`, and `modal-dialog#search-suggestions-dialog` to prevent interference with initialization and protect user, organization, and repository names |
 | Inline code and code blocks | Exclude `pre` and `code` elements |
 | Editable fields such as bios and comment bodies | Exclude `[contenteditable="true"]` and text inside `<textarea>` elements |
 
@@ -90,6 +93,9 @@ The extension generally avoids CSS class names and `data-testid` attributes, but
 - `.gh-header-title` for Wiki page titles
 - `.js-wiki-sidebar-toc-container` for automatically generated Wiki tables of contents
 - `include-fragment`, GitHub's custom element for deferred content, to prevent mistranslation and flickering of loading placeholders
+- `react-partial` and its `loaded` class, GitHub's marker for React hydration completion, to postpone translation until touching the DOM is safe. If GitHub renames this marker, the affected partials simply stay untranslated
+- `header[role="banner"]` to exclude the global header entirely when its translation is turned off from the popup
+- The global search trigger button, `qbsearch-input`, and `modal-dialog#search-suggestions-dialog` to prevent interference with initialization and display control and to avoid mistranslating search suggestions
 
 These safeguards reduce the risk of mistranslation; they do not guarantee that user-created content can never be translated. If a GitHub DOM change causes an exclusion to stop matching, a string inside an allowlisted ancestor or element could be translated when it matches a dictionary key.
 

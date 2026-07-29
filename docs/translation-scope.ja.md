@@ -3,7 +3,7 @@
 # 翻訳対象の範囲
 
 このドキュメントは、GitHub UI Translatorが「何を翻訳し、何を意図的に翻訳しないか」を整理したものです。
-実装の詳細は `content.js` と `dictionaries/ja.json` を参照してください。
+実装の詳細は `content.js` と `dictionaries/ja.json`（他言語の辞書も同様の形式）を参照してください。
 
 GitHubの固定UIのみを辞書で翻訳し、ユーザーが作成したコンテンツや動的な文字列は原則として原文のまま表示します。
 
@@ -15,7 +15,7 @@ GitHubの固定UIのみを辞書で翻訳し、ユーザーが作成したコン
 
 ## 翻訳される範囲
 
-GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベル、フォームの説明文など）を、確認済みの画面ごとに辞書へ登録している。2026年7月時点で **1293件**（`node scripts/validate.mjs` で件数を確認可能）。
+GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベル、フォームの説明文など）を、確認済みの画面ごとに辞書へ登録している。2026年7月時点で日本語辞書は **1369件**（`node scripts/validate.mjs` で件数を確認可能）。同梱するすべての言語辞書は、この件数で完全に一致するよう検証される。
 
 対応済みの主な画面（`dictionaries/ja.json` 内のセクション見出しに対応）:
 
@@ -52,6 +52,9 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 | Issue/PR/Discussion/commitへの個別ページリンク | URLパターン（`/issues/N` 等）で除外 |
 | Wikiページ名（見出し・サイドバーのページ一覧・目次） | `.gh-header-title`、`.js-wiki-sidebar-toc-container`、Wikiページ内部リンクのURLパターンで除外 |
 | ファイル・ディレクトリ一覧の各行（ファイル名・フォルダ名） | `/tree/`・`/blob/` へのリンクをURLパターンで除外 |
+| hydration中のReactパーシャル | `react-partial:not(.loaded)` を除外。React hydration完了前にサーバーレンダリング済みHTMLを書き換えるとhydration不一致でパーシャルが壊れる（ブラウザ冷間起動時に検索ボタンが消える等）。GitHubが `loaded` クラスを付与した時点で翻訳する |
+| グローバルナビゲーションヘッダー | 既定で翻訳対象だが、`react-partial` のhydration完了後にのみ翻訳する（上記参照）。ポップアップでOFFにすると `header[role="banner"]` を丸ごと除外する |
+| グローバル検索UI | 検索起動ボタン、`qbsearch-input`、`modal-dialog#search-suggestions-dialog` を除外（初期化処理との競合防止、およびユーザー名・Organization名・リポジトリ名の保護） |
 | インラインコード・コードブロック | `pre`、`code` タグを除外 |
 | 編集中の入力欄（bio、コメント本文等） | `[contenteditable="true"]`、`<textarea>` の子テキストを除外 |
 
@@ -89,6 +92,9 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 - `.gh-header-title`（Wikiページ見出し）
 - `.js-wiki-sidebar-toc-container`（Wiki自動目次）
 - `include-fragment`（GitHubの遅延読み込みカスタム要素。読み込み中プレースホルダーの誤訳・点滅を防止）
+- `react-partial` と `loaded` クラス（GitHubのReact hydration完了マーカー。完了までDOMに触れないための目印で、GitHub側で名称が変わった場合は該当パーシャルが翻訳されなくなるだけで動作は壊れない）
+- `header[role="banner"]`（ポップアップでグローバルヘッダー翻訳をOFFにした場合に丸ごと除外するための目印）
+- グローバル検索の起動ボタン、`qbsearch-input`、`modal-dialog#search-suggestions-dialog`（初期化・表示制御との競合、および検索候補の誤訳を防止）
 
 これらは誤翻訳のリスクを低減するための防御策であり、ユーザー作成コンテンツが翻訳されないことを完全に保証するものではない。GitHub側のDOM変更で除外が効かなくなると、許可リストに含まれる祖先要素やタグの内側で辞書に一致した文字列が翻訳される可能性がある。
 
