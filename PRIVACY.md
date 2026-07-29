@@ -2,11 +2,11 @@
 
 [English](PRIVACY.md) | [日本語](PRIVACY.ja.md)
 
-Last updated: July 12, 2026
+Last updated: July 29, 2026
 
 ## Summary
 
-**GitHub UI Translator does not collect or transmit personal or sensitive user data. It stores only the extension's on/off state and selected language locally on your device.**
+**GitHub UI Translator does not collect or transmit personal or sensitive user data. It stores only the translation on/off state, selected language, and global header translation on/off state locally on your device.**
 
 ## Details
 
@@ -26,11 +26,11 @@ To perform translation, the extension accesses visible GitHub UI text (such as l
 
 ### Local settings only
 
-The extension stores two settings — the translation on/off state and the selected language — using the browser's extension storage (`chrome.storage.local` / `browser.storage.local`). These settings remain on your device and are never transmitted anywhere.
+The extension stores three settings — the translation on/off state, the selected language, and the global header translation on/off state — using the browser's extension storage (`chrome.storage.local` / `browser.storage.local`). These settings remain on your device and are never transmitted anywhere.
 
 ### Permissions
 
-- **storage**: Used solely to save the on/off state and language selection described above.
+- **storage**: Used solely to save the translation on/off state, selected language, and global header translation on/off state described above.
 - **Host access to `https://github.com/*`**: Required to run the translation script on GitHub pages. It is used only to replace UI text with translations from the bundled dictionaries and to reload GitHub tabs when you change settings.
 
 ### No third parties
