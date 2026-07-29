@@ -1,0 +1,83 @@
+name: Translation request
+description: Suggest a missing or improved translation for fixed GitHub UI text
+title: "[Translation]: "
+labels:
+  - translation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve the translations. Please do not submit text from READMEs, issues, comments, code, or other user-created content.
+
+        This template is for languages that the extension already supports. To request support for a language that is not listed below, please open a Feature request instead.
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - Japanese
+        - Simplified Chinese
+    validations:
+      required: true
+
+  - type: input
+    id: source-text
+    attributes:
+      label: Original English text
+      description: Enter the fixed GitHub UI text exactly as it appears.
+      placeholder: "For example: Compare & pull request"
+    validations:
+      required: true
+
+  - type: input
+    id: current-translation
+    attributes:
+      label: Current translation
+      description: Leave this blank if the text is not currently translated.
+
+  - type: input
+    id: suggested-translation
+    attributes:
+      label: Suggested translation
+    validations:
+      required: true
+
+  - type: input
+    id: affected-url
+    attributes:
+      label: GitHub URL where the text appears
+      description: Remove private repository names or other sensitive information before submitting.
+      placeholder: "https://github.com/..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Explain where the text appears and why the suggested translation is appropriate.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Add a screenshot if it helps identify the UI text. Remove sensitive information first.
+
+  - type: checkboxes
+    id: fixed-ui-text
+    attributes:
+      label: Translation scope
+      options:
+        - label: This request is for fixed GitHub UI text, not user-created content.
+          required: true
+
+  - type: checkboxes
+    id: existing-issues
+    attributes:
+      label: Existing issues
+      options:
+        - label: I searched the existing issues and did not find a duplicate.
+          required: true

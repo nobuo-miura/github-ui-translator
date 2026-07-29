@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question and answer
+    url: https://github.com/nobuo-miura/github-ui-translator/discussions/categories/q-a
+    about: Ask how to install or use the extension, or get help with a setting.
+  - name: General discussion
+    url: https://github.com/nobuo-miura/github-ui-translator/discussions/categories/general
+    about: Share feedback or discuss the project with other users.
