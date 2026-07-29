@@ -1,0 +1,54 @@
+name: Feature request
+description: Suggest a new feature or improvement for GitHub UI Translator
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting an improvement. Please describe the problem you want to solve before describing a specific solution.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or limitation
+      description: What problem are you experiencing, and who is affected by it?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed solution
+      description: Describe the feature or behavior you would like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: Explain when and how you would use this feature.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe any alternative solutions or workarounds you have considered.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add screenshots, examples, or any other information that may help evaluate the request.
+
+  - type: checkboxes
+    id: existing-issues
+    attributes:
+      label: Existing issues
+      options:
+        - label: I searched the existing issues and did not find a duplicate.
+          required: true

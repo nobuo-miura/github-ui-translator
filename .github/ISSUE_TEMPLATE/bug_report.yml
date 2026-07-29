@@ -1,0 +1,102 @@
+name: Bug report
+description: Report extension behavior that does not work as expected
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a problem. Please provide enough detail for us to reproduce it.
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension version
+      description: You can find this on your browser's extension management page.
+      placeholder: "For example: 0.1.5"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Google Chrome
+        - Mozilla Firefox
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: browser-version
+    attributes:
+      label: Browser version
+      placeholder: "For example: 142.0"
+    validations:
+      required: true
+
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system
+      placeholder: "For example: macOS 26.0, Windows 11, Ubuntu 24.04"
+    validations:
+      required: true
+
+  - type: input
+    id: affected-url
+    attributes:
+      label: Affected GitHub URL
+      description: Remove private repository names or other sensitive information before submitting.
+      placeholder: "https://github.com/..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem description
+      description: Describe what went wrong and when it happened.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Add screenshots or a screen recording if they help explain the problem. Remove sensitive information first.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other information that may help us investigate.
+
+  - type: checkboxes
+    id: existing-issues
+    attributes:
+      label: Existing issues
+      options:
+        - label: I searched the existing issues and did not find a duplicate.
+          required: true
