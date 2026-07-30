@@ -281,7 +281,9 @@
       const translated = dict[trimmed];
       if (translated) {
         // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
-        el.setAttribute('aria-label', label.replace(trimmed, () => translated));
+        const replacement = label.replace(trimmed, () => translated);
+        // 書き込みは値が変わるときだけ（理由はテキストノード側の同じガードを参照）
+        if (replacement !== label) el.setAttribute('aria-label', replacement);
       }
     }
 
@@ -291,7 +293,8 @@
       const trimmed = placeholder.trim();
       const translated = dict[trimmed];
       if (translated) {
-        el.setAttribute('placeholder', placeholder.replace(trimmed, () => translated));
+        const replacement = placeholder.replace(trimmed, () => translated);
+        if (replacement !== placeholder) el.setAttribute('placeholder', replacement);
       }
     }
 
@@ -315,14 +318,16 @@
       const trimmed = value.trim();
       const translated = dict[trimmed];
       if (translated) {
-        el.value = value.replace(trimmed, () => translated);
+        const replacement = value.replace(trimmed, () => translated);
+        if (replacement !== value) el.value = replacement;
       }
       const disableWith = el.getAttribute('data-disable-with');
       if (disableWith) {
         const disableWithTrimmed = disableWith.trim();
         const disableWithTranslated = dict[disableWithTrimmed];
         if (disableWithTranslated) {
-          el.setAttribute('data-disable-with', disableWith.replace(disableWithTrimmed, () => disableWithTranslated));
+          const replacement = disableWith.replace(disableWithTrimmed, () => disableWithTranslated);
+          if (replacement !== disableWith) el.setAttribute('data-disable-with', replacement);
         }
       }
       return;
@@ -355,7 +360,15 @@
       const translated = dict[lookupText];
       if (translated) {
         // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
-        textNode.nodeValue = value.replace(trimmed, () => translated);
+        const replacement = value.replace(trimmed, () => translated);
+        // 値が変わらない場合は書き込まない。nodeValueへの代入は同じ文字列でも
+        // characterDataミューテーションを発火させる仕様のため、辞書に
+        // "Wiki": "Wiki" のような自己マッピング（意図的に未翻訳の固有名詞）が
+        // あると収束せず、requestAnimationFrameが実行されるたびに同じ処理が続く。
+        // 表示は一切変わらないので気づきにくいが、不要な再走査が継続する。
+        // "Wikis" -> "Wiki" のように訳文が別のキーでもある場合も、2巡目でここに
+        // 到達して同じループになるため、書き込み直前の比較で止めるのが確実
+        if (replacement !== value) textNode.nodeValue = replacement;
       }
     }
   }
@@ -379,8 +392,10 @@
     if (Object.keys(dict).length === 0) return;
 
     // SPA対応: GitHubの動的DOM更新に追従する
-    // 完全一致した文字列は翻訳後の日本語になり辞書のキー（英語）と再度一致しないため、
-    // 再走査してもループしない。複数ミューテーションはrequestAnimationFrameで1回にまとめる
+    // 自分の書き込みもcharacterDataミューテーションとして観測されるため、再走査が
+    // ループしないことはtranslateElement側の「値が変わるときだけ書き込む」ガードに
+    // 依存している（訳文が原文と同じ自己マッピングでも止まる）。
+    // 複数ミューテーションはrequestAnimationFrameで1回にまとめる
     //
     // 監視対象はdocument.bodyではなくdocumentElement（<html>）にする。
     // GitHubのTurboナビゲーション（特に「戻る/進む」の履歴復元）は<body>要素ごと

@@ -54,7 +54,7 @@ Translations live in `dictionaries/<code>.json` — currently [`ja.json`](../dic
 }
 ```
 
-Five rules matter. The validator checks the parts it can determine from the files; the remaining parts need care in review.
+Six rules matter. The validator checks the parts it can determine from the files; the remaining parts need care in review.
 
 **1. Every dictionary must contain exactly the same set of keys.** This is the rule contributors trip over most often. If you add an entry to `ja.json` and not to `zh-CN.json`, CI fails with `missing keys`. Add the entry to *every* dictionary in the same pull request. If you cannot translate it into a language you do not speak, say so in the pull request rather than leaving the key out.
 
@@ -65,6 +65,8 @@ Five rules matter. The validator checks the parts it can determine from the file
 **4. Keep entries grouped by GitHub screen.** Each group is introduced by a `// ==== Section name ====` comment. Add new entries to the group they belong to rather than to the end of the file; this is what makes it possible to spot which section is affected when GitHub changes its UI. Nothing checks placement — an entry in the wrong group passes CI.
 
 **5. Indent keys with four spaces.** The duplicate-key check reads the raw file line by line and recognizes keys only at that exact indentation. Different indentation does not raise an error; it silently removes those keys from the duplicate check, so a genuine duplicate can slip through unnoticed.
+
+**6. Translation chains must converge.** A translation may intentionally be identical to its source—for example, `"Wiki": "Wiki"` records that the product name should remain untranslated. The validator reports these self-mappings as warnings, not errors. A cycle of two or more different values, such as `A → B → A`, never converges and is rejected. A non-cyclic chain whose output changes again on the next pass is also reported as a warning so that it can be reviewed.
 
 Values must be non-empty strings. Duplicate keys within one file are an error.
 
@@ -100,7 +102,7 @@ Run the validator before opening a pull request:
 node scripts/validate.mjs
 ```
 
-It checks dictionary format and metadata, duplicate keys, empty or whitespace-padded keys, key parity across all dictionaries, key parity across all `_locales`, that every `__MSG_*__` placeholder in `manifest.json` resolves, and that `shared.js` loads before `content.js`. On success it prints the entry count per language.
+It checks dictionary format and metadata, duplicate keys, empty or whitespace-padded keys, key parity across all dictionaries, key parity across all `_locales`, that every `__MSG_*__` placeholder in `manifest.json` resolves, and that `shared.js` loads before `content.js`. It also warns about self-mappings and translation chains that change again on the next pass, and rejects translation cycles of length two or greater. On success it prints the entry count per language and any informational warnings.
 
 It does **not** check section placement, key indentation, or whether locale directory names correspond to the codes in `languages.json`. Those three need a human eye.
 

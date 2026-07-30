@@ -94,7 +94,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 1. 同じ形式で`dictionaries/<言語コード>.json`（例: `dictionaries/en.json`）を追加する
 2. `languages.json`に`{ "code": "<言語コード>", "name": "<表示名>" }`を追加する。Popupとオプション画面はこの共通一覧を読み込む
-3. `node scripts/validate.mjs`を実行し、辞書形式、重複キー、メタデータ、同梱辞書間のキー一致を確認する
+3. `node scripts/validate.mjs`を実行し、辞書形式、重複キー、メタデータ、同梱辞書間のキー一致、自己マッピング、翻訳連鎖、収束しないサイクルを確認する
 
 Popup、オプション画面、拡張機能の名前・説明は、GitHub翻訳用辞書とは別にブラウザ拡張標準の`_locales`で多言語化しています。拡張機能自身のUIにも新しい言語を追加する場合は、`_locales/en/messages.json`と同じメッセージキーを持つ`_locales/<言語コード>/messages.json`も追加してください。
 
