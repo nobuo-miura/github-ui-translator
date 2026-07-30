@@ -5,6 +5,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const errors = [];
+// 自己マッピング（"Wiki": "Wiki"）は「意図的に未翻訳」の記録として妥当なので
+// エラーにはしない。ただしcontent.jsが値の変わらない書き込みを避けそこねると
+// MutationObserverの無限ループになる箇所なので、件数を可視化しておく
+const warnings = [];
 
 function readText(relativePath) {
   return fs.readFileSync(path.join(root, relativePath), 'utf8');
@@ -101,6 +105,59 @@ for (const language of Array.isArray(languages) ? languages : []) {
     }
   }
 
+  const selfMapped = Object.entries(dictionary.translations)
+    .filter(([source, translation]) => source === translation)
+    .map(([source]) => source);
+  if (selfMapped.length > 0) {
+    warnings.push(`${dictionaryPath}: ${selfMapped.length} self-mapping(s) (translation equals source): ${selfMapped.join(', ')}`);
+  }
+
+  // 訳文が別のキーでもある場合、1巡目の置換結果が2巡目でさらに引かれる。
+  // 長さ2以上の循環（A -> B -> A、A -> B -> C -> A、…）は毎回値が変わるため、
+  // content.js側の「値が変わるときだけ書き込む」ガードでは止められず、画面の
+  // 文字列が入れ替わり続ける無限ループになる。循環の長さに上限はないので、
+  // 各キーから訳文を辿って任意長の循環を検出する。
+  // 自己マッピング（長さ1の循環）は書き込み自体が起きないので許容する。
+  //
+  // 1つのキーには1つの訳文しかないため出次数は常に1で、開始点ごとに辿って
+  // 訪問済みを覚えるだけで全体をO(キー数)で走査できる。
+  const edges = new Map(Object.entries(dictionary.translations));
+  const visited = new Set();
+  const cyclicKeys = new Set();
+  for (const start of edges.keys()) {
+    if (visited.has(start)) continue;
+    const path = [];
+    const position = new Map();
+    let node = start;
+    // 訪問済みの節点に入った場合、その先の循環は既に報告済みなので打ち切る
+    while (edges.has(node) && !visited.has(node)) {
+      if (position.has(node)) {
+        const cycle = path.slice(position.get(node));
+        if (cycle.length >= 2) {
+          cycle.forEach((key) => cyclicKeys.add(key));
+          const trace = [...cycle, cycle[0]].map((key) => JSON.stringify(key)).join(' -> ');
+          errors.push(`${dictionaryPath}: translation cycle ${trace} will never converge`);
+        }
+        break;
+      }
+      position.set(node, path.length);
+      path.push(node);
+      node = edges.get(node);
+    }
+    path.forEach((key) => visited.add(key));
+  }
+
+  // 循環しない連鎖（A -> B -> C で C は自己マッピングか辞書外）は収束するが、
+  // 余分な再翻訳が1巡走るので気づけるようにしておく。
+  // 循環を構成するキーと、その訳文が直接循環へ入るキーはここでは除外する。
+  // それより上流の枝は、次巡でも再翻訳されることを示す警告が出る場合がある
+  for (const [source, translation] of Object.entries(dictionary.translations)) {
+    if (source === translation || cyclicKeys.has(source) || cyclicKeys.has(translation)) continue;
+    const next = edges.get(translation);
+    if (next === undefined || next === translation) continue;
+    warnings.push(`${dictionaryPath}: chained translation "${source}" -> "${translation}" -> "${next}" (re-translated on the next pass)`);
+  }
+
   const currentKeys = new Set(Object.keys(dictionary.translations));
   if (referenceKeys === null) referenceKeys = currentKeys;
   else compareKeys(dictionaryPath, referenceKeys, currentKeys);
@@ -131,6 +188,10 @@ if (!manifest.content_scripts?.some((entry) => {
   return sharedIndex >= 0 && contentIndex >= 0 && sharedIndex < contentIndex;
 })) {
   errors.push('manifest.json: shared.js must load before content.js');
+}
+
+if (warnings.length > 0) {
+  console.warn(`\nWarnings:\n- ${warnings.join('\n- ')}`);
 }
 
 if (errors.length > 0) {

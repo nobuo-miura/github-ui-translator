@@ -93,7 +93,7 @@ Entries are grouped into sections by GitHub screen (repository navigation, repos
 
 1. Add `dictionaries/<code>.json` (e.g. `dictionaries/en.json`) in the same format.
 2. Add `{ "code": "<code>", "name": "<display name>" }` to `languages.json`. The popup and options page both load this shared list.
-3. Run `node scripts/validate.mjs` to check the dictionary format, duplicate keys, metadata, and key parity with the other bundled dictionaries.
+3. Run `node scripts/validate.mjs` to check the dictionary format, duplicate keys, metadata, key parity with the other bundled dictionaries, self-mappings, translation chains, and non-converging cycles.
 
 The popup, options page, and extension metadata use the browser extension `_locales` mechanism independently of the GitHub translation dictionaries. To add a new language for the extension's own UI, also add `_locales/<code>/messages.json` with the same message keys as `_locales/en/messages.json`.
 
