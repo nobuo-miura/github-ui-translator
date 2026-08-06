@@ -18,6 +18,9 @@ body:
       options:
         - Japanese
         - Simplified Chinese
+        - Spanish
+        - German
+        - Portuguese (Brazil)
     validations:
       required: true
 
