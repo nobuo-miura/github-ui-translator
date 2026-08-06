@@ -1,0 +1,75 @@
+{
+  "extensionName": {
+    "message": "GitHub UI Translator"
+  },
+  "extensionDescription": {
+    "message": "Übersetzt die GitHub-Oberfläche lokal mithilfe integrierter Sprachwörterbücher."
+  },
+  "actionTitle": {
+    "message": "GitHub UI Translator"
+  },
+  "translationLabel": {
+    "message": "Übersetzung"
+  },
+  "translationToggleLabel": {
+    "message": "Übersetzung aktivieren oder deaktivieren"
+  },
+  "translationEnabledStatus": {
+    "message": "EIN: GitHub-Oberfläche übersetzen"
+  },
+  "translationDisabledStatus": {
+    "message": "AUS: Ursprüngliche englische Oberfläche anzeigen"
+  },
+  "languageLabel": {
+    "message": "Sprache"
+  },
+  "globalHeaderTranslationLabel": {
+    "message": "Globalen Header übersetzen"
+  },
+  "globalHeaderTranslationToggleLabel": {
+    "message": "Übersetzung des globalen Headers aktivieren oder deaktivieren"
+  },
+  "globalHeaderTranslationWarning": {
+    "message": "Wenn sich die globale Suche nicht mehr öffnen lässt (z. B. direkt nach dem Start des Browsers), deaktiviere diese Option."
+  },
+  "repositoryLink": {
+    "message": "GitHub UI Translator auf GitHub"
+  },
+  "settingsTitle": {
+    "message": "GitHub UI Translator - Einstellungen"
+  },
+  "dictionaryInfoHeading": {
+    "message": "Wörterbuchinformationen"
+  },
+  "languageColumn": {
+    "message": "Sprache"
+  },
+  "entryCountColumn": {
+    "message": "Einträge"
+  },
+  "versionInfoHeading": {
+    "message": "Versionsinformationen"
+  },
+  "dictionaryCount": {
+    "message": "$COUNT$ Einträge",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "dictionaryLoadError": {
+    "message": "Ladefehler"
+  },
+  "languageListLoadError": {
+    "message": "Die Sprachliste konnte nicht geladen werden"
+  },
+  "versionLabel": {
+    "message": "Version: $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  }
+}

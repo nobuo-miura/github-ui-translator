@@ -40,7 +40,7 @@ Node.js is needed only to run the validator. CI uses Node 26.
 
 ## Editing the dictionaries
 
-Translations live in `dictionaries/<code>.json` — currently [`ja.json`](../dictionaries/ja.json) and [`zh-CN.json`](../dictionaries/zh-CN.json).
+Translations live in `dictionaries/<code>.json` — currently [`ja.json`](../dictionaries/ja.json), [`zh-CN.json`](../dictionaries/zh-CN.json), [`es.json`](../dictionaries/es.json), [`de.json`](../dictionaries/de.json), and [`pt-BR.json`](../dictionaries/pt-BR.json).
 
 ```jsonc
 {
@@ -56,7 +56,7 @@ Translations live in `dictionaries/<code>.json` — currently [`ja.json`](../dic
 
 Six rules matter. The validator checks the parts it can determine from the files; the remaining parts need care in review.
 
-**1. Every dictionary must contain exactly the same set of keys.** This is the rule contributors trip over most often. If you add an entry to `ja.json` and not to `zh-CN.json`, CI fails with `missing keys`. Add the entry to *every* dictionary in the same pull request. If you cannot translate it into a language you do not speak, say so in the pull request rather than leaving the key out.
+**1. Every dictionary must contain exactly the same set of keys.** This is the rule contributors trip over most often. If you add an entry to `ja.json` and not to the other dictionaries, CI fails with `missing keys`. Add the entry to *every* dictionary in the same pull request. If you cannot translate it into a language you do not speak, say so in the pull request rather than leaving the key out.
 
 **2. Keys must match the original English text exactly.** Leading and trailing whitespace is trimmed before matching. For **visible text** the extension additionally collapses runs of whitespace — including line breaks — into a single space, so a key written on one line can match text that GitHub renders across several lines. **Attribute values are only trimmed, not collapsed**: `aria-label`, `placeholder`, button `value`, and `data-disable-with` are looked up as-is apart from surrounding whitespace, so a key intended for one of those must reproduce its internal spacing exactly. The validator rejects keys with leading or trailing whitespace, but whether a key matches GitHub's original text and internal spacing needs to be checked in review.
 
@@ -72,7 +72,7 @@ Values must be non-empty strings. Duplicate keys within one file are an error.
 
 ## Translation guidelines
 
-- When the same term appears in the official GitHub Docs, use its localized wording and capitalization as the primary reference. See the [Japanese documentation](https://docs.github.com/ja) and [Simplified Chinese documentation](https://docs.github.com/zh).
+- When the same term appears in the official GitHub Docs, use its localized wording and capitalization as the primary reference. See the [Japanese documentation](https://docs.github.com/ja), [Simplified Chinese documentation](https://docs.github.com/zh), [Spanish documentation](https://docs.github.com/es), [German documentation](https://docs.github.com/de), and [Portuguese documentation](https://docs.github.com/pt).
 - Check the term on the current GitHub screen and consider every known place where the same English key appears. Because one dictionary key has one translation, prefer wording that remains clear across those contexts.
 - Keep terminology consistent with related entries in the existing dictionary and preserve official product and feature names where GitHub does.
 - GitHub Docs are a reference, not an absolute rule. If the documented wording is unnatural in the UI or does not fit the current context, prefer a clear, natural translation and explain the reason in the pull request.
@@ -83,14 +83,17 @@ Values must be non-empty strings. Duplicate keys within one file are an error.
 2. Add `{ "code": "<code>", "name": "<display name>" }` to [`languages.json`](../languages.json). The popup and the options page both read this list.
 3. Add `_locales/<locale-code>/messages.json` with the same message keys as [`_locales/en/messages.json`](../_locales/en/messages.json). This localizes the extension's own UI — the popup, the options page, and the extension name and description — and is separate from the GitHub translation dictionaries.
 
-**The locale directory name is not always the same as the dictionary code.** WebExtensions requires `language_REGION` with an underscore, while dictionary codes use the BCP 47 form with a hyphen. Simplified Chinese is the existing example:
+**The locale directory name is not always the same as the dictionary code.** WebExtensions requires `language_REGION` with an underscore, while dictionary codes use the BCP 47 form with a hyphen. Simplified Chinese and Brazilian Portuguese are existing examples:
 
 | | Dictionary code | Locale directory |
 | --- | --- | --- |
 | Japanese | `ja` | `_locales/ja` |
 | Simplified Chinese | `zh-CN` | `_locales/zh_CN` |
+| Spanish | `es` | `_locales/es` |
+| German | `de` | `_locales/de` |
+| Brazilian Portuguese | `pt-BR` | `_locales/pt_BR` |
 
-A directory named `_locales/zh-CN` is ignored by the browser. Nothing catches this: `scripts/validate.mjs` compares message keys between whatever locale directories exist, but never checks them against the codes in `languages.json`. The extension UI and metadata silently fall back to English.
+A directory named `_locales/zh-CN` or `_locales/pt-BR` is ignored by the browser. Nothing catches this: `scripts/validate.mjs` compares message keys between whatever locale directories exist, but never checks them against the codes in `languages.json`. The extension UI and metadata silently fall back to English.
 
 The new dictionary needs every key that the existing dictionaries have, so this is a large change. Please open a Feature request before starting so we can agree on scope.
 
