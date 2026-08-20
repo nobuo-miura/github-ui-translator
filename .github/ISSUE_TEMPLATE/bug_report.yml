@@ -24,6 +24,7 @@ body:
       label: Browser
       options:
         - Google Chrome
+        - Microsoft Edge
         - Mozilla Firefox
         - Other
     validations:
