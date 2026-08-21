@@ -8,7 +8,7 @@
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-GitHubの英語UIを、ローカル辞書を使って日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語に翻訳するブラウザ拡張機能です（Chrome / Edge / Firefox対応）。
+GitHubの英語UIを、ローカル辞書を使って日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語・韓国語に翻訳するブラウザ拡張機能です（Chrome / Edge / Firefox対応）。
 外部の翻訳APIやクラウドサービスには一切依存せず、すべてブラウザ内で完結します。
 
 ## 特徴
@@ -24,7 +24,7 @@ GitHubの英語UIを、ローカル辞書を使って日本語・簡体字中国
 
 ## 制限事項
 
-- 現在対応している言語は日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語です。今後も対応範囲が整い次第、ほかの言語を追加する予定です
+- 現在対応している言語は日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語・韓国語です。今後も対応範囲が整い次第、ほかの言語を追加する予定です
 - "3 commits" や "opened 2 days ago" のような、数値・日付を含む動的な文言は翻訳されません。ユーザー名などのユーザー作成コンテンツも対象外です。詳しくは[翻訳対象の範囲](docs/translation-scope.ja.md)を参照してください
 - `github.com` 以外のドメイン（GitHub Enterprise等）には対応していません
 - Chrome・Edge・Firefoxで動作確認済みです。その他のChromium系ブラウザも動くと思われますが、明示的な検証はしていません
@@ -73,7 +73,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## 使い方
 
-- ツールバーの拡張機能アイコンをクリックすると、翻訳のON/OFFトグル、言語選択、グローバルヘッダー翻訳の設定が表示される（現時点では日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語に対応）
+- ツールバーの拡張機能アイコンをクリックすると、翻訳のON/OFFトグル、言語選択、グローバルヘッダー翻訳の設定が表示される（現時点では日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語・韓国語に対応）
 - グローバルヘッダー翻訳は既定でON。GitHubのReact hydration完了後にのみ翻訳するため通常はグローバル検索と競合しないが、万一検索画面が開かない場合はOFFにできる
 - トグル、言語、グローバルヘッダー翻訳の設定を変更すると、開いているGitHubのタブが自動的に再読み込みされ、設定が反映される
 - Popup下部にはこのリポジトリへのリンクがある
@@ -81,7 +81,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## 辞書のカスタマイズ
 
-変更したい言語の辞書ファイル（例: `dictionaries/ja.json`、`dictionaries/zh-CN.json`、`dictionaries/es.json`、`dictionaries/de.json`、`dictionaries/pt-BR.json`）を直接編集することで、翻訳される文言を追加・変更できます。
+変更したい言語の辞書ファイル（例: `dictionaries/ja.json`、`dictionaries/zh-CN.json`、`dictionaries/es.json`、`dictionaries/de.json`、`dictionaries/pt-BR.json`、`dictionaries/ko.json`）を直接編集することで、翻訳される文言を追加・変更できます。
 エントリはGitHubの画面（リポジトリナビゲーション、リポジトリSettings、Organization Settingsなど）ごとにセクション分けされており、各セクションの先頭に `// ====` というコメント行を入れています。どの文言がどの画面のものか一目で分かり、GitHub側のUI変更にも気付きやすくなっています。
 
 ```jsonc
@@ -125,7 +125,8 @@ github-ui-translator/
 │  ├─ zh-CN.json    … 簡体字中国語辞書
 │  ├─ es.json       … スペイン語辞書
 │  ├─ de.json       … ドイツ語辞書
-│  └─ pt-BR.json    … ブラジルポルトガル語辞書
+│  ├─ pt-BR.json    … ブラジルポルトガル語辞書
+│  └─ ko.json       … 韓国語辞書
 ├─ docs/
 │  ├─ translation-scope.md     … 英語版
 │  └─ translation-scope.ja.md  … 日本語版
