@@ -21,6 +21,7 @@ body:
         - Spanish
         - German
         - Portuguese (Brazil)
+        - Korean
     validations:
       required: true
 

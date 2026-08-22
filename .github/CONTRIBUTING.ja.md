@@ -40,7 +40,7 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 
 ## 辞書の編集
 
-翻訳は`dictionaries/<言語コード>.json`にあります。現在は[`ja.json`](../dictionaries/ja.json)、[`zh-CN.json`](../dictionaries/zh-CN.json)、[`es.json`](../dictionaries/es.json)、[`de.json`](../dictionaries/de.json)、[`pt-BR.json`](../dictionaries/pt-BR.json)の5つです。
+翻訳は`dictionaries/<言語コード>.json`にあります。現在は[`ja.json`](../dictionaries/ja.json)、[`zh-CN.json`](../dictionaries/zh-CN.json)、[`es.json`](../dictionaries/es.json)、[`de.json`](../dictionaries/de.json)、[`pt-BR.json`](../dictionaries/pt-BR.json)、[`ko.json`](../dictionaries/ko.json)の6つです。
 
 ```jsonc
 {
@@ -72,7 +72,7 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 
 ## 翻訳方針
 
-- 同じ用語がGitHub公式ドキュメントにある場合は、その訳語と表記を第一の参考にします。[日本語ドキュメント](https://docs.github.com/ja)、[簡体字中国語ドキュメント](https://docs.github.com/zh)、[スペイン語ドキュメント](https://docs.github.com/es)、[ドイツ語ドキュメント](https://docs.github.com/de)、[ポルトガル語ドキュメント](https://docs.github.com/pt)を参照してください。
+- 同じ用語がGitHub公式ドキュメントにある場合は、その訳語と表記を第一の参考にします。[日本語ドキュメント](https://docs.github.com/ja)、[簡体字中国語ドキュメント](https://docs.github.com/zh)、[スペイン語ドキュメント](https://docs.github.com/es)、[ドイツ語ドキュメント](https://docs.github.com/de)、[ポルトガル語ドキュメント](https://docs.github.com/pt)、[韓国語ドキュメント](https://docs.github.com/ko)を参照してください。
 - 現在のGitHub画面で文脈を確認し、同じ英語キーが使われる既知の箇所も考慮します。1つの辞書キーには1つの訳しか設定できないため、複数の文脈で意味が通る表現を優先してください。
 - 既存辞書の関連する訳語と表記を統一し、GitHubが製品名や機能名を原文のまま使用している場合はその表記を維持します。
 - GitHub公式ドキュメントは参考基準であり、絶対的なルールではありません。公式の訳語が画面上で不自然な場合や現在の文脈に合わない場合は、明確で自然な訳を優先し、その理由をプルリクエストに記載してください。
@@ -92,6 +92,7 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 | スペイン語 | `es` | `_locales/es` |
 | ドイツ語 | `de` | `_locales/de` |
 | ブラジルポルトガル語 | `pt-BR` | `_locales/pt_BR` |
+| 韓国語 | `ko` | `_locales/ko` |
 
 `_locales/zh-CN`や`_locales/pt-BR`というディレクトリ名はブラウザに無視されます。これを検出する仕組みはありません。[`scripts/validate.mjs`](../scripts/validate.mjs)は存在するロケールディレクトリ同士でメッセージキーを比較するだけで、`languages.json`のコードとの対応は検査していないためです。拡張機能のUIとメタデータは黙って英語にフォールバックします。
 
