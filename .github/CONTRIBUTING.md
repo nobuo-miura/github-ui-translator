@@ -40,7 +40,7 @@ Node.js is needed only to run the validator. CI uses Node 26.
 
 ## Editing the dictionaries
 
-Translations live in `dictionaries/<code>.json` — currently [`ja.json`](../dictionaries/ja.json), [`zh-CN.json`](../dictionaries/zh-CN.json), [`es.json`](../dictionaries/es.json), [`de.json`](../dictionaries/de.json), and [`pt-BR.json`](../dictionaries/pt-BR.json).
+Translations live in `dictionaries/<code>.json` — currently [`ja.json`](../dictionaries/ja.json), [`zh-CN.json`](../dictionaries/zh-CN.json), [`es.json`](../dictionaries/es.json), [`de.json`](../dictionaries/de.json), [`pt-BR.json`](../dictionaries/pt-BR.json), and [`ko.json`](../dictionaries/ko.json).
 
 ```jsonc
 {
@@ -72,7 +72,7 @@ Values must be non-empty strings. Duplicate keys within one file are an error.
 
 ## Translation guidelines
 
-- When the same term appears in the official GitHub Docs, use its localized wording and capitalization as the primary reference. See the [Japanese documentation](https://docs.github.com/ja), [Simplified Chinese documentation](https://docs.github.com/zh), [Spanish documentation](https://docs.github.com/es), [German documentation](https://docs.github.com/de), and [Portuguese documentation](https://docs.github.com/pt).
+- When the same term appears in the official GitHub Docs, use its localized wording and capitalization as the primary reference. See the [Japanese documentation](https://docs.github.com/ja), [Simplified Chinese documentation](https://docs.github.com/zh), [Spanish documentation](https://docs.github.com/es), [German documentation](https://docs.github.com/de), [Portuguese documentation](https://docs.github.com/pt), and [Korean documentation](https://docs.github.com/ko).
 - Check the term on the current GitHub screen and consider every known place where the same English key appears. Because one dictionary key has one translation, prefer wording that remains clear across those contexts.
 - Keep terminology consistent with related entries in the existing dictionary and preserve official product and feature names where GitHub does.
 - GitHub Docs are a reference, not an absolute rule. If the documented wording is unnatural in the UI or does not fit the current context, prefer a clear, natural translation and explain the reason in the pull request.
@@ -92,6 +92,7 @@ Values must be non-empty strings. Duplicate keys within one file are an error.
 | Spanish | `es` | `_locales/es` |
 | German | `de` | `_locales/de` |
 | Brazilian Portuguese | `pt-BR` | `_locales/pt_BR` |
+| Korean | `ko` | `_locales/ko` |
 
 A directory named `_locales/zh-CN` or `_locales/pt-BR` is ignored by the browser. Nothing catches this: `scripts/validate.mjs` compares message keys between whatever locale directories exist, but never checks them against the codes in `languages.json`. The extension UI and metadata silently fall back to English.
 

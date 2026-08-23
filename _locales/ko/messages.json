@@ -1,0 +1,75 @@
+{
+  "extensionName": {
+    "message": "GitHub UI Translator"
+  },
+  "extensionDescription": {
+    "message": "번들로 제공되는 언어 사전을 사용해 GitHub UI를 로컬에서 번역합니다."
+  },
+  "actionTitle": {
+    "message": "GitHub UI Translator"
+  },
+  "translationLabel": {
+    "message": "번역"
+  },
+  "translationToggleLabel": {
+    "message": "번역 사용 또는 사용 안 함"
+  },
+  "translationEnabledStatus": {
+    "message": "켜짐: GitHub UI 번역"
+  },
+  "translationDisabledStatus": {
+    "message": "꺼짐: 원본 영어 UI 표시"
+  },
+  "languageLabel": {
+    "message": "언어"
+  },
+  "globalHeaderTranslationLabel": {
+    "message": "전역 헤더 번역"
+  },
+  "globalHeaderTranslationToggleLabel": {
+    "message": "전역 헤더 번역 사용 또는 사용 안 함"
+  },
+  "globalHeaderTranslationWarning": {
+    "message": "전역 검색이 열리지 않게 되면(예: 브라우저 시작 직후) 이 옵션을 끄세요."
+  },
+  "repositoryLink": {
+    "message": "GitHub에서 GitHub UI Translator 보기"
+  },
+  "settingsTitle": {
+    "message": "GitHub UI Translator - 설정"
+  },
+  "dictionaryInfoHeading": {
+    "message": "사전 정보"
+  },
+  "languageColumn": {
+    "message": "언어"
+  },
+  "entryCountColumn": {
+    "message": "항목 수"
+  },
+  "versionInfoHeading": {
+    "message": "버전 정보"
+  },
+  "dictionaryCount": {
+    "message": "$COUNT$개 항목",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "dictionaryLoadError": {
+    "message": "로드 오류"
+  },
+  "languageListLoadError": {
+    "message": "언어 목록을 로드할 수 없습니다"
+  },
+  "versionLabel": {
+    "message": "버전: $VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  }
+}
