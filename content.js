@@ -63,6 +63,76 @@
     '[contenteditable="true"]',
     '[data-hovercard-type="repository"]',
     '[data-hovercard-type="user"]',
+    // グローバルパンくず内のリポジトリ名。repoPickerCrumbはGitHubのReactヘッダーで
+    // リポジトリ切替対象を示す要素で、表示テキストはユーザーが付けたリポジトリ名
+    '[class*="repoPickerCrumb"]',
+    // リポジトリのコード画面上部に表示されるリポジトリ名。Starボタン等の固定UIを
+    // 除外しないよう、CodeViewHeaderのタイトル内にあるstrongだけに限定する
+    '[class*="CodeViewHeader-module__TitleWrapper__"] strong',
+    // リポジトリコード画面のReactファイルツリー。treeitemはリンクではないため
+    // isUserContentLinkでは保護できず、遅延描画後にファイル名・ディレクトリ名が
+    // 辞書キーと完全一致すると誤訳される。固定UIを残してtree本体だけを除外する
+    'nav[aria-label="File Tree Navigation"] [role="tree"]',
+    // Issue/PRに付くラベルとラベル作成フォームのプレビュー。ラベル名はユーザーが
+    // 自由に設定できるため、PrimerのIssueLabelトークン全体を翻訳対象から除外する。
+    // 末尾はビルドごとに変わるハッシュなので、公開コンポーネント名の接頭辞だけを使う
+    '[class*="prc-Token-IssueLabel-"]',
+    // Issue/PR右サイドバーの編集ポップアップに表示される候補名。ラベル名・
+    // マイルストーン名・プロジェクト名・担当者名はいずれもユーザーが設定する内容。
+    // dialog全体を除外すると見出しや検索欄などの固定UIまで翻訳できなくなるため、
+    // 用途が明示されたlistbox内の候補行だけを保護する。ラベルの説明文も候補行の
+    // 内側にあるので、行単位の除外により名前と合わせて保護される
+    '[role="listbox"][aria-label="Label results"] [role="option"]',
+    '[role="listbox"][aria-label="Milestone results"] [role="option"]',
+    '[role="listbox"][aria-label="Project results"] [role="option"]',
+    '[role="listbox"][aria-label="User results"] [role="option"]',
+    // Issueの「Create a branch」ダイアログ。ベースリポジトリとベースブランチは
+    // ユーザーが付けた識別子なので、候補行と選択後にボタン内へ表示される値を保護する。
+    // ボタン自体のaria-labelは固定UIとして翻訳できるよう、表示値のspanだけを除外する
+    '[role="listbox"][aria-label="Repository results"] [role="option"]',
+    '[role="listbox"][aria-label="Branch results"] [role="option"]',
+    // Issue右サイドバーの「開発」メニューに表示されるPull request候補。
+    // 候補行のタイトルはユーザー作成コンテンツで、リポジトリ名や番号も含む
+    '[role="listbox"][aria-label="Pull request results"] [role="option"]',
+    'button[aria-label^="Selected repository:"] [data-component="text"]',
+    'button[aria-label="Select a branch"] [data-component="text"]',
+    // PRとDiscussionの右サイドバーでは、上のReact製listboxではなく旧式の
+    // details-menuが使われている。各フォーム・候補行にGitHubが付けている用途別の
+    // クラス／aria-labelに限定し、「No milestone」等の固定UIや新規作成フォームは
+    // 除外せず、ユーザーが設定した候補名と付随する説明だけを保護する
+    '.js-discussion-sidebar-menu .js-filterable-label',
+    // Issue/PR一覧の絞り込みメニュー。ラベル名・説明、マイルストーン名、
+    // プロジェクト名、ユーザー名はユーザー作成コンテンツなので候補行を保護し、
+    // 「担当者なし」等の固定選択肢やフィルター見出しは翻訳対象に残す。
+    // 新しいIssues一覧の同種候補は上の* results listboxで保護される
+    '.js-issues-label-select-menu-item',
+    '#milestones-select-menu [role="menuitemradio"][href*="milestone%3A"]',
+    '#project-select-menu virtual-list [role="menuitemcheckbox"]',
+    '#author-select-menu [role="menuitemradio"][href*="author%3A"]',
+    '#assignees-select-menu [role="menuitemradio"][href*="assignee%3A"]',
+    'form[aria-label="Select milestones"] .select-menu-item:not(.select-menu-new-item-form)',
+    'form[aria-label="Select projects"] [role="menuitemcheckbox"]',
+    'form[aria-label="Select assignees"] .select-menu-item',
+    'form[aria-label="Select reviewers"] .select-menu-item',
+    // リポジトリ画面で現在選択されているブランチ。aria-labelは「<ブランチ名> branch」
+    // で、内部の表示テキストはユーザーが付けたブランチ名そのものになる
+    'button[aria-label$=" branch"]',
+    // ブランチ選択ポップアップの候補行。ブランチ名とタグ名はいずれもユーザーが
+    // 付けた識別子なので、固定UIのタブや操作文言は残して候補行だけを除外する
+    '[role="dialog"][aria-label="Select a branch"] [role="menuitemradio"]',
+    // リリース作成画面のタグ候補。タグ名はユーザーが付ける識別子なので、
+    // ダイアログの見出し・検索欄・新規タグ作成ボタンは残して候補行だけを除外する
+    '[role="dialog"][aria-label="Select a tag"] [role="menuitemradio"]',
+    // リリース作成・編集画面で選択中のタグ名。Tag:の固定ラベルとタグ名は別spanに
+    // 分かれているため、ラベルは翻訳対象に残し、その直後の値だけを保護する
+    'button[aria-label^="Tag:"] .fgColor-muted + span',
+    // リリース作成画面のターゲット候補。ブランチ一覧と最近のコミット一覧が同じ
+    // コンテナ内で切り替わるため、ブランチ名だけでなくコミットメッセージを含む
+    // 候補行も保護する。js-release-target-wrapperはこの用途を示すGitHub側のクラス
+    '.js-release-target-wrapper [role="menuitemradio"]',
+    // Discussionの投票タイトル・選択肢・結果はすべてユーザーが作成する内容。
+    // 作成後の表示だけでなく投票作成・編集時のプレビューもコンポーネント単位で保護する
+    '.js-discussion-poll-component',
     // GitHubの遅延読み込み用カスタム要素。読み込み中はaria-label="Loading ..."が
     // 付いており、[aria-label]に無条件でマッチしてしまう。中身は読み込み完了後に
     // Ajaxで丸ごと置き換わる仮のプレースホルダーなので、翻訳しても意味がなく、
@@ -143,7 +213,10 @@
     // リポジトリSettings > Pages
     { pattern: /^\/[^/]+\/[^/]+\/settings\/pages$/, selectors: ['p'] },
     // リポジトリSettings > 高度なセキュリティ
-    { pattern: /^\/[^/]+\/[^/]+\/settings\/security_analysis$/, selectors: ['p'] }
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/security_analysis$/, selectors: ['p'] },
+    // リリース作成画面。説明欄はtextarea、タグ・ブランチ・コミット候補は専用の
+    // 除外セレクターで保護済みのため、画面下部の固定ガイド文だけを許可する
+    { pattern: /^\/[^/]+\/[^/]+\/releases\/new$/, selectors: ['p'] }
   ];
 
   // 許可リストを広げたページのうち、その画面固有のユーザー作成コンテンツ
@@ -167,6 +240,79 @@
     {
       pattern: /^\/settings\/personal-access-tokens\/\d+$/,
       selectors: ['form.js-user-programmatic-access-form h2.Subhead-heading', 'h3.Subhead-heading a']
+    },
+    // リポジトリ固有の保存済みIssueビュー詳細画面。h1はGitHub固定の見出しではなく、
+    // ユーザーが自由に付けたビュー名そのものなので翻訳対象から除外する。
+    {
+      pattern: /^\/[^/]+\/[^/]+\/issues\/views\/\d+$/,
+      selectors: ['h1']
+    },
+    // マイルストーン詳細画面。h1はGitHub固定の見出しではなく、ユーザーが自由に
+    // 付けたマイルストーン名そのものなので翻訳対象から除外する。
+    {
+      pattern: /^\/[^/]+\/[^/]+\/milestone\/\d+$/,
+      selectors: ['h1']
+    },
+    // リリース詳細のh1はGitHub固定の見出しではなくユーザーが入力したリリース名。
+    // タグ名と同じ場合も異なる場合もあるため、URLではなく見出し自体を保護する
+    {
+      pattern: /^\/[^/]+\/[^/]+\/releases\/tag\/[^/]+$/,
+      selectors: ['main .border-top > h1.sr-only']
+    },
+    // リリース一覧の各sectionにある非表示見出しはリリース名そのもの。
+    // section全体を除外するとAssets等の固定UIまで翻訳できないため見出しだけを保護する
+    {
+      pattern: /^\/[^/]+\/[^/]+\/releases$/,
+      selectors: ['section[id^="release-"] > h2.sr-only', 'nav[aria-label="Release list navigation"] a[href^="#release-"]']
+    },
+    // Issue作成画面のカスタムIssue Template / Issue Formカード。名前と説明は
+    // リポジトリ内の設定ファイルで自由に指定できる。Blank issueは固定UIなので残す
+    {
+      pattern: /^\/[^/]+\/[^/]+\/issues\/new\/choose$/,
+      selectors: ['a[href*="/issues/new?template="]:not([href*="template=BLANK_ISSUE"])']
+    },
+    // Issue Form本体のラベル・説明・Markdownはリポジトリ内のYAMLで定義される内容。
+    // 右側の担当者等の固定UIはコンテナ外なので、フォーム要素群だけを保護する
+    {
+      pattern: /^\/[^/]+\/[^/]+\/issues\/new$/,
+      selectors: ['[class*="IssueFormElements-module__formElementsContainer__"]']
+    },
+    // ラベル管理一覧。各行のラベル名と説明はどちらもユーザーが編集できるため、
+    // React ListViewが付与する明示的なlistitemロールを行単位で除外する。
+    {
+      pattern: /^\/[^/]+\/[^/]+\/labels$/,
+      selectors: ['main [role="listitem"]']
+    },
+    // ユーザーまたはOrganization所有のProjects画面。h1はGitHub固定の見出しではなく、
+    // ユーザーが自由に付けたプロジェクト名そのものなので翻訳対象から除外する。
+    {
+      pattern: /^\/(users|orgs)\/[^/]+\/projects\/\d+(\/|$)/,
+      selectors: ['h1']
+    },
+    // Issue/PR/Discussion詳細のタイトル。従来はbdiや.gh-header-titleで保護されていたが、
+    // 新しいReact画面ではh1内の.markdown-titleとなり、スクロール時にはh2の
+    // 追従ヘッダーにも複製される。どちらもユーザーが付けたタイトルなので除外する。
+    {
+      pattern: /^\/[^/]+\/[^/]+\/(issues|pull|discussions)\/\d+$/,
+      selectors: ['h1 .markdown-title', 'h2 .markdown-title', '.sticky-header-container .markdown-title']
+    },
+    // Actions実行詳細のタイトルとJob詳細見出し。Workflow名とJob名はWorkflow YAMLで
+    // ユーザーが設定するため、実行番号や固定のステータスUIとは分けて保護する
+    {
+      pattern: /^\/[^/]+\/[^/]+\/actions\/runs\/\d+(\/job\/\d+)?$/,
+      selectors: ['h1 .markdown-title', '.CheckRun-log-title']
+    },
+    // ルールセット作成・編集画面のテキスト入力欄。ルールセット名やrefパターンなど
+    // ユーザー設定値を保持し、現在値がplaceholderへ複製された場合も誤訳を防ぐ。
+    {
+      pattern: /^\/[^/]+\/[^/]+\/settings\/rules\/(new|\d+)$/,
+      selectors: ['input[type="text"]']
+    },
+    // Environment編集画面の見出し。h2内の省略表示対象はGitHub固定文言ではなく、
+    // ユーザーが自由に付けたEnvironment名なので翻訳対象から除外する。
+    {
+      pattern: /^\/[^/]+\/[^/]+\/settings\/environments\/\d+\/edit$/,
+      selectors: ['h2 .css-truncate-target']
     }
   ];
 
@@ -196,7 +342,17 @@
       // GitHub側でURL規則が不統一なため、両方にマッチさせる（pulls?）
       // マイルストーン詳細ページはURLが/milestone/2（単数形）、一覧ページは
       // /milestones（複数形）とGitHub側でURL規則が不統一なため、両方にマッチさせる
-      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models|milestones?|labels)(\/|$)/.test(location.pathname);
+      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models|milestones?|labels|releases?)(\/|$)/.test(location.pathname) ||
+      // グローバルなPull requestsダッシュボード（/pulls、/pulls/inbox、
+      // /pulls/assigned等）。セクション見出し（h2）やページタイトル（h1）が
+      // nav/header/button外の素のテキストとして出るため拡張スコープが必要
+      /^\/pulls(\/|$)/.test(location.pathname) ||
+      // グローバルなIssuesダッシュボード（/issues、/issues/assigned等）。
+      // 上と同様にページタイトル（h1）がnav/header/button外に出るため必要
+      /^\/issues(\/|$)/.test(location.pathname) ||
+      // グローバルなリポジトリ一覧（/repos）。ページタイトル（h1）や
+      // 「New repository」等のPrimer Buttonクラス付き<a>タグが対象になる
+      /^\/repos(\/|$)/.test(location.pathname);
 
     const selector = isExtendedScopePage
       ? BASE_SELECTOR.concat(EXTRA_SELECTOR)
@@ -227,6 +383,28 @@
     }
 
     return /^\/[^/]+\/[^/]+\/(issues|pull|discussions)\/\d+(\/|$)/.test(path) ||
+      // リポジトリ固有の保存済みIssueビュー一覧に表示されるビュー名。
+      // リンク先の数値IDはGitHubが付与し、リンクの表示名はユーザーが自由に設定する
+      /^\/[^/]+\/[^/]+\/issues\/views\/\d+$/.test(path) ||
+      // リリース一覧・詳細に表示されるリリース名。リンク先にはユーザーが付けた
+      // タグ名が入るため、辞書キーと完全一致しても表示名を翻訳しない
+      /^\/[^/]+\/[^/]+\/releases\/tag\/[^/]+$/.test(path) ||
+      // リリースに手動アップロードされたAssetのファイル名。末尾のパス部分は
+      // ユーザーが付けた名前で、一覧・詳細のダウンロードリンクにそのまま表示される
+      /^\/[^/]+\/[^/]+\/releases\/download\/[^/]+\/.+$/.test(path) ||
+      // ActionsのWorkflow名・実行名・Job名。リンク表示はWorkflow YAMLで自由に
+      // 設定でき、StarやActions等の辞書キーと完全一致しうる
+      /^\/[^/]+\/[^/]+\/actions\/workflows\/[^/]+$/.test(path) ||
+      /^\/[^/]+\/[^/]+\/actions\/runs\/\d+(\/job\/\d+)?$/.test(path) ||
+      // ユーザーまたはOrganization所有のProjects。プロジェクト名はパンくずリンク、
+      // ビュー名は各ビューへのタブリンクとして表示され、どちらもユーザーが変更できる
+      /^\/(users|orgs)\/[^/]+\/projects\/\d+(\/views\/\d+)?$/.test(path) ||
+      // リポジトリRulesets一覧に表示されるルールセット名。リンク先の数値IDは
+      // GitHubが付与し、リンクの表示名はユーザーが自由に設定する
+      /^\/[^/]+\/[^/]+\/settings\/rules\/\d+$/.test(path) ||
+      // Environment一覧に表示されるEnvironment名。リンク先の数値IDはGitHubが
+      // 付与し、リンクの表示名はユーザーが自由に設定する
+      /^\/[^/]+\/[^/]+\/settings\/environments\/\d+\/edit$/.test(path) ||
       /^\/[^/]+\/[^/]+\/commit\/[0-9a-f]+(\/|$)/i.test(path) ||
       // Wikiページ名へのリンク（サイドバーのページ一覧等）。ページ名はユーザーが
       // 付けたタイトルであり、辞書のキーと偶然完全一致すると誤訳されうる。
@@ -242,11 +420,120 @@
       // ファイル名・フォルダ名のテキストノードまでTreeWalkerで走査され誤訳が
       // 発生していた。isExcludedElementはtranslateElement呼び出し自体を止める
       // ため、この行はaria-label属性・可視テキストとも一切書き換えなくなる
-      /^\/[^/]+\/[^/]+\/(tree|blob)\/.+/.test(path);
+      /^\/[^/]+\/[^/]+\/(tree|blob)\/.+/.test(path) ||
+      // Issue/PR一覧の各行に付くマイルストーンリンク（/owner/repo/milestones/<name>）。
+      // GitHubはID（/milestone/2、単数形）ではなくユーザーが付けたマイルストーン名を
+      // スラッグとしてそのままリンク先に使うため、"Actions"や"Draft"等の辞書キーと
+      // 偶然完全一致すると誤訳されうる。新規作成への固定リンク（.../milestones/new）
+      // はマイルストーン名ではないため除外対象から外す
+      /^\/[^/]+\/[^/]+\/milestones?\/(?!new$)[^/]+$/.test(path);
+  }
+
+  // Pull requests/Issues/リポジトリのダッシュボード（サイドバーaside）には、
+  // GitHub固定のフィルターリンク（Inbox、Assigned to me等）を並べたnavと、
+  // ユーザーが名前を付けて保存した「Views」の一覧を並べたnavの2つが並ぶ。
+  // 後者はユーザーが自由に名付けられるため、"My repositories"のように辞書の
+  // キーと偶然完全一致すると誤訳されうる。両navにはハッシュ化されたPrimerの
+  // 汎用クラスしか付いておらずCSSセレクタでは区別できないが、GitHub側の実装で
+  // 固定リンクのnavが常にaside内で最初のnavとしてレンダリングされ、保存された
+  // Viewsのnavはそれ以降に続くため、aside内で2番目以降のnavをユーザー作成
+  // コンテンツとして除外する
+  function isSavedViewsLink(el) {
+    if (!/^\/(pulls|issues|repos)(\/|$)/.test(location.pathname)) return false;
+
+    const nav = el.closest('nav');
+    if (!nav) return false;
+    const aside = nav.closest('aside');
+    if (!aside) return false;
+    return aside.querySelector('nav') !== nav;
+  }
+
+  // ActionsのJobログではユーザー定義StepとGitHub固定Stepが同じ要素構造を使う。
+  // 固定の開始・終了Stepは翻訳対象に残し、それ以外のWorkflow YAML由来の名前を保護する
+  function isWorkflowUserStep(el) {
+    const stepName = el.closest('.CheckStep-titleName');
+    if (!stepName) return false;
+    const text = stepName.textContent.trim();
+    return text !== 'Set up job' && text !== 'Complete job';
+  }
+
+  // グローバルパンくずのリポジトリ切り替えは、候補listboxに用途を示す属性がなく、
+  // ダイアログ名も動的ID経由のaria-labelledbyで付く。専用のトリガーボタンが開いて
+  // いる間だけ、同時に表示されているSelectPanel内のoptionをリポジトリ名として保護する
+  function isRepositorySwitcherOption(el) {
+    const option = el.closest('[role="option"]');
+    if (!option || !option.closest('[class*="prc-SelectPanel-Overlay-"]')) return false;
+    return Boolean(document.querySelector('[class*="repoPickerDropdownButton"][aria-expanded="true"]'));
+  }
+
+  const STANDARD_DISCUSSION_CATEGORIES = new Set([
+    'announcements', 'general', 'ideas', 'polls', 'q-a', 'q&a', 'show-and-tell'
+  ]);
+
+  // Discussionカテゴリはリポジトリ管理者が作成・命名できる。一方、GitHub標準の
+  // 6カテゴリは辞書で意図的に翻訳しているため、標準スラッグ以外だけを保護する。
+  // 一覧のカテゴリリンク、新規Discussionのカテゴリカード、検索リンクに対応する
+  function isCustomDiscussionCategory(el) {
+    // セクション作成・編集画面のカテゴリチェック項目。数値IDしか持たないため、
+    // labelの先頭テキストノードにあるカテゴリ名で標準カテゴリかを判定する
+    if (/^\/[^/]+\/[^/]+\/discussions\/sections\/(new|\d+\/edit)$/.test(location.pathname)) {
+      const label = el.closest('label');
+      const checkbox = label?.querySelector('input[name="section[category_ids][]"]');
+      if (checkbox) {
+        const nameNode = [...label.childNodes]
+          .find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+        const name = (nameNode?.textContent || '').trim().toLowerCase().replaceAll(' ', '-');
+        return Boolean(name) && !STANDARD_DISCUSSION_CATEGORIES.has(name);
+      }
+    }
+
+    // カテゴリ管理一覧はリンク先が数値IDのためURLからスラッグを取得できない。
+    // 各行のEditリンクに含まれるカテゴリ名で標準カテゴリかを判定し、カスタム行では
+    // 名前だけでなく管理者が入力した説明もまとめて保護する
+    if (/^\/[^/]+\/[^/]+\/discussions\/categories$/.test(location.pathname)) {
+      const row = el.closest('li.Box-row');
+      const editLink = row?.querySelector('a[aria-label^="Edit "][aria-label$=" category"]');
+      if (editLink) {
+        const name = editLink.getAttribute('aria-label').slice(5, -9).toLowerCase().replaceAll(' ', '-');
+        return !STANDARD_DISCUSSION_CATEGORIES.has(name);
+      }
+    }
+
+    let link = el.closest('a[href]');
+    let protectCard = false;
+    if (!link) {
+      const card = el.closest('li');
+      link = card?.querySelector('a[href*="/discussions/new?category="]') || null;
+      protectCard = Boolean(link);
+    }
+    if (!link) return false;
+
+    let url;
+    try {
+      url = new URL(link.getAttribute('href'), location.href);
+    } catch {
+      return false;
+    }
+
+    const categoryPath = url.pathname.match(/^\/[^/]+\/[^/]+\/discussions\/categories\/([^/]+)$/);
+    if (categoryPath) return !STANDARD_DISCUSSION_CATEGORIES.has(categoryPath[1]);
+
+    if (/^\/[^/]+\/[^/]+\/discussions\/new$/.test(url.pathname)) {
+      const category = url.searchParams.get('category');
+      return protectCard && Boolean(category) && !STANDARD_DISCUSSION_CATEGORIES.has(category);
+    }
+
+    if (/^\/[^/]+\/[^/]+\/discussions$/.test(url.pathname)) {
+      const query = url.searchParams.get('discussions_q') || '';
+      const match = query.match(/category:(?:"([^"]+)"|([^\s]+))/);
+      const name = (match?.[1] || match?.[2] || '').toLowerCase().replaceAll(' ', '-');
+      return Boolean(name) && !STANDARD_DISCUSSION_CATEGORIES.has(name);
+    }
+    return false;
   }
 
   function isExcludedElement(el) {
-    return !el || Boolean(el.closest(getExcludeSelector())) || isUserContentLink(el);
+    return !el || Boolean(el.closest(getExcludeSelector())) || isUserContentLink(el) || isSavedViewsLink(el) || isWorkflowUserStep(el) || isRepositorySwitcherOption(el) || isCustomDiscussionCategory(el);
   }
 
   async function loadDictionary(language) {
@@ -278,7 +565,8 @@
     const label = el.getAttribute('aria-label');
     if (label) {
       const trimmed = label.trim();
-      const translated = dict[trimmed];
+      const targetMatch = el.closest('.js-release-target-wrapper') && trimmed.match(/^Target:\s+(.+)$/);
+      const translated = dict[trimmed] || (targetMatch && dict['Target:'] && `${dict['Target:']} ${targetMatch[1]}`);
       if (translated) {
         // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
         const replacement = label.replace(trimmed, () => translated);
@@ -357,7 +645,11 @@
       // 一致させるため、辞書引き用にのみ連続空白を単一スペースに正規化する
       // （置換対象は元のtrimmedのままなので、余分な改行も訳文で解消される）
       const lookupText = trimmed.replace(/\s+/g, ' ');
-      const translated = dict[lookupText];
+      // リリース作成画面のTargetボタンは固定ラベルとユーザーが選択したブランチ名を
+      // 1つのテキストノード（例: "Target: main"）に結合する。完全一致の原則を保ち
+      // つつ、用途を限定して固定の接頭辞だけを訳し、選択値は原文のまま保持する
+      const targetMatch = textNode.parentElement.closest('.js-release-target-wrapper') && lookupText.match(/^Target:\s+(.+)$/);
+      const translated = dict[lookupText] || (targetMatch && dict['Target:'] && `${dict['Target:']} ${targetMatch[1]}`);
       if (translated) {
         // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
         const replacement = value.replace(trimmed, () => translated);
