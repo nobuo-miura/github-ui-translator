@@ -5,6 +5,8 @@
     { "code": "es", "name": "Español" },
     { "code": "de", "name": "Deutsch" },
     { "code": "pt-BR", "name": "Português (Brasil)" },
-    { "code": "ko", "name": "한국어" }
+    { "code": "ko", "name": "한국어" },
+    { "code": "fr", "name": "Français" },
+    { "code": "ru", "name": "Русский" }
   ]
 }
