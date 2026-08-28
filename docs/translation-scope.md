@@ -15,7 +15,7 @@ The extension uses its dictionary only for fixed GitHub UI text. User-created co
 
 ## What is translated
 
-Fixed GitHub UI text—such as navigation items, buttons, headings, labels, and form descriptions—is added to the dictionary after being verified on each supported page. As of July 2026, the Japanese dictionary contains **1,369 entries**. Run `node scripts/validate.mjs` to confirm the current count; every bundled language dictionary is validated to match this count exactly.
+Fixed GitHub UI text—such as navigation items, buttons, headings, labels, and form descriptions—is added to the dictionary after being verified on each supported page. Run `node scripts/validate.mjs` to see the current entry count for each language. Every bundled language dictionary is validated to contain exactly the same set of keys.
 
 The main supported areas, corresponding to section headings in `dictionaries/ja.json`, include:
 

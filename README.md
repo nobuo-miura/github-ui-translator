@@ -2,14 +2,23 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
+[![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
 [![Microsoft Edge Add-ons](https://img.shields.io/badge/Microsoft%20Edge%20Add--ons-Available-0078D7?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons/detail/fgjocjmjjghflobobinafkbkeildanoj)
-[![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-GitHub UI Translator is a browser extension for Chrome, Edge, and Firefox that translates GitHub's English UI into Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, or Korean using a local dictionary.
+GitHub UI Translator is a browser extension for Chrome, Edge, and Firefox that translates GitHub's English UI into Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, Korean, French, or Russian using a local dictionary.
 It does not rely on external translation APIs or cloud services; all translation runs locally in the browser.
+
+<details>
+<summary>Screenshots (all 8 languages)</summary>
+
+The first row is GitHub's original English UI; each row below shows the translation for one language.
+
+![Translation results for all 8 supported languages](docs/images/languages.png)
+
+</details>
 
 ## Features
 
@@ -24,7 +33,7 @@ It does not rely on external translation APIs or cloud services; all translation
 
 ## Limitations
 
-- Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, and Korean are currently supported. Additional languages are planned as coverage expands.
+- Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, Korean, French, and Russian are currently supported. Additional languages are planned as coverage expands.
 - Dynamic text containing numbers or dates, such as "3 commits" or "opened 2 days ago", is not translated. User-created content such as user names is also excluded. See [Translation scope](docs/translation-scope.md) for details.
 - Only `github.com` is supported. GitHub Enterprise and other custom domains are not supported.
 - Tested on Chrome, Edge, and Firefox. Other Chromium-based browsers should also work but have not been explicitly tested.
@@ -73,14 +82,14 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## Usage
 
-- Click the extension icon in the toolbar to open the on/off toggle and the language selector. Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, and Korean are bundled today; the dropdown is ready for additional languages once more dictionaries are added.
+- Click the extension icon in the toolbar to open the on/off toggle and the language selector. Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, Korean, French, and Russian are bundled today; the dropdown is ready for additional languages once more dictionaries are added.
 - Changing the toggle or the language reloads open GitHub tabs so the new setting takes effect.
 - The popup also lets you select whether to translate the global header and has a link to this repository. Changing this option reloads open GitHub tabs. Global header translation is on by default and waits for GitHub's React hydration to finish before translating; turn it off if the global search ever fails to open.
 - Open the extension options page (`chrome://extensions` on Chrome, `edge://extensions` on Edge, or `about:addons` on Firefox) to view the bundled dictionary information and extension version.
 
 ## Customizing the Dictionary
 
-You can add or change translations by editing the dictionary file for the language you want to change directly (e.g. `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`).
+You can add or change translations by editing the dictionary file for the language you want to change directly (e.g. `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json`, `dictionaries/ru.json`).
 Entries are grouped into sections by GitHub screen (repository navigation, repository Settings, organization Settings, etc.), each preceded by a `// ====` comment line, so you can tell at a glance which screen an entry belongs to and quickly spot when GitHub's UI text changes.
 
 ```jsonc
@@ -125,7 +134,9 @@ github-ui-translator/
 │  ├─ es.json       # Spanish dictionary
 │  ├─ de.json       # German dictionary
 │  ├─ pt-BR.json    # Brazilian Portuguese dictionary
-│  └─ ko.json       # Korean dictionary
+│  ├─ ko.json       # Korean dictionary
+│  ├─ fr.json       # French dictionary
+│  └─ ru.json       # Russian dictionary
 ├─ docs/
 │  ├─ translation-scope.md     # English version
 │  └─ translation-scope.ja.md  # Japanese version
