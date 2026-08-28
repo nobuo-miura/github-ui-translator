@@ -2,14 +2,23 @@
 
 [English](README.md) | [日本語](README.ja.md)
 
+[![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
 [![Microsoft Edge Add-ons](https://img.shields.io/badge/Microsoft%20Edge%20Add--ons-Available-0078D7?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons/detail/fgjocjmjjghflobobinafkbkeildanoj)
-[![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 GitHubの英語UIを、ローカル辞書を使って日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語・韓国語・フランス語・ロシア語に翻訳するブラウザ拡張機能です（Chrome / Edge / Firefox対応）。
 外部の翻訳APIやクラウドサービスには一切依存せず、すべてブラウザ内で完結します。
+
+<details>
+<summary>スクリーンショット（対応8言語）</summary>
+
+先頭は翻訳前のGitHubの英語UI、その下が各言語の翻訳結果です。
+
+![対応8言語の翻訳結果](docs/images/languages.png)
+
+</details>
 
 ## 特徴
 
