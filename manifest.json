@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "action": {
@@ -22,7 +22,6 @@
     "gecko": {
       "id": "github-ui-translator@nobuo-miura.github.io",
       "strict_min_version": "142.0",
-      "update_url": "https://raw.githubusercontent.com/nobuo-miura/github-ui-translator/main/updates.json",
       "data_collection_permissions": {
         "required": ["none"]
       }
