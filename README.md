@@ -4,12 +4,15 @@
 
 [![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
-[![Microsoft Edge Add-ons](https://img.shields.io/badge/Microsoft%20Edge%20Add--ons-Available-0078D7?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons/detail/fgjocjmjjghflobobinafkbkeildanoj)
+[![Microsoft Edge Add-ons](https://img.shields.io/badge/dynamic/json?label=Microsoft%20Edge%20Add-ons&logo=microsoftedge&query=%24.version&prefix=v&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Ffgjocjmjjghflobobinafkbkeildanoj)](https://microsoftedge.microsoft.com/addons/detail/fgjocjmjjghflobobinafkbkeildanoj)
+[![Firefox Add-ons](https://img.shields.io/amo/v/github-ui-translator?label=Firefox%20Add-ons&logo=firefoxbrowser)](https://addons.mozilla.org/firefox/addon/github-ui-translator/)
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 GitHub UI Translator is a browser extension for Chrome, Edge, and Firefox that translates GitHub's English UI into Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, Korean, French, or Russian using a local dictionary.
 It does not rely on external translation APIs or cloud services; all translation runs locally in the browser.
+
+![Translation result for Japanese](docs/images/jp.jpeg)
 
 <details>
 <summary>Screenshots (all 8 languages)</summary>
@@ -60,12 +63,7 @@ Install [GitHub UI Translator from Microsoft Edge Add-ons](https://microsoftedge
 
 Firefox 142 or later is required.
 
-1. Open the [latest release](https://github.com/nobuo-miura/github-ui-translator/releases/latest) page in Firefox and click the attached `.xpi` file.
-2. When the installation confirmation dialog appears, click "Add".
-
-If the dialog does not appear, drag and drop the downloaded `.xpi` file onto the `about:addons` page. The file is signed, so the extension stays installed across Firefox restarts.
-
-Version 0.1.2 and later of the extension check `updates.json` in this repository and install newer signed XPI releases automatically. If you installed version 0.1.1 or earlier, manually install v0.1.2 once to enable future automatic updates.
+Install [GitHub UI Translator from Firefox Add-ons](https://addons.mozilla.org/firefox/addon/github-ui-translator/).
 
 After installation, open a GitHub page such as `https://github.com/...` and supported UI text will be translated automatically.
 
@@ -126,7 +124,6 @@ github-ui-translator/
 ├─ content.js       # Translation engine that scans the DOM using an allowlist
 ├─ popup.html/js    # Toolbar popup with the translation toggle
 ├─ options.html/js  # Dictionary information and version display
-├─ updates.json     # Update manifest for the self-distributed Firefox extension
 ├─ _locales/        # Localized popup, options, and extension metadata messages
 ├─ dictionaries/
 │  ├─ ja.json       # Japanese dictionary

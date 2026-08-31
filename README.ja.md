@@ -4,12 +4,15 @@
 
 [![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
-[![Microsoft Edge Add-ons](https://img.shields.io/badge/Microsoft%20Edge%20Add--ons-Available-0078D7?logo=microsoftedge)](https://microsoftedge.microsoft.com/addons/detail/fgjocjmjjghflobobinafkbkeildanoj)
+[![Microsoft Edge Add-ons](https://img.shields.io/badge/dynamic/json?label=Microsoft%20Edge%20Add-ons&logo=microsoftedge&query=%24.version&prefix=v&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Ffgjocjmjjghflobobinafkbkeildanoj)](https://microsoftedge.microsoft.com/addons/detail/fgjocjmjjghflobobinafkbkeildanoj)
+[![Firefox Add-ons](https://img.shields.io/amo/v/github-ui-translator?label=Firefox%20Add-ons&logo=firefoxbrowser)](https://addons.mozilla.org/firefox/addon/github-ui-translator/)
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 GitHubの英語UIを、ローカル辞書を使って日本語・簡体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語・韓国語・フランス語・ロシア語に翻訳するブラウザ拡張機能です（Chrome / Edge / Firefox対応）。
 外部の翻訳APIやクラウドサービスには一切依存せず、すべてブラウザ内で完結します。
+
+![日本語翻訳結果](docs/images/jp.jpeg)
 
 <details>
 <summary>スクリーンショット（対応8言語）</summary>
@@ -60,12 +63,7 @@ GitHubの英語UIを、ローカル辞書を使って日本語・簡体字中国
 
 Firefox 142以降が必要です。
 
-1. Firefoxで[最新リリース](https://github.com/nobuo-miura/github-ui-translator/releases/latest)ページを開き、添付されている `.xpi` ファイルをクリックする
-2. インストールの確認ダイアログが表示されたら「追加」を選択する
-
-ダイアログが表示されない場合は、ダウンロードした `.xpi` ファイルを `about:addons` の画面にドラッグ&ドロップしてください。署名済みのため、インストール後はFirefoxを再起動しても有効なままです。
-
-v0.1.2以降は、このリポジトリの`updates.json`を確認し、新しい署名済みXPIへ自動更新します。バージョン0.1.1以前をインストールしている場合は、v0.1.2のみ手動でインストールしてください。以降は自動更新されます。
+[Firefox Add-ons](https://addons.mozilla.org/firefox/addon/github-ui-translator/)からインストールしてください。
 
 インストール後、GitHubのページ（`https://github.com/...`）を開くと、対応するUI文言が選択中の言語へ自動的に翻訳されます。
 
@@ -127,7 +125,6 @@ github-ui-translator/
 ├─ content.js       … 翻訳エンジン本体（許可リスト方式でDOMを走査）
 ├─ popup.html/js    … ツールバーのON/OFFトグル
 ├─ options.html/js  … 辞書情報・バージョン表示
-├─ updates.json     … Firefox自己配布版の更新マニフェスト
 ├─ _locales/        … Popup・設定・拡張機能メタデータの翻訳
 ├─ dictionaries/
 │  ├─ ja.json       … 日本語辞書
