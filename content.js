@@ -270,7 +270,11 @@
     },
     // リリース作成画面。説明欄はtextarea、タグ・ブランチ・コミット候補は専用の
     // 除外セレクターで保護済みのため、画面下部の固定ガイド文だけを許可する
-    { pattern: /^\/[^/]+\/[^/]+\/releases\/new$/, selectors: ['p'] }
+    { pattern: /^\/[^/]+\/[^/]+\/releases\/new$/, selectors: ['p'] },
+    // GitHub Sponsorsダッシュボード。見出し・説明文・フォームのキャプションを許可。
+    // リポジトリ説明・自己紹介プレビュー・スポンサー名などのユーザーコンテンツは
+    // 下のPATTERN_EXTRA_EXCLUDE_SELECTORで個別に除外する
+    { pattern: /^\/sponsors\/[^/]+\/dashboard(\/[a-z_]+)?$/, selectors: ['p', '[data-component="FormControl.Caption"]'] }
   ];
 
   // 許可リストを広げたページのうち、その画面固有のユーザー作成コンテンツ
@@ -350,6 +354,23 @@
       pattern: /^\/[^/]+\/[^/]+\/actions\/runs\/\d+(\/job\/\d+)?$/,
       selectors: ['h1 .markdown-title', '.CheckRun-log-title']
     },
+    // GitHub Sponsorsダッシュボードのユーザーコンテンツ領域だけを除外する。
+    // featured-work要素には見出し・説明文・「Edit featured work」ボタンといった
+    // 固定UIも含まれるため要素ごと除外はせず、実際にユーザーが用意した内容
+    // （表示中の注目リポジトリカード、各編集ダイアログの選択候補）に絞る。
+    {
+      pattern: /^\/sponsors\/[^/]+\/dashboard(\/[a-z_]+)?$/,
+      selectors: [
+        // 表示中の「Featured work」カード（リポジトリ名・説明）
+        'featured-work .js-sponsors-sortable-list',
+        // 「Featured work」編集ダイアログのリポジトリ選択候補（名前）。
+        // ダイアログの見出し・キャプション等の固定UIは翻訳対象に残す
+        '#edit-sponsors-featured-work [class*="pinned-item-name"]',
+        // 「Featured sponsors」編集ダイアログ。中身はほぼ候補行（スポンサー名）で
+        // 固定UIはSave/Cancel程度のため、ダイアログごと除外する
+        '#edit-featured-sponsorships-dialog'
+      ]
+    },
     // ルールセット作成・編集画面のテキスト入力欄。ルールセット名やrefパターンなど
     // ユーザー設定値を保持し、現在値がplaceholderへ複製された場合も誤訳を防ぐ。
     // また「対象を追加」「バイパスを追加」「Add environments」等で開くSelectPanelの
@@ -387,6 +408,9 @@
     const isExtendedScopePage =
       /\/settings(\/|$)/.test(location.pathname) ||
       /^\/orgs\/[^/]+\/(people|teams|security-managers|packages|sponsoring|repositories|actions)(\/|$)/.test(location.pathname) ||
+      // GitHub Sponsorsのダッシュボード（/sponsors/<user>/dashboard 配下）。見出し・
+      // ラベル・説明文が nav/button/[aria-label] の外に多数出るため拡張スコープが必要
+      /^\/sponsors\/[^/]+\/dashboard(\/|$)/.test(location.pathname) ||
       /^\/new(\/|$)/.test(location.pathname) ||
       /^\/organizations\/[^/]+\/repositories\/new$/.test(location.pathname) ||
       // 個別PRページはURLが/pull/123（単数形）、一覧ページは/pulls（複数形）と

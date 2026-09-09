@@ -119,3 +119,5 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 `nav`/`header`/`button`/`role=...`/`[aria-label]` だけでは拾えない見出し・ラベル・説明文がある画面では、確認済みのページに限定して `h1`〜`h6`/`label`/`a`/`p`/`span` 等を追加で許可している（`content.js` の `EXTRA_SELECTOR` / `EXACT_PATH_EXTRA_SELECTOR` / `PATTERN_EXTRA_SELECTOR` を参照）。特に `p`・`span` タグは、そのページにユーザー作成コンテンツが紛れ込まないことを個別に確認した上で、画面ごとに許可している（具体例は前節「確認済みページでの翻訳範囲の拡張」を参照）。
 
 なお、`/branches`・`/tags` も拡張スコープ対象（`h1`〜`h6`/`label`/`a`/`strong` を許可）。ブランチ名・タグ名は `/tree/`・`/releases/tag/` へのリンクのURLパターンで引き続き保護される。
+
+`/sponsors/<user>/dashboard` 配下（GitHub Sponsors ダッシュボード）も拡張スコープ対象（`h1`〜`h6`/`label`/`a`/`p`/`[data-component="FormControl.Caption"]` を許可）。ユーザーコンテンツは、`featured-work` 要素自体（見出し・説明文・「Edit featured work」ボタン等の固定UIも含む）ではなく実際にユーザーが用意した部分だけを除外して保護する: `featured-work .js-sponsors-sortable-list`（表示中の注目リポジトリカード）、`#edit-sponsors-featured-work [class*="pinned-item-name"]`（リポジトリ選択候補の名前）、`#edit-featured-sponsorships-dialog`（スポンサー選択ダイアログ）。

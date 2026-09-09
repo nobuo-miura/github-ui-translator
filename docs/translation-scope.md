@@ -122,3 +122,5 @@ Some pages contain fixed headings, labels, and descriptions that are not covered
 The `p` and `span` elements are enabled only on pages that have been checked to ensure that user-created content does not appear in those elements (see "Extending translation on a verified page" above for the concrete list).
 
 `/branches` and `/tags` are also extended-scope pages (allowing `h1`–`h6`, `label`, `a`, `strong`). Branch and tag names remain protected by the `/tree/` and `/releases/tag/` URL patterns.
+
+The GitHub Sponsors dashboard (`/sponsors/<user>/dashboard/…`) is also extended-scope (allowing `h1`–`h6`, `label`, `a`, `p`, `[data-component="FormControl.Caption"]`). Only the parts users actually author are excluded — not the whole `featured-work` element, which also contains fixed UI (headings, descriptions, the "Edit featured work" button): `featured-work .js-sponsors-sortable-list` (the visible featured repository cards), `#edit-sponsors-featured-work [class*="pinned-item-name"]` (repository names in the picker), and `#edit-featured-sponsorships-dialog` (the sponsor picker dialog).
