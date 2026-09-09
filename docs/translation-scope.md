@@ -47,8 +47,15 @@ The following content is intentionally excluded even when its text exactly match
 |---|---|
 | README, issue, comment, and code block content | Exclude elements inside `.markdown-body` |
 | Repository name links | Exclude `[data-hovercard-type="repository"]` |
+| Rows in the global repositories list (`/repos`): owner/repo names and descriptions | Exclude `[class*="ReposListItem-module__NwoTitle__"]` and `[class*="ReposListItem-module__FormattedDescription__"]` |
 | User name links | Exclude `[data-hovercard-type="user"]` |
-| Issue, pull request, and discussion titles | Exclude `<bdi>`, which GitHub uses for bidirectional text isolation |
+| Issue, pull request, and discussion titles | Exclude `<bdi>` (which GitHub uses for bidirectional text isolation) and the `.markdown-title` class (detail-view headings and sticky headers, the "Link an issue" menu under a pull request's Development section, and anywhere else the title is reused) |
+| Issue template names and descriptions (`name:` / `description:`) | On `/issues/new/choose`, exclude template links by URL pattern; in the picker dialog opened from list views, exclude item titles and descriptions inside `[data-testid="template-list"]` |
+| Issue form content (labels, descriptions, and Markdown defined in YAML) | Exclude `[class*="IssueFormElements-module__formElementsContainer__"]` (shared by the `/issues/new` page and the create dialog) |
+| Branch and tag names in the ref selector popup | Exclude `[data-testid="overlay-content"][aria-labelledby^="ref-picker-"] [role="menuitemradio"]` (the dialog's `aria-label` is not used because the extension translates it) |
+| Milestone and project names in the sidebar picker menus | Exclude `#milestone-select-menu .select-menu-item:not(.select-menu-new-item-form)` and `#projects-select-menu [role="menuitemcheckbox"]` |
+| Saved issue view names in the views list (`/issues/views`) | Exclude links matching `/issues/views/<id>` (numeric or base64, excluding `new`) by URL pattern |
+| SelectPanel option rows ("Add target", "Add environments", etc.) on the ruleset editor (`/settings/rules/…`) | Exclude `[data-testid="filtered-action-list"] [role="option"]` (environment / team / user / ref names) |
 | Links to individual issues, pull requests, discussions, and commits | Exclude matching URL patterns such as `/issues/N` |
 | Wiki page names in headings, sidebars, and tables of contents | Exclude `.gh-header-title`, `.js-wiki-sidebar-toc-container`, and matching internal Wiki links |
 | File and directory names in repository listings | Exclude links matching `/tree/` and `/blob/` URL patterns |
@@ -101,10 +108,19 @@ These safeguards reduce the risk of mistranslation; they do not guarantee that u
 
 #### Extending translation on a verified page
 
-- `[data-component="FormControl.Caption"]` on repository ruleset creation and editing pages. This attribute is part of Primer's published component interface and is expected to be more stable than an internal `data-testid`.
+Each of these is limited to settings pages that have been individually verified to contain no user input, and is needed because the description text for each setting lives in a bare `<span>` / `<div>` container.
+
+- `[data-component="FormControl.Caption"]` / `[data-component="RadioGroup.Caption"]` on ruleset creation/editing pages and Agent suggestions for issues (`/settings/suggestions`). These attributes are part of Primer's published component interface and are expected to be more stable than an internal `data-testid`.
+- `[class*="Description-module__Box__"]` on repository Settings > Copilot pages (`/settings/copilot/…`). A Primer module prefix; each feature setting's description sits in this container.
+- `p` on `/settings/suggestions` and `/settings/copilot/…`; `span` on `/settings/copilot/features` only (feature names, badges, and descriptions are all bare `<span>`, so this is limited to that single page).
+- On all of these pages, description sentences that contain links stay untranslated because their text nodes are split.
 
 ### Page-specific scope extensions
 
-Some pages contain fixed headings, labels, and descriptions that are not covered by `nav`, `header`, `button`, ARIA roles, or `[aria-label]`. On individually verified pages, the extension expands the allowlist to elements such as `h1`–`h6`, `label`, `a`, and `p`. See `EXTRA_SELECTOR`, `EXACT_PATH_EXTRA_SELECTOR`, and `PATTERN_EXTRA_SELECTOR` in `content.js`.
+Some pages contain fixed headings, labels, and descriptions that are not covered by `nav`, `header`, `button`, ARIA roles, or `[aria-label]`. On individually verified pages, the extension expands the allowlist to elements such as `h1`–`h6`, `label`, `a`, `p`, and `span`. See `EXTRA_SELECTOR`, `EXACT_PATH_EXTRA_SELECTOR`, and `PATTERN_EXTRA_SELECTOR` in `content.js`.
 
-The `p` element is enabled only on pages that have been checked to ensure that user-created content does not appear in those elements.
+The `p` and `span` elements are enabled only on pages that have been checked to ensure that user-created content does not appear in those elements (see "Extending translation on a verified page" above for the concrete list).
+
+`/branches` and `/tags` are also extended-scope pages (allowing `h1`–`h6`, `label`, `a`, `strong`). Branch and tag names remain protected by the `/tree/` and `/releases/tag/` URL patterns.
+
+The GitHub Sponsors dashboard (`/sponsors/<user>/dashboard/…`) is also extended-scope (allowing `h1`–`h6`, `label`, `a`, `p`, `[data-component="FormControl.Caption"]`). Only the parts users actually author are excluded — not the whole `featured-work` element, which also contains fixed UI (headings, descriptions, the "Edit featured work" button): `featured-work .js-sponsors-sortable-list` (the visible featured repository cards), `#edit-sponsors-featured-work [class*="pinned-item-name"]` (repository names in the picker), and `#edit-featured-sponsorships-dialog` (the sponsor picker dialog).

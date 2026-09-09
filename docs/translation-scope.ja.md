@@ -47,8 +47,15 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 |---|---|
 | README・Issue・コメント・コードブロック等の本文 | `.markdown-body` を除外セレクタに指定 |
 | リポジトリ名リンク | `[data-hovercard-type="repository"]` を除外 |
+| グローバルなリポジトリ一覧（`/repos`）の各行（オーナー名／リポジトリ名・説明文） | `[class*="ReposListItem-module__NwoTitle__"]`、`[class*="ReposListItem-module__FormattedDescription__"]` を除外 |
 | ユーザー名リンク | `[data-hovercard-type="user"]` を除外 |
-| Issue/PR/Discussionのタイトル | `<bdi>` タグ（GitHubが双方向テキスト対応のため使用）を除外 |
+| Issue/PR/Discussionのタイトル | `<bdi>` タグ（GitHubが双方向テキスト対応のため使用）と `.markdown-title` クラス（詳細画面の見出し・追従ヘッダー、PRの「開発」でイシューをリンクする選択メニュー等、タイトルが再利用される箇所）を除外 |
+| イシューテンプレートの名前・説明（`name:` / `description:`） | `/issues/new/choose` ページはテンプレートリンクのURLパターン、一覧等から開く選択ダイアログは `[data-testid="template-list"]` 配下の項目タイトル・説明を除外 |
+| イシューフォーム（YAMLで定義したラベル・説明・Markdown） | `[class*="IssueFormElements-module__formElementsContainer__"]` を除外（`/issues/new` ページ・作成ダイアログ共通） |
+| ブランチ／タグ選択ポップアップの候補行 | `[data-testid="overlay-content"][aria-labelledby^="ref-picker-"] [role="menuitemradio"]` を除外（ダイアログの `aria-label` は拡張自身が翻訳するため使わない） |
+| サイドバーのマイルストーン／プロジェクト選択メニューの候補行 | `#milestone-select-menu .select-menu-item:not(.select-menu-new-item-form)`、`#projects-select-menu [role="menuitemcheckbox"]` を除外 |
+| 保存済みIssueビュー一覧（`/issues/views`）のビュー名 | `/issues/views/<id>`（数値・base64いずれも、`new` を除く）へのリンクをURLパターンで除外 |
+| ルールセット編集画面（`/settings/rules/…`）の「対象を追加」「Add environments」等のSelectPanel候補行 | `[data-testid="filtered-action-list"] [role="option"]` を除外（Environment名・チーム名・ユーザー名等） |
 | Issue/PR/Discussion/commitへの個別ページリンク | URLパターン（`/issues/N` 等）で除外 |
 | Wikiページ名（見出し・サイドバーのページ一覧・目次） | `.gh-header-title`、`.js-wiki-sidebar-toc-container`、Wikiページ内部リンクのURLパターンで除外 |
 | ファイル・ディレクトリ一覧の各行（ファイル名・フォルダ名） | `/tree/`・`/blob/` へのリンクをURLパターンで除外 |
@@ -100,8 +107,17 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 
 #### 確認済みページでの翻訳範囲の拡張
 
-- `[data-component="FormControl.Caption"]`（ルールセット作成・編集画面限定。Primerの公開コンポーネント仕様の一部として、内部実装用の`data-testid`より変更されにくいと判断）
+いずれもユーザー入力を含まないことを個別に確認済みの設定画面に限定しており、各設定項目の説明文が素の`<span>`/`<div>`コンテナに入っているために必要となる。
+
+- `[data-component="FormControl.Caption"]` / `[data-component="RadioGroup.Caption"]`（ルールセット作成・編集画面、Agent suggestions for issues（`/settings/suggestions`）。Primerの公開コンポーネント仕様の一部として、内部実装用の`data-testid`より変更されにくいと判断）
+- `[class*="Description-module__Box__"]`（リポジトリSettings > Copilot（`/settings/copilot/…`）。Primerのモジュール接頭辞。各機能設定の説明文がこのコンテナに入っている）
+- `p`（`/settings/suggestions`、`/settings/copilot/…`）／`span`（`/settings/copilot/features` のみ。機能名・バッジ・説明文がすべて素の`<span>`のため、この1画面に限定して許可）
+- いずれの画面でも、リンクを含む説明文はテキストノードが分割されるため翻訳されない
 
 ### ページ単位でスコープを広げている箇所
 
-`nav`/`header`/`button`/`role=...`/`[aria-label]` だけでは拾えない見出し・ラベル・説明文がある画面では、確認済みのページに限定して `h1`〜`h6`/`label`/`a`/`p` 等を追加で許可している（`content.js` の `EXTRA_SELECTOR` / `EXACT_PATH_EXTRA_SELECTOR` / `PATTERN_EXTRA_SELECTOR` を参照）。特に `p` タグは、そのページにユーザー作成コンテンツが紛れ込まないことを個別に確認した上で、画面ごとに許可している。
+`nav`/`header`/`button`/`role=...`/`[aria-label]` だけでは拾えない見出し・ラベル・説明文がある画面では、確認済みのページに限定して `h1`〜`h6`/`label`/`a`/`p`/`span` 等を追加で許可している（`content.js` の `EXTRA_SELECTOR` / `EXACT_PATH_EXTRA_SELECTOR` / `PATTERN_EXTRA_SELECTOR` を参照）。特に `p`・`span` タグは、そのページにユーザー作成コンテンツが紛れ込まないことを個別に確認した上で、画面ごとに許可している（具体例は前節「確認済みページでの翻訳範囲の拡張」を参照）。
+
+なお、`/branches`・`/tags` も拡張スコープ対象（`h1`〜`h6`/`label`/`a`/`strong` を許可）。ブランチ名・タグ名は `/tree/`・`/releases/tag/` へのリンクのURLパターンで引き続き保護される。
+
+`/sponsors/<user>/dashboard` 配下（GitHub Sponsors ダッシュボード）も拡張スコープ対象（`h1`〜`h6`/`label`/`a`/`p`/`[data-component="FormControl.Caption"]` を許可）。ユーザーコンテンツは、`featured-work` 要素自体（見出し・説明文・「Edit featured work」ボタン等の固定UIも含む）ではなく実際にユーザーが用意した部分だけを除外して保護する: `featured-work .js-sponsors-sortable-list`（表示中の注目リポジトリカード）、`#edit-sponsors-featured-work [class*="pinned-item-name"]`（リポジトリ選択候補の名前）、`#edit-featured-sponsorships-dialog`（スポンサー選択ダイアログ）。
