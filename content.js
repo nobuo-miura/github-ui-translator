@@ -69,6 +69,25 @@
     // リポジトリのコード画面上部に表示されるリポジトリ名。Starボタン等の固定UIを
     // 除外しないよう、CodeViewHeaderのタイトル内にあるstrongだけに限定する
     '[class*="CodeViewHeader-module__TitleWrapper__"] strong',
+    // グローバルなリポジトリ一覧（/repos）の各行。React製のReposListItemが付与する
+    // NwoTitleは「オーナー名 / リポジトリ名」の複合表示、FormattedDescriptionは
+    // リポジトリの説明文で、いずれもユーザーが入力した内容。辞書キーと完全一致すると
+    // 誤訳されるため、行内の更新日時や可視性バッジ等の固定UIは残してこの2つを除外する
+    '[class*="ReposListItem-module__NwoTitle__"]',
+    '[class*="ReposListItem-module__FormattedDescription__"]',
+    // 「新しいイシュー」ボタンから開くテンプレート選択ダイアログ（CreateIssueDialog）。
+    // /issues/new/choose ページと違い各テンプレートは<a href>ではなくReactの
+    // ActionList項目としてレンダリングされURLパターンでは保護できない。テンプレート名
+    // （name:）と説明（description:）はリポジトリ内のYAMLでユーザーが自由に付ける値
+    // なので、data-testid="template-list"配下の項目タイトルと説明を除外する。
+    // 「空のイシュー」等の固定行の文言もここに含まれ訳されなくなるが、誤訳を防ぐ側を優先する
+    '[data-testid="template-list"] [class*="IssueTemplateItem-module__actionListTitle__"]',
+    '[data-testid="template-list"] [class*="prc-ActionList-Description-"]',
+    // Issue Form本体のラベル・説明・Markdownはリポジトリ内のYAMLで定義される内容。
+    // /issues/new ページに加え、一覧などから開くCreateIssueDialog内のフォームでも
+    // 同じコンテナが使われる。パスに依存せずコンテナ単位で保護する（右側の担当者等の
+    // 固定UIはコンテナ外なので影響しない）
+    '[class*="IssueFormElements-module__formElementsContainer__"]',
     // リポジトリコード画面のReactファイルツリー。treeitemはリンクではないため
     // isUserContentLinkでは保護できず、遅延描画後にファイル名・ディレクトリ名が
     // 辞書キーと完全一致すると誤訳される。固定UIを残してtree本体だけを除外する
@@ -114,15 +133,24 @@
     'form[aria-label="Select projects"] [role="menuitemcheckbox"]',
     'form[aria-label="Select assignees"] .select-menu-item',
     'form[aria-label="Select reviewers"] .select-menu-item',
+    // PR作成（/compare）・Issue/PR詳細のサイドバーで開くマイルストーン／プロジェクト
+    // 選択メニュー。直上の form[aria-label="Select …"] は拡張自身がその aria-label を
+    // 翻訳すると一致しなくなるため、言語非依存な details の id で候補行を特定する。
+    // マイルストーン名・プロジェクト名はユーザーが付ける名前。タブ（オープン/クローズ等）と
+    // 「新しいマイルストーンを作成」フォーム行は固定UIとして翻訳対象に残す
+    '#milestone-select-menu .select-menu-item:not(.select-menu-new-item-form)',
+    '#projects-select-menu [role="menuitemcheckbox"]',
     // リポジトリ画面で現在選択されているブランチ。aria-labelは「<ブランチ名> branch」
     // で、内部の表示テキストはユーザーが付けたブランチ名そのものになる
     'button[aria-label$=" branch"]',
-    // ブランチ選択ポップアップの候補行。ブランチ名とタグ名はいずれもユーザーが
-    // 付けた識別子なので、固定UIのタブや操作文言は残して候補行だけを除外する
-    '[role="dialog"][aria-label="Select a branch"] [role="menuitemradio"]',
-    // リリース作成画面のタグ候補。タグ名はユーザーが付ける識別子なので、
-    // ダイアログの見出し・検索欄・新規タグ作成ボタンは残して候補行だけを除外する
-    '[role="dialog"][aria-label="Select a tag"] [role="menuitemradio"]',
+    // ブランチ／タグ選択ポップアップの候補行（リポジトリのコード画面上部の
+    // ブランチ切替、リリース作成・編集画面のタグ選択などで共通のReact SelectPanel）。
+    // ブランチ名・タグ名はいずれもユーザーが付けた識別子なので、固定UIのタブ
+    // （Branches/Tags）や検索欄、「Create branch」等の操作は残して候補行だけを除外する。
+    // ダイアログのaria-label（"Select a branch"等）は辞書キーと一致し拡張自身が
+    // 翻訳してしまうため除外条件には使えない。言語非依存なaria-labelledbyの接頭辞
+    // （ref-picker-…）とrole="menuitemradio"で候補行を特定する
+    '[data-testid="overlay-content"][aria-labelledby^="ref-picker-"] [role="menuitemradio"]',
     // リリース作成・編集画面で選択中のタグ名。Tag:の固定ラベルとタグ名は別spanに
     // 分かれているため、ラベルは翻訳対象に残し、その直後の値だけを保護する
     'button[aria-label^="Tag:"] .fgColor-muted + span',
@@ -162,6 +190,11 @@
     // 保護されておらず、Wiki固有のクラスのためこのタグ自体はaria/role等を
     // 持たない。.markdown-body同様、除外専用の目印としてCSSクラスに頼る例外とする
     '.gh-header-title',
+    // GitHubがIssue/PR/Discussionのタイトルをレンダリングする際に付与する専用クラス。
+    // 詳細画面のh1/追従ヘッダーだけでなく、PR右サイドバーの「開発（Development）」で
+    // イシューをリンクする選択メニューなど、タイトルが再利用されるあらゆる箇所に付く。
+    // 常にユーザーが入力したタイトルなので、クラス単体を除外専用の目印として使う
+    '.markdown-title',
     // カスタムサイドバーがないWikiページで自動生成される目次。現在のページ自身の
     // 見出しをそのままアンカーリンクとして列挙するため、ページ内フラグメントへの
     // リンク（#見出し名）となりisUserContentLinkのURLパターンでは捕捉できない
@@ -186,7 +219,11 @@
     // このページの権限選択欄の説明文（例:「Read-only access to public
     // repositories.」）がこの構造で実装されているため、この画面限定で許可する。
     '/settings/personal-access-tokens/new': ['p', '.FormControl-caption'],
-    '/settings/tokens/new': ['p']
+    '/settings/tokens/new': ['p'],
+    // アカウントのCopilot設定（機能トグル一覧）。機能名・バッジ・説明文が素の
+    // <span>/<p>でレンダリングされており、この画面はユーザー入力を一切含まないため
+    // spanまで許可する。リンクを含む説明文はテキストノードが分割され訳されない
+    '/settings/copilot/features': ['p', 'span']
   };
 
   // owner/repoのように可変のパスセグメントを含むため完全一致では表現できない
@@ -214,6 +251,23 @@
     { pattern: /^\/[^/]+\/[^/]+\/settings\/pages$/, selectors: ['p'] },
     // リポジトリSettings > 高度なセキュリティ
     { pattern: /^\/[^/]+\/[^/]+\/settings\/security_analysis$/, selectors: ['p'] },
+    // リポジトリSettings > Agent suggestions for issues（/settings/suggestions）。
+    // 概要文は<p>、各自動化レベルの説明はRulesと同じ[data-component="FormControl.Caption"]
+    // /"RadioGroup.Caption"という素の<span>で実装されている。この画面はユーザー入力を
+    // 含まないため、これらの説明文を許可する
+    {
+      pattern: /^\/[^/]+\/[^/]+\/settings\/suggestions$/,
+      selectors: ['p', '[data-component="FormControl.Caption"]', '[data-component="RadioGroup.Caption"]']
+    },
+    // リポジトリSettings > Copilot（/settings/copilot/code_review・/mcp 等）。
+    // 各設定項目の説明文はPrimerのDescription-module__Box__という素のコンテナに
+    // テキストノードとして入っており、拾うにはこのクラスが必要。リンクを含む
+    // 一部の説明はテキストノードが分割されるため翻訳されないが、この画面は
+    // ユーザー入力を含まないため許可できる部分だけを許可する
+    {
+      pattern: /^\/[^/]+\/[^/]+\/settings\/copilot\/[a-z_]+$/,
+      selectors: ['p', '[class*="Description-module__Box__"]', '[data-component="FormControl.Caption"]']
+    },
     // リリース作成画面。説明欄はtextarea、タグ・ブランチ・コミット候補は専用の
     // 除外セレクターで保護済みのため、画面下部の固定ガイド文だけを許可する
     { pattern: /^\/[^/]+\/[^/]+\/releases\/new$/, selectors: ['p'] }
@@ -244,7 +298,7 @@
     // リポジトリ固有の保存済みIssueビュー詳細画面。h1はGitHub固定の見出しではなく、
     // ユーザーが自由に付けたビュー名そのものなので翻訳対象から除外する。
     {
-      pattern: /^\/[^/]+\/[^/]+\/issues\/views\/\d+$/,
+      pattern: /^\/[^/]+\/[^/]+\/issues\/views\/(?!new$)[^/]+$/,
       selectors: ['h1']
     },
     // マイルストーン詳細画面。h1はGitHub固定の見出しではなく、ユーザーが自由に
@@ -270,12 +324,6 @@
     {
       pattern: /^\/[^/]+\/[^/]+\/issues\/new\/choose$/,
       selectors: ['a[href*="/issues/new?template="]:not([href*="template=BLANK_ISSUE"])']
-    },
-    // Issue Form本体のラベル・説明・Markdownはリポジトリ内のYAMLで定義される内容。
-    // 右側の担当者等の固定UIはコンテナ外なので、フォーム要素群だけを保護する
-    {
-      pattern: /^\/[^/]+\/[^/]+\/issues\/new$/,
-      selectors: ['[class*="IssueFormElements-module__formElementsContainer__"]']
     },
     // ラベル管理一覧。各行のラベル名と説明はどちらもユーザーが編集できるため、
     // React ListViewが付与する明示的なlistitemロールを行単位で除外する。
@@ -304,9 +352,12 @@
     },
     // ルールセット作成・編集画面のテキスト入力欄。ルールセット名やrefパターンなど
     // ユーザー設定値を保持し、現在値がplaceholderへ複製された場合も誤訳を防ぐ。
+    // また「対象を追加」「バイパスを追加」「Add environments」等で開くSelectPanelの
+    // 候補行は、Environment名・チーム名・ユーザー名・refパターンなどユーザーが
+    // 付けた識別子なので、role="option"の候補行を除外する（見出し・検索欄は残す）。
     {
       pattern: /^\/[^/]+\/[^/]+\/settings\/rules\/(new|\d+)$/,
-      selectors: ['input[type="text"]']
+      selectors: ['input[type="text"]', '[data-testid="filtered-action-list"] [role="option"]']
     },
     // Environment編集画面の見出し。h2内の省略表示対象はGitHub固定文言ではなく、
     // ユーザーが自由に付けたEnvironment名なので翻訳対象から除外する。
@@ -342,7 +393,7 @@
       // GitHub側でURL規則が不統一なため、両方にマッチさせる（pulls?）
       // マイルストーン詳細ページはURLが/milestone/2（単数形）、一覧ページは
       // /milestones（複数形）とGitHub側でURL規則が不統一なため、両方にマッチさせる
-      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models|milestones?|labels|releases?)(\/|$)/.test(location.pathname) ||
+      /^\/[^/]+\/[^/]+\/(issues|pulls?|compare|wiki|security|pulse|graphs|community|network|discussions|actions|models|milestones?|labels|releases?|branches|tags)(\/|$)/.test(location.pathname) ||
       // グローバルなPull requestsダッシュボード（/pulls、/pulls/inbox、
       // /pulls/assigned等）。セクション見出し（h2）やページタイトル（h1）が
       // nav/header/button外の素のテキストとして出るため拡張スコープが必要
@@ -383,9 +434,10 @@
     }
 
     return /^\/[^/]+\/[^/]+\/(issues|pull|discussions)\/\d+(\/|$)/.test(path) ||
-      // リポジトリ固有の保存済みIssueビュー一覧に表示されるビュー名。
-      // リンク先の数値IDはGitHubが付与し、リンクの表示名はユーザーが自由に設定する
-      /^\/[^/]+\/[^/]+\/issues\/views\/\d+$/.test(path) ||
+      // リポジトリ固有の保存済みIssueビュー一覧（/issues/views）に表示されるビュー名。
+      // リンク先のIDはGitHubが付与し（数値のこともbase64風のこともある）、
+      // リンクの表示名はユーザーが自由に設定する。「新規作成」への固定リンクは除く
+      /^\/[^/]+\/[^/]+\/issues\/views\/(?!new$)[^/]+$/.test(path) ||
       // リリース一覧・詳細に表示されるリリース名。リンク先にはユーザーが付けた
       // タグ名が入るため、辞書キーと完全一致しても表示名を翻訳しない
       /^\/[^/]+\/[^/]+\/releases\/tag\/[^/]+$/.test(path) ||
