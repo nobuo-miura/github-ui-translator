@@ -249,6 +249,15 @@
     { pattern: /^\/[^/]+\/[^/]+\/settings\/actions$/, selectors: ['p'] },
     // リポジトリSettings > Pages
     { pattern: /^\/[^/]+\/[^/]+\/settings\/pages$/, selectors: ['p'] },
+    // リポジトリSettings > Webhook（作成・編集画面。同じパスの?tab=deliveriesも含む）。
+    // 「個別にイベントを選択する」で表示される各イベントの説明文が
+    // label内のspan.note > pに入っており、pを許可しないと訳されない。
+    // Payload URLを含む削除確認文もpだが、URL入りで辞書キーと完全一致しえず、
+    // Deliveriesタブのペイロード本体はpre（常に除外）で表示されるため許可できる。
+    // 配信詳細の「Redeliver」は<button>ではなくPrimerのbtnクラスを当てた<summary>で
+    // 実装されているため個別に許可する（配信一覧の行のsummaryにはbtnクラスがなく、
+    // GUIDやイベント名のスラッグは対象外のまま）
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/hooks\/(new|\d+)$/, selectors: ['p', 'summary.btn'] },
     // リポジトリSettings > 高度なセキュリティ
     { pattern: /^\/[^/]+\/[^/]+\/settings\/security_analysis$/, selectors: ['p'] },
     // リポジトリSettings > Agent suggestions for issues（/settings/suggestions）。
@@ -379,6 +388,13 @@
     {
       pattern: /^\/[^/]+\/[^/]+\/settings\/rules\/(new|\d+)$/,
       selectors: ['input[type="text"]', '[data-testid="filtered-action-list"] [role="option"]']
+    },
+    // Webhookの配信詳細（Request/Responseタブ内）のHeaders/Payload/Bodyラベル。
+    // HTTPのヘッダー等を指すが、"Headers"はWiki編集画面の「見出し」として
+    // 辞書登録済みで誤訳になるため、この画面ではラベルごと原文のまま残す
+    {
+      pattern: /^\/[^/]+\/[^/]+\/settings\/hooks\/\d+$/,
+      selectors: ['tab-container [role="tabpanel"] > label']
     },
     // Environment編集画面の見出し。h2内の省略表示対象はGitHub固定文言ではなく、
     // ユーザーが自由に付けたEnvironment名なので翻訳対象から除外する。
