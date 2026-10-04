@@ -980,6 +980,40 @@
     "Workflow job queued, waiting, in progress, or completed on a repository.": "Job de workflow na fila, aguardando, em andamento ou concluído em um repositório.",
     "Workflow run requested or completed on a repository.": "Execução de workflow solicitada ou concluída em um repositório.",
 
+    // ==== リポジトリ/Organization Settings > Webhook > フォーム共通 ====
+    "/ Add webhook": "/ Adicionar webhook",
+    "By default, we verify SSL certificates when delivering payloads.": "Por padrão, verificamos os certificados SSL ao entregar payloads.",
+    "(not recommended)": "(não recomendado)",
+    "Are you sure?": "Tem certeza?",
+    "Warning": "Aviso",
+    ": Disabling SSL verification has serious implications.": ": Desabilitar a verificação SSL tem implicações graves.",
+    "Disable, I understand my webhooks may not be secure": "Desabilitar, entendo que meus webhooks podem não ser seguros",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用のイベント名） ====
+    "Custom property values": "Valores de propriedades personalizadas",
+    "Memberships": "Associações",
+    "Org blocks": "Bloqueios da organização",
+    "Personal access token requests": "Solicitações de tokens de acesso pessoal",
+    "Project v2 items": "Itens de projeto (v2)",
+    "Projects v2": "Projetos (v2)",
+    "Projects v2 status updates": "Atualizações de status de projetos (v2)",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用の説明文） ====
+    "Custom property is created, updated, deleted, or promoted.": "Propriedade personalizada criada, atualizada, excluída ou promovida.",
+    "Custom property values are changed for a repository": "Os valores de propriedades personalizadas de um repositório são alterados",
+    "Team membership added or removed.": "Associação de equipe adicionada ou removida.",
+    "A user has been blocked or unblocked.": "Um usuário foi bloqueado ou desbloqueado.",
+    "Organization deleted, renamed, member invited, member added, or member removed.": "Organização excluída ou renomeada, ou membro convidado, adicionado ou removido.",
+    "Personal access token request created, approved, denied, or cancelled.": "Solicitação de token de acesso pessoal criada, aprovada, negada ou cancelada.",
+    "Project item created, edited, deleted, archived, restored, converted, or reordered.": "Item de projeto criado, editado, excluído, arquivado, restaurado, convertido ou reordenado.",
+    "Project created, updated, deleted, closed, or reopened.": "Projeto criado, atualizado, excluído, fechado ou reaberto.",
+    "Project status updates created, updated, or deleted.": "Atualizações de status do projeto criadas, atualizadas ou excluídas.",
+    "Team is created, deleted, edited, or added to/removed from a repository.": "Equipe criada, excluída, editada, ou adicionada a um repositório ou removida dele.",
+    "Feedback is welcome in": "Feedback é bem-vindo nesta",
+    "this discussion": "discussão",
+    "Projects v2 feedback discussion": "Discussão de feedback sobre projetos (v2)",
+    "Projects v2 status update feedback discussion": "Discussão de feedback sobre atualizações de status de projetos (v2)",
+
     // ==== リポジトリSettings > Webhook > Recent Deliveries ====
     "Recent Deliveries": "Entregas recentes",
     "/ Manage webhook": "/ Gerenciar webhook",

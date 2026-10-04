@@ -250,6 +250,8 @@
     // リポジトリSettings > Pages
     { pattern: /^\/[^/]+\/[^/]+\/settings\/pages$/, selectors: ['p'] },
     // リポジトリSettings > Webhook（作成・編集画面。同じパスの?tab=deliveriesも含む）。
+    // OrganizationのWebhook（/organizations/<org>/settings/hooks/…）も同じ
+    // 2セグメント構成で同じフォームが使われるため、このパターンでまとめて扱う。
     // 「個別にイベントを選択する」で表示される各イベントの説明文が
     // label内のspan.note > pに入っており、pを許可しないと訳されない。
     // Payload URLを含む削除確認文もpだが、URL入りで辞書キーと完全一致しえず、
@@ -391,7 +393,8 @@
     },
     // Webhookの配信詳細（Request/Responseタブ内）のHeaders/Payload/Bodyラベル。
     // HTTPのヘッダー等を指すが、"Headers"はWiki編集画面の「見出し」として
-    // 辞書登録済みで誤訳になるため、この画面ではラベルごと原文のまま残す
+    // 辞書登録済みで誤訳になるため、この画面ではラベルごと原文のまま残す。
+    // OrganizationのWebhook編集画面にも同じパターンで適用される
     {
       pattern: /^\/[^/]+\/[^/]+\/settings\/hooks\/\d+$/,
       selectors: ['tab-container [role="tabpanel"] > label']
