@@ -1,0 +1,13 @@
+{
+  "name": "github-ui-translator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"test/**/*.test.mjs\"",
+    "validate": "node scripts/validate.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "30.1.1"
+  },
+  "packageManager": "pnpm@12.6.0"
+}
