@@ -980,6 +980,40 @@
     "Workflow job queued, waiting, in progress, or completed on a repository.": "Задание рабочего процесса в очереди, ожидает, выполняется или завершено в репозитории.",
     "Workflow run requested or completed on a repository.": "Запуск рабочего процесса запрошен или завершён в репозитории.",
 
+    // ==== リポジトリ/Organization Settings > Webhook > フォーム共通 ====
+    "/ Add webhook": "/ Добавить веб-перехватчик",
+    "By default, we verify SSL certificates when delivering payloads.": "По умолчанию при доставке полезных данных проверяются SSL-сертификаты.",
+    "(not recommended)": "(не рекомендуется)",
+    "Are you sure?": "Вы уверены?",
+    "Warning": "Предупреждение",
+    ": Disabling SSL verification has serious implications.": ": отключение проверки SSL имеет серьёзные последствия.",
+    "Disable, I understand my webhooks may not be secure": "Отключить, я понимаю, что мои веб-перехватчики могут быть небезопасны",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用のイベント名） ====
+    "Custom property values": "Значения настраиваемых свойств",
+    "Memberships": "Членство",
+    "Org blocks": "Блокировки организации",
+    "Personal access token requests": "Запросы личных маркеров доступа",
+    "Project v2 items": "Элементы проектов (v2)",
+    "Projects v2": "Проекты (v2)",
+    "Projects v2 status updates": "Обновления статуса проектов (v2)",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用の説明文） ====
+    "Custom property is created, updated, deleted, or promoted.": "Настраиваемое свойство создано, обновлено, удалено или повышено.",
+    "Custom property values are changed for a repository": "Изменены значения настраиваемых свойств репозитория",
+    "Team membership added or removed.": "Членство в команде добавлено или удалено.",
+    "A user has been blocked or unblocked.": "Пользователь заблокирован или разблокирован.",
+    "Organization deleted, renamed, member invited, member added, or member removed.": "Организация удалена или переименована, участник приглашён, добавлен или удалён.",
+    "Personal access token request created, approved, denied, or cancelled.": "Запрос личного маркера доступа создан, одобрен, отклонён или отменён.",
+    "Project item created, edited, deleted, archived, restored, converted, or reordered.": "Элемент проекта создан, изменён, удалён, заархивирован, восстановлен, преобразован или перемещён.",
+    "Project created, updated, deleted, closed, or reopened.": "Проект создан, обновлён, удалён, закрыт или открыт повторно.",
+    "Project status updates created, updated, or deleted.": "Обновления статуса проекта созданы, изменены или удалены.",
+    "Team is created, deleted, edited, or added to/removed from a repository.": "Команда создана, удалена, изменена, добавлена в репозиторий или удалена из него.",
+    "Feedback is welcome in": "Отзывы принимаются в",
+    "this discussion": "этом обсуждении",
+    "Projects v2 feedback discussion": "Обсуждение отзывов о проектах (v2)",
+    "Projects v2 status update feedback discussion": "Обсуждение отзывов об обновлениях статуса проектов (v2)",
+
     // ==== リポジトリSettings > Webhook > Recent Deliveries ====
     "Recent Deliveries": "Недавние доставки",
     "/ Manage webhook": "/ Управление веб-перехватчиком",

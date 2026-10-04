@@ -980,6 +980,40 @@
     "Workflow job queued, waiting, in progress, or completed on a repository.": "리포지토리의 워크플로 작업이 큐에 추가, 대기 중, 진행 중 또는 완료되었습니다.",
     "Workflow run requested or completed on a repository.": "리포지토리의 워크플로 실행이 요청되거나 완료되었습니다.",
 
+    // ==== リポジトリ/Organization Settings > Webhook > フォーム共通 ====
+    "/ Add webhook": "/ 웹후크 추가",
+    "By default, we verify SSL certificates when delivering payloads.": "기본적으로 페이로드를 배달할 때 SSL 인증서를 확인합니다.",
+    "(not recommended)": "(권장하지 않음)",
+    "Are you sure?": "확실합니까?",
+    "Warning": "경고",
+    ": Disabling SSL verification has serious implications.": ": SSL 검증을 비활성화하면 심각한 영향이 있습니다.",
+    "Disable, I understand my webhooks may not be secure": "비활성화합니다. 웹후크가 안전하지 않을 수 있음을 이해합니다",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用のイベント名） ====
+    "Custom property values": "사용자 지정 속성 값",
+    "Memberships": "멤버십",
+    "Org blocks": "조직 차단",
+    "Personal access token requests": "개인 액세스 토큰 요청",
+    "Project v2 items": "프로젝트(v2) 항목",
+    "Projects v2": "프로젝트(v2)",
+    "Projects v2 status updates": "프로젝트(v2) 상태 업데이트",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用の説明文） ====
+    "Custom property is created, updated, deleted, or promoted.": "사용자 지정 속성이 생성, 업데이트, 삭제 또는 승격되었습니다.",
+    "Custom property values are changed for a repository": "리포지토리의 사용자 지정 속성 값이 변경되었습니다",
+    "Team membership added or removed.": "팀 멤버십이 추가되거나 제거되었습니다.",
+    "A user has been blocked or unblocked.": "사용자가 차단되었거나 차단 해제되었습니다.",
+    "Organization deleted, renamed, member invited, member added, or member removed.": "조직이 삭제 또는 이름 변경되었거나 구성원이 초대, 추가 또는 제거되었습니다.",
+    "Personal access token request created, approved, denied, or cancelled.": "개인 액세스 토큰 요청이 생성, 승인, 거부 또는 취소되었습니다.",
+    "Project item created, edited, deleted, archived, restored, converted, or reordered.": "프로젝트 항목이 생성, 편집, 삭제, 보관, 복원, 변환 또는 재정렬되었습니다.",
+    "Project created, updated, deleted, closed, or reopened.": "프로젝트가 생성, 업데이트, 삭제, 닫힘 또는 다시 열림 상태가 되었습니다.",
+    "Project status updates created, updated, or deleted.": "프로젝트 상태 업데이트가 생성, 업데이트 또는 삭제되었습니다.",
+    "Team is created, deleted, edited, or added to/removed from a repository.": "팀이 생성, 삭제, 편집되었거나 리포지토리에 추가 또는 제거되었습니다.",
+    "Feedback is welcome in": "피드백은 다음에서 받습니다:",
+    "this discussion": "이 토론",
+    "Projects v2 feedback discussion": "프로젝트(v2) 피드백 토론",
+    "Projects v2 status update feedback discussion": "프로젝트(v2) 상태 업데이트 피드백 토론",
+
     // ==== リポジトリSettings > Webhook > Recent Deliveries ====
     "Recent Deliveries": "최근 배달",
     "/ Manage webhook": "/ 웹후크 관리",

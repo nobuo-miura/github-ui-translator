@@ -980,6 +980,40 @@
     "Workflow job queued, waiting, in progress, or completed on a repository.": "リポジトリのワークフロージョブがキュー投入・待機中・実行中・完了になった。",
     "Workflow run requested or completed on a repository.": "リポジトリのワークフロー実行がリクエストまたは完了された。",
 
+    // ==== リポジトリ/Organization Settings > Webhook > フォーム共通 ====
+    "/ Add webhook": "/ Webhookを追加",
+    "By default, we verify SSL certificates when delivering payloads.": "デフォルトでは、ペイロードの配信時にSSL証明書を検証します。",
+    "(not recommended)": "（非推奨）",
+    "Are you sure?": "よろしいですか？",
+    "Warning": "警告",
+    ": Disabling SSL verification has serious implications.": "：SSL検証を無効にすると重大な影響があります。",
+    "Disable, I understand my webhooks may not be secure": "無効化する（Webhookが安全でなくなる可能性を理解しています）",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用のイベント名） ====
+    "Custom property values": "カスタムプロパティの値",
+    "Memberships": "チームのメンバーシップ",
+    "Org blocks": "Organizationのブロック",
+    "Personal access token requests": "個人アクセストークンのリクエスト",
+    "Project v2 items": "プロジェクト（v2）のアイテム",
+    "Projects v2": "プロジェクト（v2）",
+    "Projects v2 status updates": "プロジェクト（v2）のステータス更新",
+
+    // ==== Organization Settings > Webhook > 個別イベント選択（Organization専用の説明文） ====
+    "Custom property is created, updated, deleted, or promoted.": "カスタムプロパティが作成・更新・削除・昇格された。",
+    "Custom property values are changed for a repository": "リポジトリのカスタムプロパティの値が変更された",
+    "Team membership added or removed.": "チームのメンバーシップが追加または削除された。",
+    "A user has been blocked or unblocked.": "ユーザーがブロックまたはブロック解除された。",
+    "Organization deleted, renamed, member invited, member added, or member removed.": "Organizationが削除・名前変更された、またはメンバーが招待・追加・削除された。",
+    "Personal access token request created, approved, denied, or cancelled.": "個人アクセストークンのリクエストが作成・承認・拒否・キャンセルされた。",
+    "Project item created, edited, deleted, archived, restored, converted, or reordered.": "プロジェクトのアイテムが作成・編集・削除・アーカイブ・復元・変換・並べ替えされた。",
+    "Project created, updated, deleted, closed, or reopened.": "プロジェクトが作成・更新・削除・クローズ・再オープンされた。",
+    "Project status updates created, updated, or deleted.": "プロジェクトのステータス更新が作成・更新・削除された。",
+    "Team is created, deleted, edited, or added to/removed from a repository.": "チームが作成・削除・編集された、またはリポジトリに追加・リポジトリから削除された。",
+    "Feedback is welcome in": "フィードバックは次で受け付けています:",
+    "this discussion": "このディスカッション",
+    "Projects v2 feedback discussion": "プロジェクト（v2）のフィードバックディスカッション",
+    "Projects v2 status update feedback discussion": "プロジェクト（v2）のステータス更新のフィードバックディスカッション",
+
     // ==== リポジトリSettings > Webhook > Recent Deliveries ====
     "Recent Deliveries": "最近の配信",
     "/ Manage webhook": "/ Webhookの管理",
