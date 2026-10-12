@@ -9,6 +9,9 @@ const errors = [];
 // エラーにはしない。ただしcontent.jsが値の変わらない書き込みを避けそこねると
 // MutationObserverの無限ループになる箇所なので、件数を可視化しておく
 const warnings = [];
+// content.jsのINLINE_TAGS / INLINE_TAG_PATTERNと揃える
+const INLINE_TAGS = new Set(['a', 'b', 'code', 'em', 'i', 'kbd', 'strong']);
+const INLINE_TAG_PATTERN = /<([a-z]+)>([^<]*)<\/\1>/g;
 
 function readText(relativePath) {
   return fs.readFileSync(path.join(root, relativePath), 'utf8');
@@ -102,6 +105,17 @@ for (const language of Array.isArray(languages) ? languages : []) {
     }
     if (typeof translation !== 'string' || !translation.trim()) {
       errors.push(`${dictionaryPath}: translation for "${source}" must be a non-empty string`);
+    } else if (/<[a-z]+>/.test(source)) {
+      // タグ付きキー（"… <a>Learn more</a>."）。content.jsは既存の要素を並べ替えずに
+      // テキストだけを書き換えるため、訳文のタグは種類・順序とも原文と一致する必要がある
+      const tagsOf = (text) => [...text.matchAll(INLINE_TAG_PATTERN)].map((match) => match[1]).join(',');
+      const sourceTags = tagsOf(source);
+      const unknownTags = sourceTags.split(',').filter((tag) => !INLINE_TAGS.has(tag));
+      if (unknownTags.length > 0) {
+        errors.push(`${dictionaryPath}: translation source "${source}" uses unsupported inline tag(s): ${unknownTags.join(', ')}`);
+      } else if (tagsOf(translation) !== sourceTags) {
+        errors.push(`${dictionaryPath}: translation for "${source}" must keep the same inline tags in the same order (${sourceTags})`);
+      }
     }
   }
 
