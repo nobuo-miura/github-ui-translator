@@ -47,6 +47,26 @@ describe('共通の除外セレクター', () => {
   });
 });
 
+describe('グローバルヘッダーのクイック検索', () => {
+  it('入力語のオーバーレイと候補行は翻訳せず、候補グループ名は翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo',
+      dict: DICT,
+      body: `<div role="dialog" aria-label="Quick search">
+        <div data-testid="quick-search-input-overlay"><span id="query">Code</span></div>
+        <ul role="group" aria-label="Code">
+          <li data-testid="quick-search-suggestion"><span id="file">Code</span></li>
+        </ul>
+      </div>
+      <button id="open" aria-label="Open quick search dialog, type / to search"><span id="btn">Code</span></button>`
+    });
+    assert.equal(page.text('#query'), 'Code');
+    assert.equal(page.text('#file'), 'Code');
+    assert.equal(page.text('#btn'), 'Code');
+    assert.equal(page.document.querySelector('[role="group"]').getAttribute('aria-label'), 'コード');
+  });
+});
+
 describe('ユーザー作成コンテンツへのリンク', () => {
   const cases = [
     ['Issue', '/octo/repo/issues/1'],
