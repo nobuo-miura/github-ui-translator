@@ -116,9 +116,9 @@ CI runs the same command on every pull request, along with `node --check` on eac
 
 ## Pull requests
 
-- `main` represents the current released version. For ordinary development, create your branch from the current `vX.Y.Z` development branch and open the pull request against that same development branch.
-- If no `vX.Y.Z` development branch currently exists, ask the maintainers which branch to use before starting work. Do not target `main` by default.
-- At release time, the maintainers open a pull request from the `vX.Y.Z` development branch to `main`. Do not target `main` directly unless you are preparing that release pull request.
+- Create your branch from `main` and open the pull request against `main`.
+- `main` collects the changes for the next release. Pull requests are squash-merged.
+- Releases are handled by the maintainers. After a pull request that bumps the version in `manifest.json` is merged, a `vX.Y.Z` tag is pushed on `main`, and the release zip is built automatically.
 - Write commit messages in English.
 - Keep one logical change per pull request. Dictionary additions for a GitHub screen, a bug fix, and a documentation update are three pull requests, not one.
 - Link the related issue if there is one.
