@@ -142,6 +142,14 @@ github-ui-translator/
 └─ icons/
 ```
 
+## Mitwirken
+
+Verbesserungen der Übersetzungen und Fehlerberichte sind willkommen. Besonders hilfreich sind Korrekturen von Muttersprachlerinnen und Muttersprachlern, durch die die Übersetzungen natürlicher klingen.
+
+- Verbesserte oder fehlende Übersetzungen kannst du über eine [Übersetzungsanfrage](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml) vorschlagen. Du kannst auf Englisch oder Deutsch schreiben
+- Fehler und Funktionswünsche kannst du über [Issues](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose) melden
+- Bitte lies vor dem Erstellen eines Pull Requests den [Leitfaden für Beiträge (English)](.github/CONTRIBUTING.md) ([日本語](.github/CONTRIBUTING.ja.md))
+
 ## Lizenz
 
 [MIT-Lizenz](./LICENSE)

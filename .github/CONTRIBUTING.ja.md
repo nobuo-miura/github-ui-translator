@@ -1,10 +1,10 @@
-[English](CONTRIBUTING.md) | [日本語](CONTRIBUTING.ja.md)
+[English](/.github/CONTRIBUTING.md) | [日本語](/.github/CONTRIBUTING.ja.md)
 
 # GitHub UI Translator への貢献
 
 GitHub UI Translatorの改善に関心を持っていただきありがとうございます。このドキュメントでは、問題の報告方法、翻訳辞書の編集方法、変更をマージするために満たす必要がある条件を説明します。
 
-拡張機能のインストール方法と使い方は[README](../README.ja.md)を参照してください。
+拡張機能のインストール方法と使い方は[README](/README.ja.md)を参照してください。
 
 ## 貢献の方法
 
@@ -19,7 +19,7 @@ GitHub UI Translatorの改善に関心を持っていただきありがとうご
 
 ## 始める前に
 
-まず[翻訳対象の範囲](../docs/translation-scope.ja.md)を読んでください。このプロジェクトで最も重要なルールが定義されています。**この拡張機能はGitHubの固定UIのみを翻訳し、ユーザーが作成したコンテンツは意図的に翻訳しません。**
+まず[翻訳対象の範囲](/docs/translation-scope.ja.md)を読んでください。このプロジェクトで最も重要なルールが定義されています。**この拡張機能はGitHubの固定UIのみを翻訳し、ユーザーが作成したコンテンツは意図的に翻訳しません。**
 
 README・Issue本文・コメント・コードブロック・ファイル名・リポジトリ名・ユーザー名・Wikiページ名は、辞書のキーに完全一致していても意図的に除外しています。これらを翻訳する変更はマージできませんので、コードを書く前に境界を理解しておく価値があります。
 
@@ -40,7 +40,7 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 
 ## 辞書の編集
 
-翻訳は`dictionaries/<言語コード>.json`にあります。現在は[`ja.json`](../dictionaries/ja.json)、[`zh-CN.json`](../dictionaries/zh-CN.json)、[`es.json`](../dictionaries/es.json)、[`de.json`](../dictionaries/de.json)、[`pt-BR.json`](../dictionaries/pt-BR.json)、[`ko.json`](../dictionaries/ko.json)、[`fr.json`](../dictionaries/fr.json)、[`ru.json`](../dictionaries/ru.json)の8つです。
+翻訳は`dictionaries/<言語コード>.json`にあります。現在は[`ja.json`](/dictionaries/ja.json)、[`zh-CN.json`](/dictionaries/zh-CN.json)、[`es.json`](/dictionaries/es.json)、[`de.json`](/dictionaries/de.json)、[`pt-BR.json`](/dictionaries/pt-BR.json)、[`ko.json`](/dictionaries/ko.json)、[`fr.json`](/dictionaries/fr.json)、[`ru.json`](/dictionaries/ru.json)の8つです。
 
 ```jsonc
 {
@@ -80,8 +80,8 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 ## 新しい言語を追加する場合
 
 1. 上記の形式で`dictionaries/<言語コード>.json`を追加します。`language`フィールドは`<言語コード>`と、`name`フィールドは手順2で登録する表示名と一致させる必要があります。
-2. [`languages.json`](../languages.json)に`{ "code": "<言語コード>", "name": "<表示名>" }`を追加します。Popupとオプション画面はどちらもこのリストを読み込みます。
-3. [`_locales/en/messages.json`](../_locales/en/messages.json)と同じメッセージキーを持つ`_locales/<ロケールコード>/messages.json`を追加します。これは拡張機能自身のUI（Popup、オプション画面、拡張機能の名前と説明）の多言語化で、GitHub翻訳用の辞書とは別の仕組みです。
+2. [`languages.json`](/languages.json)に`{ "code": "<言語コード>", "name": "<表示名>" }`を追加します。Popupとオプション画面はどちらもこのリストを読み込みます。
+3. [`_locales/en/messages.json`](/_locales/en/messages.json)と同じメッセージキーを持つ`_locales/<ロケールコード>/messages.json`を追加します。これは拡張機能自身のUI（Popup、オプション画面、拡張機能の名前と説明）の多言語化で、GitHub翻訳用の辞書とは別の仕組みです。
 
 **ロケールディレクトリ名は辞書のコードと同じとは限りません。** WebExtensionsはアンダースコア区切りの`言語_地域`を要求しますが、辞書のコードはハイフン区切りのBCP 47形式です。既存の例が簡体字中国語とブラジルポルトガル語です。
 
@@ -96,7 +96,7 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 | フランス語 | `fr` | `_locales/fr` |
 | ロシア語 | `ru` | `_locales/ru` |
 
-`_locales/zh-CN`や`_locales/pt-BR`というディレクトリ名はブラウザに無視されます。これを検出する仕組みはありません。[`scripts/validate.mjs`](../scripts/validate.mjs)は存在するロケールディレクトリ同士でメッセージキーを比較するだけで、`languages.json`のコードとの対応は検査していないためです。拡張機能のUIとメタデータは黙って英語にフォールバックします。
+`_locales/zh-CN`や`_locales/pt-BR`というディレクトリ名はブラウザに無視されます。これを検出する仕組みはありません。[`scripts/validate.mjs`](/scripts/validate.mjs)は存在するロケールディレクトリ同士でメッセージキーを比較するだけで、`languages.json`のコードとの対応は検査していないためです。拡張機能のUIとメタデータは黙って英語にフォールバックします。
 
 新しい辞書には既存の辞書が持つすべてのキーが必要になるため、大きな変更になります。着手前にFeature requestを作成し、範囲をすり合わせてください。
 
@@ -127,4 +127,4 @@ CIはすべてのプルリクエストで同じコマンドと、各JavaScript�
 
 ## ライセンス
 
-貢献していただいた内容は、このプロジェクトの[MITライセンス](../LICENSE)の下でライセンスされることに同意したものとみなします。
+貢献していただいた内容は、このプロジェクトの[MITライセンス](/LICENSE)の下でライセンスされることに同意したものとみなします。

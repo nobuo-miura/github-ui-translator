@@ -142,6 +142,14 @@ github-ui-translator/
 └─ icons/
 ```
 
+## Contributing
+
+Translation improvements and bug reports are welcome. Fixes from native speakers that make the translations sound more natural are especially helpful.
+
+- Suggest better translations or missing ones with a [translation request](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml). You can write in English or your own language
+- Report bugs or request features in [Issues](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
+- Before opening a pull request, please read the [contribution guide](.github/CONTRIBUTING.md) ([日本語](.github/CONTRIBUTING.ja.md))
+
 ## License
 
 [MIT License](./LICENSE)
