@@ -1,10 +1,10 @@
-[English](CONTRIBUTING.md) | [日本語](CONTRIBUTING.ja.md)
+[English](/.github/CONTRIBUTING.md) | [日本語](/.github/CONTRIBUTING.ja.md)
 
 # Contributing to GitHub UI Translator
 
 Thank you for your interest in improving GitHub UI Translator. This document covers how to report problems, how to edit the translation dictionaries, and what your changes need to satisfy before they can be merged.
 
-For how to install and use the extension, see the [README](../README.md).
+For how to install and use the extension, see the [README](/README.md).
 
 ## Ways to contribute
 
@@ -19,7 +19,7 @@ Blank issues are disabled, so please pick the template that fits. Search the exi
 
 ## Before you start
 
-Read [Translation Scope](../docs/translation-scope.md) first. It defines the single most important rule in this project: **the extension translates fixed GitHub UI text only, and deliberately leaves user-created content untranslated.**
+Read [Translation Scope](/docs/translation-scope.md) first. It defines the single most important rule in this project: **the extension translates fixed GitHub UI text only, and deliberately leaves user-created content untranslated.**
 
 READMEs, issue bodies, comments, code blocks, file names, repository names, user names, and Wiki page titles are excluded on purpose, even when they exactly match a dictionary key. A change that translates any of these will not be merged, so it is worth understanding the boundary before you write code.
 
@@ -40,7 +40,7 @@ Node.js is needed only to run the validator. CI uses Node 26.
 
 ## Editing the dictionaries
 
-Translations live in `dictionaries/<code>.json` — currently [`ja.json`](../dictionaries/ja.json), [`zh-CN.json`](../dictionaries/zh-CN.json), [`es.json`](../dictionaries/es.json), [`de.json`](../dictionaries/de.json), [`pt-BR.json`](../dictionaries/pt-BR.json), [`ko.json`](../dictionaries/ko.json), [`fr.json`](../dictionaries/fr.json), and [`ru.json`](../dictionaries/ru.json).
+Translations live in `dictionaries/<code>.json` — currently [`ja.json`](/dictionaries/ja.json), [`zh-CN.json`](/dictionaries/zh-CN.json), [`es.json`](/dictionaries/es.json), [`de.json`](/dictionaries/de.json), [`pt-BR.json`](/dictionaries/pt-BR.json), [`ko.json`](/dictionaries/ko.json), [`fr.json`](/dictionaries/fr.json), and [`ru.json`](/dictionaries/ru.json).
 
 ```jsonc
 {
@@ -80,8 +80,8 @@ Values must be non-empty strings. Duplicate keys within one file are an error.
 ## Adding a new language
 
 1. Add `dictionaries/<code>.json` in the format above. Its `language` field must equal `<code>` and its `name` field must equal the display name you register in step 2.
-2. Add `{ "code": "<code>", "name": "<display name>" }` to [`languages.json`](../languages.json). The popup and the options page both read this list.
-3. Add `_locales/<locale-code>/messages.json` with the same message keys as [`_locales/en/messages.json`](../_locales/en/messages.json). This localizes the extension's own UI — the popup, the options page, and the extension name and description — and is separate from the GitHub translation dictionaries.
+2. Add `{ "code": "<code>", "name": "<display name>" }` to [`languages.json`](/languages.json). The popup and the options page both read this list.
+3. Add `_locales/<locale-code>/messages.json` with the same message keys as [`_locales/en/messages.json`](/_locales/en/messages.json). This localizes the extension's own UI — the popup, the options page, and the extension name and description — and is separate from the GitHub translation dictionaries.
 
 **The locale directory name is not always the same as the dictionary code.** WebExtensions requires `language_REGION` with an underscore, while dictionary codes use the BCP 47 form with a hyphen. Simplified Chinese and Brazilian Portuguese are existing examples:
 
@@ -127,4 +127,4 @@ CI runs the same command on every pull request, along with `node --check` on eac
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the [MIT License](../LICENSE) that covers this project.
+By contributing, you agree that your contributions are licensed under the [MIT License](/LICENSE) that covers this project.
