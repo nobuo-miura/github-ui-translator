@@ -73,7 +73,7 @@
     "Compare": "Сравнить",
     "Compare & pull request": "Сравнить и создать запрос на слияние",
 
-    // ==== Слияние и закрытие проблемы/PR ====
+    // ==== Слияние и закрытие задачи/PR ====
     "Merge pull request": "Слить запрос",
     "Close pull request": "Закрыть запрос на слияние",
     "Reopen pull request": "Переоткрыть запрос на слияние",
@@ -93,7 +93,7 @@
     "Rename": "Переименовать",
     "Rename branch": "Переименовать ветку",
 
-    // ==== Боковая панель проблемы/PR (ответственные, метки и т. д.) ====
+    // ==== Боковая панель задачи/PR (ответственные, метки и т. д.) ====
     "Assignees": "Исполнители",
     "Labels": "Метки",
     "Label": "Метка",
@@ -109,7 +109,7 @@
     "Unsubscribe": "Отписаться",
     "Customize": "Настроить",
 
-    // ==== Создание ветви из проблемы ====
+    // ==== Создание ветки из задачи ====
     "Create a branch for this issue": "Создать ветку для этой задачи",
     "Branch name": "Имя ветки",
     "Repository destination": "Целевой репозиторий",
@@ -240,7 +240,7 @@
     "GitHub Copilot won't show suggestions matching public code.": "GitHub Copilot не будет показывать предложения, совпадающие с публичным кодом.",
     "Allow GitHub to use my data for AI model training": "Разрешить GitHub использовать мои данные для обучения моделей ИИ",
 
-    // ==== Глобальная панель запросов на вытягивание (/pulls/inbox и т. д.) ====
+    // ==== Глобальная панель запросов на слияние (/pulls/inbox и т. д.) ====
     "Inbox": "Входящие",
     "Authored by me": "Созданные мной",
     "Involves me": "С моим участием",
@@ -252,7 +252,7 @@
     "Needs action": "Требуется действие",
     "Ready to merge": "Готово к слиянию",
 
-    // ==== Глобальная панель проблем (/issues/assigned и т. д.) ====
+    // ==== Глобальная панель задач (/issues/assigned и т. д.) ====
     "Mentioning me": "Упоминающие меня",
 
     // ==== Глобальный список репозиториев (/repos) ====
@@ -260,7 +260,7 @@
     "My repositories": "Мои репозитории",
     "My forks": "Мои форки",
 
-    // ==== Экран списка проблем ====
+    // ==== Экран списка задач ====
     "Assigned to me": "Назначенные мне",
     "Created by me": "Созданные мной",
     "Mentioned": "Упоминания",
@@ -284,7 +284,7 @@
     "Search Issues": "Поиск задач",
     "Sort by": "Сортировать по",
 
-    // ==== Экран создания проблемы (/issues/new) ====
+    // ==== Экран создания задачи (/issues/new) ====
     "Create new issue": "Создать задачу",
     "Add a title": "Заголовок",
     "Add a description": "Описание",
@@ -406,7 +406,7 @@
     "Squash and merge": "Сжать и слить",
     "Rebase and merge": "Перебазировать и слить",
 
-    // ==== Панель инструментов редактора Markdown (общая для проблем/PR/комментариев) ====
+    // ==== Панель инструментов редактора Markdown (общая для задач/PR/комментариев) ====
     "Bold": "Полужирный",
     "Italic": "Курсив",
     "Link": "Ссылка",
@@ -528,7 +528,7 @@
     "Filter": "Фильтр",
     "Sort": "Сортировка",
 
-    // ==== Статус проблемы/PR ====
+    // ==== Статус задачи/PR ====
     "Open": "Открыто",
     "Closed": "Закрыто",
     "Merged": "Слито",
@@ -563,7 +563,7 @@
     "Accessibility": "Доступность",
     "Try Enterprise": "Попробовать Enterprise",
 
-    // ==== Параметры репозитория > боковое меню ====
+    // ==== Настройки репозитория > боковое меню ====
     "Access": "Доступ",
     "Collaborators": "Соавторы",
     "Code and automation": "Код и автоматизация",
@@ -581,7 +581,7 @@
     "General": "Общие",
     "Moderation options": "Настройки модерации",
 
-    // ==== Параметры репозитория > General (основные параметры, флажки Features) ====
+    // ==== Настройки репозитория > General (основные параметры, флажки Features) ====
     "Default branch": "Ветка по умолчанию",
     "Template repository": "Репозиторий-шаблон",
     "Social preview": "Предпросмотр для соцсетей",
@@ -598,6 +598,168 @@
     "The default branch is considered the “base” branch in your repository, against which all pull requests and code commits are automatically made, unless you specify a different branch.": "Ветка по умолчанию считается «базовой» веткой репозитория, к которой автоматически применяются все запросы на слияние и коммиты кода, если не указана другая ветка.",
     "Disallow assets and tags from being modified once a release is published.": "Запрещает изменение ресурсов и тегов после публикации релиза.",
     "Upload an image to customize your repository’s social media preview.": "Загрузите изображение, чтобы настроить предпросмотр репозитория для соцсетей.",
+
+    // ==== Настройки репозитория > General (описания со ссылками; в ключах с тегами перевод должен сохранять вид и порядок тегов) ====
+    "Template repositories let users generate new repositories with the same directory structure and files. <a>Learn more about template repositories</a>.": "Репозитории-шаблоны позволяют пользователям создавать новые репозитории с той же структурой каталогов и файлами. <a>Подробнее о репозиториях-шаблонах</a>.",
+    "<a>Changing your default branch</a> can have unintended consequences that can affect new pull requests and clones.": "<a>Изменение ветки по умолчанию</a> может привести к непредвиденным последствиям для новых запросов на слияние и клонов.",
+    "\"Sponsor\" button is using the <a>organization funding file.</a>": "Кнопка «Спонсировать» использует <a>файл финансирования организации.</a>",
+    "You can add a <code>.github/FUNDING.yml</code> file to this repository to override the <a>organization funding file</a>": "Вы можете добавить в этот репозиторий файл <code>.github/FUNDING.yml</code>, чтобы переопределить <a>файл финансирования организации</a>",
+    "Include this code in the <a>GitHub Archive Program</a>.": "Включить этот код в <a>GitHub Archive Program</a>.",
+    "Enabling this setting will require contributors to sign off on commits made through GitHub’s web interface. Signing off is a way for contributors to affirm that their commit complies with the repository's terms, commonly the <a>Developer Certificate of Origin (DCO)</a>. <a>Learn more about signing off on commits</a>.": "Если включить этот параметр, участники должны будут подписывать коммиты, сделанные через веб-интерфейс GitHub. Подпись позволяет участникам подтвердить, что их коммит соответствует условиям репозитория, обычно <a>Developer Certificate of Origin (DCO)</a>. <a>Подробнее о подписи коммитов</a>.",
+    "Enabling this setting will allow anyone who can view this repository to add <a>commit comments</a>. Existing commit comments are not affected by this setting and will remain viewable, editable, and deletable.": "Если включить этот параметр, любой, кто может просматривать этот репозиторий, сможет добавлять <a>комментарии к коммитам</a>. Существующие комментарии к коммитам не затрагиваются и по-прежнему доступны для просмотра, изменения и удаления.",
+    "Pushes will be rejected if they attempt to update more than this. <a>Learn more about this setting</a>, and send us your <a>feedback</a>.": "Отправки будут отклонены, если они пытаются обновить больше этого количества. <a>Подробнее об этом параметре</a> и отправьте нам <a>отзыв</a>.",
+
+    // ==== Настройки репозитория, другие страницы (описания со ссылками; в ключах с тегами перевод должен сохранять вид и порядок тегов) ====
+    "Define branch rules to disable force pushing, prevent branches from being deleted, or require pull requests before merging. Learn more about <a>repository rules</a> and <a>protected branches</a>.": "Определите правила веток, чтобы запретить принудительную отправку, предотвратить удаление веток или разрешать слияние только через запросы на слияние. Подробнее о <a>правилах репозитория</a> и <a>защищённых ветках</a>.",
+    "Protected tags are being deprecated. To continue protecting tags, please migrate to a tag ruleset by August 30th. You can learn more about the sunset in our <a>changelog</a> and can get started now by migrating to rulesets.": "Защищённые теги устаревают. Чтобы продолжить защищать теги, перейдите на набор правил для тегов до 30 августа. Подробнее о прекращении поддержки можно узнать в нашем <a>журнале изменений</a>, а перейти на наборы правил можно уже сейчас.",
+    "Your list contains a <code>*</code> wildcard pattern, which will <strong>allow all actions and reusable workflows</strong> except those that are explicitly blocked.": "Ваш список содержит шаблон с подстановочным знаком <code>*</code>, который <strong>разрешит все действия и повторно используемые рабочие процессы</strong>, кроме явно заблокированных.",
+    "Your list contains <strong>only blocked patterns</strong>. By default, only allowed patterns specified in the list can be used. To allow all actions and reusable workflows except those that are explicitly blocked, add a <code>*</code> wildcard pattern.": "Ваш список содержит <strong>только шаблоны блокировки</strong>. По умолчанию можно использовать только разрешённые шаблоны, указанные в списке. Чтобы разрешить все действия и повторно используемые рабочие процессы, кроме явно заблокированных, добавьте шаблон с подстановочным знаком <code>*</code>.",
+    "There is a maximum limit of <strong>400</strong> days.": "Максимальный предел — <strong>400</strong> дн.",
+    "Retention can be set up to <strong>365</strong> days.": "Срок хранения можно установить не более <strong>365</strong> дн.",
+    "Total cache size can be set up to <strong>10000</strong> GB.": "Общий размер кэша можно установить не более <strong>10000</strong> ГБ.",
+    "This tells Actions to send tokens with <strong>write</strong> permissions to workflows from pull requests originating from repository forks. Note that doing so will give maintainers of those forks <strong>write</strong> permissions against the source repository.": "Это указывает Actions отправлять токены с правами на <strong>запись</strong> рабочим процессам из запросов на слияние, созданных из форков репозитория. Учтите, что при этом сопровождающие этих форков получат права на <strong>запись</strong> в исходный репозиторий.",
+    "Host your own runners and customize the environment used to run jobs in your GitHub Actions workflows. <a>Learn more about self-hosted runners</a>.": "Размещайте собственные раннеры и настраивайте среду для выполнения заданий в рабочих процессах GitHub Actions. <a>Подробнее о раннерах на собственном сервере</a>.",
+    "<a>Learn more about using runners</a> to run actions on your own servers.": "<a>Подробнее об использовании раннеров</a> для выполнения действий на собственных серверах.",
+    "Customize claims included in the OIDC token. <a>Learn more about OIDC tokens.</a>": "Настройте утверждения, включаемые в токен OIDC. <a>Подробнее о токенах OIDC.</a>",
+    "Automatically enabled for this repository. Repositories created or renamed after July 15, 2026 use immutable subject claims. <a>Learn more about immutable subject claims.</a>": "Автоматически включено для этого репозитория. Репозитории, созданные или переименованные после 15 июля 2026 г., используют неизменяемые утверждения subject. <a>Подробнее о неизменяемых утверждениях subject.</a>",
+    "Webhooks allow external services to be notified when certain events happen. When the specified events happen, we'll send a POST request to each of the URLs you provide. Learn more in our <a>Webhooks Guide</a>.": "Вебхуки позволяют уведомлять внешние службы о наступлении определённых событий. Когда происходят указанные события, мы отправляем POST-запрос на каждый из указанных вами URL-адресов. Подробнее в нашем <a>руководстве по вебхукам</a>.",
+    "We'll send a <code>POST</code> request to the URL below with details of any subscribed events. You can also specify which data format you'd like to receive (JSON, <code>x-www-form-urlencoded</code>, <em>etc</em>). More information can be found in <a>our developer documentation</a>.": "Мы отправим <code>POST</code>-запрос на указанный ниже URL-адрес со сведениями о событиях, на которые оформлена подписка. Также можно указать нужный формат данных (JSON, <code>x-www-form-urlencoded</code>, <em>и т. д.</em>). Дополнительные сведения см. в <a>документации для разработчиков</a>.",
+    "Just the <code>push</code> event.": "Только событие <code>push</code>.",
+    "Send me <strong>everything</strong>.": "Отправлять <strong>всё</strong>.",
+    "Copilot references <a>repository custom instructions</a> when reviewing pull requests.": "Copilot учитывает <a>пользовательские инструкции репозитория</a> при ревью запросов на слияние.",
+    "When enabled, <a>external Copilot licenses</a> cannot run a Copilot review within this repository.": "Если включено, <a>внешние лицензии Copilot</a> не смогут запускать ревью Copilot в этом репозитории.",
+    "With MCP, you can extend the capabilities of Copilot cloud agent and Copilot code review by connecting them to other tools and services. The <a>GitHub</a> and <a>Playwright</a> MCP servers are enabled by default.": "С помощью MCP можно расширить возможности облачного агента Copilot и ревью кода Copilot, подключив их к другим инструментам и службам. MCP-серверы <a>GitHub</a> и <a>Playwright</a> включены по умолчанию.",
+    "You can configure environments with protection rules, variables, and secrets. <a>Learn more about configuring environments.</a>": "Для сред можно настроить правила защиты, переменные и секреты. <a>Подробнее о настройке сред.</a>",
+    "<a>GitHub Pages</a> is designed to host your personal, organization, or project pages from a GitHub repository.": "<a>GitHub Pages</a> предназначен для размещения личных страниц, страниц организации или проекта из репозитория GitHub.",
+    "Use a suggested workflow, <a>browse all workflows</a>, or <a>create your own</a>.": "Используйте предложенный рабочий процесс, <a>просмотрите все рабочие процессы</a> или <a>создайте собственный</a>.",
+    "Understand the packages this repository depends on and secure its <a>software supply chain</a>.": "Узнайте, от каких пакетов зависит этот репозиторий, и защитите его <a>цепочку поставок ПО</a>.",
+    "Keep your dependencies secure and up-to-date with <a>Dependabot</a>.": "Поддерживайте зависимости в безопасном и актуальном состоянии с помощью <a>Dependabot</a>.",
+    "Automatically open pull requests when new versions of your dependencies are available by <a>configuring your dependabot.yml file</a>.": "Автоматически открывайте запросы на слияние при появлении новых версий зависимостей, <a>настроив файл dependabot.yml</a>.",
+    "Select the <a>runner type</a> used by Dependabot for scans, versions and security updates.": "Выберите <a>тип раннера</a>, который Dependabot использует для сканирования, обновлений версий и обновлений безопасности.",
+    "The <code>dependabot</code> label is used by default. Learn how to <a>use or create custom labels</a>.": "По умолчанию используется метка <code>dependabot</code>. Узнайте, как <a>использовать или создавать пользовательские метки</a>.",
+    "We recommend using <a>GitHub Apps</a> instead for fine grained control over repositories and <a>enhanced security</a>.": "Вместо этого рекомендуем использовать <a>GitHub Apps</a> для детального управления репозиториями и <a>повышенной безопасности</a>.",
+    "<a>Deploy keys</a> use an SSH key to grant readonly or write access to a single repository. They are not protected by a passphrase and can be a security risk if your server is compromised. If you have a complex project or want more fine-grain control over permissions, consider using <a>GitHub Apps</a> instead.": "<a>Ключи деплоя</a> используют SSH-ключ для предоставления доступа только на чтение или на запись к одному репозиторию. Они не защищены парольной фразой и могут представлять угрозу безопасности при компрометации сервера. Для сложных проектов или более детального управления разрешениями рассмотрите вместо них <a>GitHub Apps</a>.",
+    "Check out our <a>guide on deploy keys</a> to learn more.": "Подробнее см. в нашем <a>руководстве по ключам деплоя</a>.",
+    "Can this key be used to <strong>push</strong> to this repository? Deploy keys always have pull access.": "Можно ли использовать этот ключ для <strong>отправки</strong> в этот репозиторий? Ключи деплоя всегда имеют доступ на извлечение.",
+    "Secrets and variables allow you to manage reusable configuration data. Secrets are <strong>encrypted</strong> and are used for sensitive data. <a>Learn more about encrypted secrets</a>. Variables are shown as plain text and are used for <strong>non-sensitive</strong> data. <a>Learn more about variables</a>.": "Секреты и переменные позволяют управлять повторно используемыми данными конфигурации. Секреты <strong>зашифрованы</strong> и используются для конфиденциальных данных. <a>Подробнее о зашифрованных секретах</a>. Переменные отображаются в виде обычного текста и используются для <strong>неконфиденциальных</strong> данных. <a>Подробнее о переменных</a>.",
+    "Development environment secrets are environment variables that are <strong>encrypted</strong>. Secrets are not passed to forks.": "Секреты среды разработки — это <strong>зашифрованные</strong> переменные среды. Секреты не передаются в форки.",
+    "Secrets are credentials that are <strong>encrypted</strong>. Anyone with <b>collaborator</b> access to this repository can use these secrets for Dependabot.": "Секреты — это <strong>зашифрованные</strong> учётные данные. Любой пользователь с доступом <b>соавтора</b> к этому репозиторию может использовать эти секреты для Dependabot.",
+    "Sets the <code>Approved</code> header to automatically approve the message in a read-only or moderated mailing list.": "Устанавливает заголовок <code>Approved</code> для автоматического одобрения сообщения в списке рассылки только для чтения или с модерацией.",
+    "We will send notification emails to the listed addresses when a <code>push</code> event is triggered.": "Мы отправим уведомления по электронной почте на указанные адреса при срабатывании события <code>push</code>.",
+    "References to GitHub issues, pull requests, and commits are automatically converted into links. Configure your own autolink references for non-GitHub URLs. <a>Learn more about automatic autolinks.</a>": "Ссылки на задачи, запросы на слияние и коммиты GitHub автоматически преобразуются в ссылки. Настройте собственные ссылки автосвязывания для URL-адресов за пределами GitHub. <a>Подробнее об автоссылках.</a>",
+    "Autolinks can be either alphanumeric or numeric. <a>Read more about the differences between the two.</a>": "Автоссылки могут быть буквенно-цифровыми или числовыми. <a>Подробнее о различиях между ними.</a>",
+    "Adding a self-hosted runner requires that you download, configure, and execute the GitHub Actions Runner. If you do not already have an existing volume licensing agreement for your GitHub purchases, by downloading and configuring the GitHub Actions Runner, you agree to the <a>GitHub Customer Agreement</a>.": "Чтобы добавить раннер на собственном сервере, необходимо скачать, настроить и запустить GitHub Actions Runner. Если у вас ещё нет соглашения о корпоративном лицензировании покупок GitHub, скачивая и настраивая GitHub Actions Runner, вы принимаете <a>Клиентское соглашение GitHub</a>.",
+    "For additional details about configuring, running, or shutting down the runner, please check out our <a>product docs</a>.": "Дополнительные сведения о настройке, запуске и остановке раннера см. в нашей <a>документации по продукту</a>.",
+
+    // ==== Настройки пользователя (описания со ссылками; в ключах с тегами перевод должен сохранять вид и порядок тегов) ====
+    "You have set your email address to private. To toggle email privacy, go to <a>email settings</a> and uncheck \"Keep my email address private.\"": "Ваш адрес электронной почты скрыт. Чтобы изменить настройку конфиденциальности, перейдите в <a>настройки электронной почты</a> и снимите флажок «Keep my email address private».",
+    "ORCID provides a persistent identifier - an ORCID iD - that distinguishes you from other researchers. Learn more at <a>ORCID.org</a>.": "ORCID предоставляет постоянный идентификатор (ORCID iD), который отличает вас от других исследователей. Подробнее на <a>ORCID.org</a>.",
+    "All of the fields on this page are optional and can be deleted at any time, and by filling them out, you're giving us consent to share this data wherever your user profile appears. Please see our <a>privacy statement</a> to learn more about how we use this information.": "Все поля на этой странице необязательны и могут быть удалены в любое время. Заполняя их, вы соглашаетесь на то, что эти данные будут показываться везде, где отображается ваш профиль. Подробнее об использовании этих сведений см. в нашем <a>заявлении о конфиденциальности</a>.",
+    "Your contribution graph, achievements, and activity overview will show your private contributions without revealing any repository or organization information. <a>Read more</a>.": "График вкладов, достижения и обзор активности будут показывать ваши частные вклады, не раскрывая сведений о репозиториях и организациях. <a>Подробнее</a>.",
+    "<a>GitHub Docs</a> has guides, API and webhook references, information about creating GitHub Apps and other resources for building applications that integrate with GitHub. Make sure your contact information is up-to-date below. Thanks for being a member!": "В <a>GitHub Docs</a> есть руководства, справочники по API и вебхукам, сведения о создании GitHub Apps и другие ресурсы для разработки приложений, интегрируемых с GitHub. Убедитесь, что ваши контактные данные ниже актуальны. Спасибо, что вы с нами!",
+    "Changing your username can have <a>unintended side effects</a>.": "Изменение имени пользователя может привести к <a>непредвиденным последствиям</a>.",
+    "We <strong>will not</strong> set up redirects for your old profile page.": "Мы <strong>не будем</strong> настраивать перенаправления для вашей старой страницы профиля.",
+    "We <strong>will not</strong> set up redirects for Pages sites.": "Мы <strong>не будем</strong> настраивать перенаправления для сайтов Pages.",
+    "We <strong>will</strong> create redirects for your repositories (web and git access).": "Мы <strong>создадим</strong> перенаправления для ваших репозиториев (веб-доступ и доступ через git).",
+    "Before you can delete your account, you must unpublish your Sponsors profile. This can be done from the <a>Sponsors Dashboard settings page</a>": "Перед удалением учётной записи необходимо снять с публикации профиль Sponsors. Это можно сделать на <a>странице настроек панели Sponsors</a>.",
+    "Notifications for workflow runs on repositories set up with <a>GitHub Actions</a>.": "Уведомления о запусках рабочих процессов в репозиториях, настроенных с помощью <a>GitHub Actions</a>.",
+    "We noticed that you are disabling your primary SMS method and have a fallback SMS number configured. By clicking \"Continue\", your fallback SMS number will become your primary SMS number. You will no longer be able to add a fallback SMS number. Read more about this change in <a>this blog post</a>.": "Вы отключаете основной способ SMS, и у вас настроен резервный номер для SMS. Если нажать «Продолжить», резервный номер станет основным. Добавить резервный номер для SMS больше будет нельзя. Подробнее об этом изменении в <a>этой записи блога</a>.",
+    "This action <strong>CANNOT</strong> be undone. This will permanently delete the SSH key and if you’d like to use it in the future, you will need to upload it again.": "Это действие <strong>НЕЛЬЗЯ</strong> отменить. SSH-ключ будет удалён безвозвратно, и для использования в будущем его придётся загрузить снова.",
+    "Check out our guide to <a>connecting to GitHub using SSH keys</a> or troubleshoot <a>common SSH problems</a>.": "Ознакомьтесь с руководством по <a>подключению к GitHub с помощью SSH-ключей</a> или устраните <a>распространённые проблемы с SSH</a>.",
+    "This action <strong>cannot</strong> be undone. This will permanently delete the GPG key, and if you’d like to use it in the future, you will need to upload it again.": "Это действие <strong>нельзя</strong> отменить. GPG-ключ будет удалён безвозвратно, и для использования в будущем его придётся загрузить снова.",
+    "Learn how to <a>generate a GPG key and add it to your account</a>.": "Узнайте, как <a>создать GPG-ключ и добавить его в учётную запись</a>.",
+    "You can block a user to deny them access to repositories and more. <a>Learn more about blocking a user</a>": "Вы можете заблокировать пользователя, чтобы запретить ему доступ к репозиториям и не только. <a>Подробнее о блокировке пользователей</a>",
+    "Interaction limits may already exist in your account's <strong>public repositories</strong>. Any changes here will override those limits.": "В <strong>общедоступных репозиториях</strong> вашей учётной записи уже могут быть ограничения взаимодействия. Изменения здесь переопределят эти ограничения.",
+    "Choose whether <a>commit comments</a> are enabled or disabled by default for repositories you own. Individual repositories can override this default. Existing commit comments are not affected by this setting and will remain viewable, editable, and deletable.": "Выберите, включены ли по умолчанию <a>комментарии к коммитам</a> в ваших репозиториях. Отдельные репозитории могут переопределить это значение. Существующие комментарии к коммитам не затрагиваются и по-прежнему доступны для просмотра, изменения и удаления.",
+    "Connect to the cloud from your local desktop client. Requires <a>Visual Studio Code</a> with the <a>GitHub Codespaces</a> extension.": "Подключайтесь к облаку из локального клиента. Требуется <a>Visual Studio Code</a> с расширением <a>GitHub Codespaces</a>.",
+    "A codespace will suspend after a period of inactivity. You can specify a default idle timeout value, which will apply to all codespaces created after the default is changed. You will be charged for the entire time your codespace is running, even if it is idle. The maximum value is <strong>240</strong> minutes (4 hours).": "Codespace приостанавливается после периода бездействия. Можно задать время ожидания по умолчанию, которое будет применяться ко всем codespace, созданным после его изменения. Оплата взимается за всё время работы codespace, даже если он простаивает. Максимальное значение — <strong>240</strong> мин (4 ч).",
+    "Inactive codespaces are automatically deleted 30 days after the last time they were stopped. A shorter retention period can be set, and will apply to all codespaces created going forward. The default and maximum value is <strong>30</strong> days. <a>Learn about retention setting</a>": "Неактивные codespace автоматически удаляются через 30 дней после последней остановки. Можно задать более короткий срок хранения, который будет применяться ко всем новым codespace. Значение по умолчанию и максимальное значение — <strong>30</strong> дн. <a>Подробнее о сроке хранения</a>",
+    "If enabled, you can view and create <a>Copilot Spaces</a>. When disabled, you cannot view or create any Copilot Spaces.": "Если включено, вы можете просматривать и создавать <a>Copilot Spaces</a>. Если отключено, просматривать и создавать Copilot Spaces нельзя.",
+    "If enabled, you can create individually owned <a>Copilot Spaces</a>. When disabled, you cannot create individual spaces.": "Если включено, вы можете создавать личные <a>Copilot Spaces</a>. Если отключено, создавать личные пространства нельзя.",
+    "If enabled, you can share individually owned <a>Copilot Spaces</a>. When disabled, you cannot share individual spaces.": "Если включено, вы можете делиться личными <a>Copilot Spaces</a>. Если отключено, делиться личными пространствами нельзя.",
+    "Copilot can allow or block suggestions matching public code. Learn more about <a>code suggestions</a>.": "Copilot может разрешать или блокировать предложения, совпадающие с общедоступным кодом. Подробнее о <a>предложениях кода</a>.",
+    "Allow GitHub to collect and use my Inputs, Outputs, and associated context to train and improve AI models. Read more in the <a>Privacy Statement</a>.": "Разрешить GitHub собирать и использовать мои входные и выходные данные и связанный контекст для обучения и улучшения моделей ИИ. Подробнее в <a>заявлении о конфиденциальности</a>.",
+    "For more information about the data your organization receives regarding your use of GitHub Copilot, please review <a>GitHub's Privacy Statement</a>.": "Дополнительные сведения о данных, которые ваша организация получает об использовании вами GitHub Copilot, см. в <a>заявлении о конфиденциальности GitHub</a>.",
+    "With Copilot cloud agent, you can delegate tasks to Copilot, freeing you to focus on the creative, complex, and high-impact work that matters most. Simply assign an issue to Copilot, wait for the agent to request your review, then leave feedback on the pull request to iterate. <a>Learn more in the docs.</a>": "С облачным агентом Copilot вы можете поручать задачи Copilot и сосредоточиться на творческой, сложной и наиболее значимой работе. Просто назначьте задачу Copilot, дождитесь запроса на ревью от агента и оставьте отзыв в запросе на слияние, чтобы продолжить итерации. <a>Подробнее в документации.</a>",
+    "Block commits that contain <a>supported secrets</a> across all public repositories on GitHub.": "Блокировать коммиты, содержащие <a>поддерживаемые секреты</a>, во всех общедоступных репозиториях на GitHub.",
+    "Allow your community to privately report potential security vulnerabilities to maintainers and repository owners. <a>Learn more about private vulnerability reporting</a>.": "Разрешите сообществу конфиденциально сообщать сопровождающим и владельцам репозиториев о потенциальных уязвимостях. <a>Подробнее о конфиденциальных отчётах об уязвимостях</a>.",
+    "Keep your dependencies secure and up-to-date. <a>Learn more about Dependabot</a>.": "Поддерживайте зависимости в безопасном и актуальном состоянии. <a>Подробнее о Dependabot</a>.",
+    "Receive alerts for vulnerabilities that affect your dependencies and manually generate Dependabot pull requests to resolve these vulnerabilities. <a>Configure alert notifications</a>.": "Получайте оповещения об уязвимостях в зависимостях и вручную создавайте запросы на слияние Dependabot для их устранения. <a>Настроить уведомления об оповещениях</a>.",
+    "Groups all available updates that resolve a Dependabot alert into one pull request (per package manager and directory of requirement manifests). This option may be overridden by group rules specified in dependabot.yml - <a>Learn how to group updates.</a>": "Объединяет все доступные обновления, устраняющие оповещение Dependabot, в один запрос на слияние (для каждого диспетчера пакетов и каталога манифестов). Этот параметр может быть переопределён правилами групп в dependabot.yml - <a>Узнайте, как группировать обновления.</a>",
+    "Validate your apps and workflows with the per-request override header detailed in this <a>GitHub Changelog</a>.": "Проверьте свои приложения и рабочие процессы с помощью заголовка переопределения для отдельных запросов, описанного в этом <a>GitHub Changelog</a>.",
+    "A GitHub App can act on its own behalf, taking actions via the API directly instead of impersonating a user. Read more in our <a>developer documentation</a>.": "GitHub App может действовать от своего имени, выполняя действия напрямую через API, а не выдавая себя за пользователя. Подробнее в нашей <a>документации для разработчиков</a>.",
+    "Something went wrong while checking. Please retry. <a>See the documentation</a> for more information.": "Во время проверки произошла ошибка. Повторите попытку. Подробнее <a>в документации</a>.",
+    "The URIs to redirect to after a user authorizes your application. You may add up to 10 redirect URIs. Wildcard matching allows tokens to be sent to all subdomains and additional paths of the redirect URI. Only enable this if you are sure you have control over all possible matches. <a>Learn more about secure use of redirect URIs</a>.": "URI-адреса для перенаправления после того, как пользователь авторизует ваше приложение. Можно добавить до 10 URI перенаправления. Сопоставление с подстановочными знаками позволяет отправлять токены на все поддомены и дополнительные пути URI перенаправления. Включайте его, только если уверены, что контролируете все возможные совпадения. <a>Подробнее о безопасном использовании URI перенаправления</a>.",
+    "This will provide a <code>refresh_token</code> which can be used to request an updated access token when this access token expires.": "Будет предоставлен <code>refresh_token</code>, с помощью которого можно запросить обновлённый токен доступа после истечения срока действия текущего.",
+    "Requests that the installing user <a>grants access to their identity</a> during installation of your App.": "Запрашивает у устанавливающего пользователя <a>доступ к его удостоверению</a> во время установки приложения.",
+    "Allow this GitHub App to authorize users via the <a>device flow</a>.": "Разрешить этому GitHub App авторизовать пользователей с помощью <a>процесса для устройств</a>.",
+    "Events will POST to this URL with a <a>webhook</a>.": "События будут отправляться POST-запросом на этот URL-адрес через <a>вебхук</a>.",
+    "Set a secret to <a>secure your webhooks</a>.": "Задайте секрет, чтобы <a>защитить вебхуки</a>.",
+    "<strong>Warning</strong>: Disabling SSL verification has serious implications.": "<strong>Предупреждение</strong>: отключение проверки SSL влечёт серьёзные последствия.",
+    "These <a>user permissions</a> are granted on an individual user basis as part of the <a>user authorization flow</a>.": "Эти <a>разрешения пользователя</a> предоставляются каждому пользователю отдельно в рамках <a>процесса авторизации пользователя</a>.",
+    "The URIs to redirect to after a user authorizes an app. You may add up to 10 redirect URIs. Wildcard matching allows tokens to be sent to all subdomains and additional paths of the redirect URI. Only enable this if you are sure you have control over all possible matches. <a>Learn more about secure use of redirect URIs</a>.": "URI-адреса для перенаправления после того, как пользователь авторизует приложение. Можно добавить до 10 URI перенаправления. Сопоставление с подстановочными знаками позволяет отправлять токены на все поддомены и дополнительные пути URI перенаправления. Включайте его, только если уверены, что контролируете все возможные совпадения. <a>Подробнее о безопасном использовании URI перенаправления</a>.",
+    "Allow this OAuth App to authorize users via the <a>device flow</a>.": "Разрешить этому приложению OAuth авторизовать пользователей с помощью <a>процесса для устройств</a>.",
+    "Choose the minimal permissions necessary for your needs. <a>Learn more about permissions.</a>": "Выберите минимально необходимые разрешения. <a>Подробнее о разрешениях.</a>",
+    "Development environment secrets are environment variables that are encrypted. They are available to any codespace you create using repositories with access to that secret. <a>Learn more</a>.": "Секреты среды разработки — это зашифрованные переменные среды. Они доступны в любом codespace, созданном из репозиториев с доступом к этому секрету. <a>Подробнее</a>.",
+
+    // ==== Настройки организации (описания со ссылками; в ключах с тегами перевод должен сохранять вид и порядок тегов) ====
+    "Add more billing email recipients in the <a>billing page</a>.": "Добавьте получателей писем об оплате на <a>странице оплаты</a>.",
+    "Building an application, service, or tool that integrates with GitHub? <a>Join the GitHub Developer Program</a>, or read more about it at our <a>GitHub developer program</a>.": "Разрабатываете приложение, службу или инструмент с интеграцией в GitHub? <a>Присоединяйтесь к GitHub Developer Program</a> или узнайте подробнее на странице <a>GitHub Developer Program</a>.",
+    "Renaming your organization can have <a>unintended side effects</a>.": "Переименование организации может привести к <a>непредвиденным последствиям</a>.",
+    "All repositories will be <a>archived</a> and be read-only.": "Все репозитории будут <a>архивированы</a> и станут доступны только для чтения.",
+    "Making a note in your <a>organization README</a>": "Оставить заметку в <a>README организации</a>",
+    "Before proceeding, please be sure to review the <a>Terms of Service</a> regarding account deletion.": "Прежде чем продолжить, ознакомьтесь с <a>Условиями предоставления услуг</a>, касающимися удаления учётной записи.",
+    "Organization rulesets won't be enforced <a>until you upgrade this organization account to GitHub Team.</a>": "Наборы правил организации не будут применяться, <a>пока вы не обновите эту учётную запись организации до GitHub Team.</a>",
+    "You can <a>set the base role</a> for this organization from one of these roles.": "Вы можете <a>задать базовую роль</a> для этой организации, выбрав одну из этих ролей.",
+    "Full access to repositories including sensitive and destructive actions. <a>Modify Admin Role</a>": "Полный доступ к репозиториям, включая конфиденциальные и разрушительные действия. <a>Изменить роль администратора</a>",
+    "Members will be able to create public repositories, visible to anyone. <a>Why is this option disabled?</a>": "Участники смогут создавать общедоступные репозитории, видимые всем. <a>Почему этот параметр отключён?</a>",
+    "Members will be able to create private sites, visible to anyone with permission. <a>Why is this option disabled?</a>": "Участники смогут создавать частные сайты, видимые всем, у кого есть разрешение. <a>Почему этот параметр отключён?</a>",
+    "If enabled, members with admin permissions for the repository will be able to delete or transfer <strong>public</strong> and <strong>private</strong> repositories. If disabled, only organization owners can delete or transfer repositories.": "Если включено, участники с правами администратора репозитория смогут удалять или передавать <strong>общедоступные</strong> и <strong>частные</strong> репозитории. Если отключено, удалять или передавать репозитории смогут только владельцы организации.",
+    "If enabled, members with admin permissions for the repository will be able to delete issues. If disabled, only organization owners can delete issues. <a>Learn more about allowing people to delete issues in your organization</a>.": "Если включено, участники с правами администратора репозитория смогут удалять задачи. Если отключено, удалять задачи смогут только владельцы организации. <a>Подробнее о разрешении удалять задачи в организации</a>.",
+    "Interaction limits may already exist in your organization's <strong>public repositories</strong>. Any changes here will override those limits.": "В <strong>общедоступных репозиториях</strong> вашей организации уже могут быть ограничения взаимодействия. Изменения здесь переопределят эти ограничения.",
+    "You may add up to <strong>10</strong> members or teams as moderators.": "Можно добавить до <strong>10</strong> участников или команд в качестве модераторов.",
+    "Choose the default branch for new repositories in this organization. You might want to change the default name due to different workflows, or because your integrations still require “master” as the default branch name. You can always change the default branch name on individual repositories. <a>Learn more about default branches.</a>": "Выберите ветку по умолчанию для новых репозиториев в этой организации. Имя по умолчанию может понадобиться изменить из-за других рабочих процессов или потому, что интеграциям всё ещё требуется имя «master». Имя ветки по умолчанию всегда можно изменить в отдельных репозиториях. <a>Подробнее о ветках по умолчанию.</a>",
+    "Choose whether repositories will require contributors to sign off on commits they make through GitHub's web interface. Signing off is a way for contributors to affirm that their commit complies with the repository's terms, commonly the <a>Developer Certificate of Origin (DCO)</a>. <a>Learn more about signing off on commits</a>.": "Выберите, должны ли репозитории требовать от участников подписывать коммиты, сделанные через веб-интерфейс GitHub. Подпись позволяет участникам подтвердить, что их коммит соответствует условиям репозитория, обычно <a>Developer Certificate of Origin (DCO)</a>. <a>Подробнее о подписи коммитов</a>.",
+    "Choose whether <a>commit comments</a> are enabled or disabled by default for repositories in this organization. Individual repositories can override this default. Existing commit comments are not affected by this setting and will remain viewable, editable, and deletable.": "Выберите, включены ли по умолчанию <a>комментарии к коммитам</a> в репозиториях этой организации. Отдельные репозитории могут переопределить это значение. Существующие комментарии к коммитам не затрагиваются и по-прежнему доступны для просмотра, изменения и удаления.",
+    "Set the labels that will be included when a new repository is created in this organization. <a>Learn more about managing default labels for your organization.</a>": "Задайте метки, которые будут добавляться при создании нового репозитория в этой организации. <a>Подробнее об управлении метками по умолчанию для организации.</a>",
+    "To manage Codespace ownership settings, please <a>upgrade your plan</a> to enable your organization.": "Чтобы управлять параметрами владения codespace, <a>обновите тарифный план</a> и включите эту возможность для организации.",
+    "By enabling Codespaces, you agree to GitHub’s <a>additional products and features terms</a> and approve of these terms on behalf of your organization.": "Включая Codespaces, вы принимаете <a>условия дополнительных продуктов и функций</a> GitHub и одобряете их от имени своей организации.",
+    "If preview features are enabled, you agree to the <a>Pre-Release Terms</a>.": "Если включены предварительные функции, вы принимаете <a>Условия предварительных выпусков</a>.",
+    "The AI powered pair programmer for your organization. Once you complete onboarding, you’ll have the ability to manage policies and control which users or teams will have access to <a>GitHub Copilot</a> inside your organization.": "ИИ-напарник по программированию для вашей организации. После завершения настройки вы сможете управлять политиками и определять, какие пользователи или команды получат доступ к <a>GitHub Copilot</a> в организации.",
+    "With Copilot code review, you can get a thorough, automated first pass on every pull request — catching bugs and surfacing suggestions early, and freeing your team to focus on the changes that need human judgment. Copilot reviews pull requests across your organization's repositories and leaves its feedback as inline comments for authors to address. <a>Learn more in the docs.</a>": "Ревью кода Copilot выполняет тщательную автоматическую первичную проверку каждого запроса на слияние: рано находит ошибки и предлагает улучшения, позволяя команде сосредоточиться на изменениях, требующих человеческого суждения. Copilot проверяет запросы на слияние в репозиториях организации и оставляет отзывы встроенными комментариями для авторов. <a>Подробнее в документации.</a>",
+    "<strong>Note:</strong> Once disabled you will lose any concurrency settings you have set up. <a>For more information on concurrency see our documentation.</a>": "<strong>Примечание.</strong> После отключения все настроенные параметры параллелизма будут потеряны. <a>Подробнее о параллелизме см. в документации.</a>",
+    "You can set a maximum limit of <strong>400</strong> days.": "Можно задать предел не более <strong>400</strong> дн.",
+    "Choose which subset of users will require approval before running workflows on their pull requests. Both the pull request author and the actor of the pull request event triggering the workflow will be checked to determine if approval is required. If approval is required, a user with write access to the repository must <a>approve the pull request workflow to be run.</a>": "Выберите, каким пользователям требуется одобрение перед запуском рабочих процессов в их запросах на слияние. Проверяются и автор запроса, и инициатор события, запускающего рабочий процесс. Если требуется одобрение, пользователь с доступом на запись в репозиторий должен <a>одобрить запуск рабочего процесса запроса на слияние.</a>",
+    "Choose the default permissions granted to the GITHUB_TOKEN when running workflows in this organization. You can specify more granular permissions in the workflow using YAML. <a>Learn more about managing permissions.</a>": "Выберите разрешения по умолчанию, предоставляемые GITHUB_TOKEN при запуске рабочих процессов в этой организации. Более детальные разрешения можно указать в рабочем процессе с помощью YAML. <a>Подробнее об управлении разрешениями.</a>",
+    "You can use caches for dependencies and other commonly reused files to speed up your workflows. The data on this page have at least 5 minutes of latency. <a>Learn more about caches</a> .": "Используйте кэши для зависимостей и других часто используемых файлов, чтобы ускорить рабочие процессы. Данные на этой странице отображаются с задержкой не менее 5 минут. <a>Подробнее о кэшах</a>.",
+    "<a>Learn more about caching</a> dependencies and build outputs to improve workflow execution time.": "<a>Подробнее о кэшировании</a> зависимостей и результатов сборки для ускорения выполнения рабочих процессов.",
+    "Order-dependent list of comma-separated template variables. <a>List of available template variables.</a>": "Список переменных шаблона через запятую (порядок важен). <a>Список доступных переменных шаблона.</a>",
+    "Improve security by including unique identifiers in the subject claim, ensuring that trust policies cannot be assumed by a different repository or organization with the same name. <a>Learn more about immutable subject claims.</a>": "Повысьте безопасность, включив уникальные идентификаторы в утверждение subject, чтобы другой репозиторий или организация с тем же именем не могли воспользоваться политиками доверия. <a>Подробнее о неизменяемых утверждениях subject.</a>",
+    "Define custom properties to include them as claims in OIDC tokens. <a>Learn more about repository custom properties.</a>": "Определите пользовательские свойства, чтобы включать их как утверждения в токены OIDC. <a>Подробнее о пользовательских свойствах репозитория.</a>",
+    "Two-factor authentication adds another level of security for your organization. <a>Learn more about requiring two-factor authentication in your organization.</a>": "Двухфакторная проверка подлинности добавляет организации ещё один уровень защиты. <a>Подробнее о требовании двухфакторной проверки подлинности в организации.</a>",
+    "Users can only use secure two-factor methods: authenticator apps, passkeys, security keys, and the GitHub mobile app. <a>Learn more about two-factor authentication</a>.": "Пользователи могут применять только надёжные способы двухфакторной проверки: приложения для проверки подлинности, ключи доступа, ключи безопасности и мобильное приложение GitHub. <a>Подробнее о двухфакторной проверке подлинности</a>.",
+    "SAML single sign-on (SSO) gives GitHub Enterprise accounts a way to control and secure access to organization resources like repositories, issues, and pull requests. <a>Learn more</a>": "Единый вход (SSO) SAML позволяет учётным записям GitHub Enterprise контролировать и защищать доступ к ресурсам организации, таким как репозитории, задачи и запросы на слияние. <a>Подробнее</a>",
+    "With an SSH certificate authority, enterprise accounts can provide SSH certificates that members can use to access your resources with Git. <a>Learn more</a>": "Центр сертификации SSH позволяет корпоративным учётным записям выдавать SSH-сертификаты, с помощью которых участники получают доступ к вашим ресурсам через Git. <a>Подробнее</a>",
+    "GitHub Enterprise Cloud is certified for SOC 1 Type 2, SOC 2 Type 2, FedRAMP LiSaaS. Enterprise customers can download these reports, and more, at any time. <a>Learn more</a>": "GitHub Enterprise Cloud сертифицирован по SOC 1 Type 2, SOC 2 Type 2 и FedRAMP LiSaaS. Корпоративные клиенты могут в любое время скачать эти и другие отчёты. <a>Подробнее</a>",
+    "Enable and disable team synchronization between your identity provider (IdP) and your organizations on GitHub Enterprise accounts. <a>Learn more</a>": "Включайте и отключайте синхронизацию команд между поставщиком удостоверений (IdP) и организациями в учётных записях GitHub Enterprise. <a>Подробнее</a>",
+    "GitHub Enterprise accounts can restrict access to private organization assets by configuring an allow list for specific IP addresses. <a>Learn more</a>": "Учётные записи GitHub Enterprise могут ограничить доступ к частным ресурсам организации, настроив список разрешённых IP-адресов. <a>Подробнее</a>",
+    "This organization does not have GitHub Advanced Security, which is free for public repositories and billed per active committer for private and internal repositories. To apply configurations with GitHub Advanced Security features to private repositories, <a>upgrade to GitHub Advanced Security.</a>": "В этой организации нет GitHub Advanced Security: он бесплатен для общедоступных репозиториев, а для частных и внутренних оплачивается за каждого активного автора коммитов. Чтобы применить конфигурации с функциями GitHub Advanced Security к частным репозиториям, <a>перейдите на GitHub Advanced Security.</a>",
+    "Select the runner type used by Dependabot for scans and version and security updates. <a>Learn about GitHub Actions runners.</a>": "Выберите тип раннера, который Dependabot использует для сканирования, обновлений версий и обновлений безопасности. <a>Подробнее о раннерах GitHub Actions.</a>",
+    "Suggest fixes for CodeQL alerts using AI. CodeQL default or advanced setup must be enabled for this feature to work. Agentic fixes use AI Credits. Learn more about the <a>limitations of autofix code suggestions</a>.": "Предлагайте исправления для оповещений CodeQL с помощью ИИ. Для работы этой функции должна быть включена стандартная или расширенная настройка CodeQL. Исправления с помощью агентов расходуют кредиты ИИ. Подробнее об <a>ограничениях предложений кода автоисправления</a>.",
+    "Run AI code scan on pull requests. Only applies for non-CodeQL languages. <a>Learn more about AI Scan</a>.": "Запускайте ИИ-сканирование кода в запросах на слияние. Применяется только к языкам, не поддерживаемым CodeQL. <a>Подробнее об AI Scan</a>.",
+    "A Copilot license is required to use AI Scan. <a>Set up Copilot</a>.": "Для использования AI Scan требуется лицензия Copilot. <a>Настроить Copilot</a>.",
+    "Link will show in addition to <a>the message GitHub displays</a>": "Ссылка будет показана в дополнение к <a>сообщению GitHub</a>",
+    "Ensure your codebases are reliable, maintainable, and efficient by proactively scanning for best practices, reducing bugs, improving readability, and enabling easier testing, collaboration, and scalability. Enabling this feature will incur charges in <a>action minutes.</a>": "Обеспечьте надёжность, сопровождаемость и эффективность кодовой базы, заранее проверяя соответствие рекомендациям, сокращая число ошибок, улучшая читаемость и упрощая тестирование, совместную работу и масштабирование. Включение этой функции приведёт к расходу <a>минут Actions.</a>",
+    "GitHub will perform a point-in-time scan of the default branch of the repository, reporting back code quality findings and suggestions to developers. It will also proactively start scanning pull requests for code quality issues. To enable code coverage reports, you will need to manually commit a workflow file, once code quality is enabled. <a>Learn how to configure code coverage</a>": "GitHub выполнит разовое сканирование ветки репозитория по умолчанию и сообщит разработчикам о проблемах качества кода и рекомендациях. Он также начнёт заранее проверять запросы на слияние на проблемы качества кода. Чтобы включить отчёты о покрытии кода, после включения проверки качества нужно вручную закоммитить файл рабочего процесса. <a>Узнайте, как настроить покрытие кода</a>",
+    "We will support quality rules and languages found in this <a>open source repository</a>. The languages supported with CodeQL for standard findings are: C#, Java, JavaScript/TypeScript, Python, Ruby, and Go. Other languages may be scanned with AI, but will not generate standard findings with CodeQL.": "Поддерживаются правила качества и языки из этого <a>репозитория с открытым исходным кодом</a>. Для стандартных результатов CodeQL поддерживаются языки: C#, Java, JavaScript/TypeScript, Python, Ruby и Go. Другие языки могут сканироваться с помощью ИИ, но стандартные результаты CodeQL для них не формируются.",
+    "Deploy keys use an SSH key to grant readonly or write access to a single repository. If you have a more complex project or want more fine-grain control over permissions, consider using a GitHub App instead. For more information, see <a>the GitHub Apps documentation</a>. Please note that deploy keys are not protected by a passphrase and can be a security risk if your server is compromised. For more information on deploy keys, see <a>managing deploy keys</a>.": "Ключи деплоя используют SSH-ключ для предоставления доступа только на чтение или на запись к одному репозиторию. Для более сложных проектов или детального управления разрешениями рассмотрите вместо них GitHub App. Подробнее см. в <a>документации по GitHub Apps</a>. Учтите, что ключи деплоя не защищены парольной фразой и могут представлять угрозу безопасности при компрометации сервера. Подробнее о ключах деплоя см. в разделе <a>управления ключами деплоя</a>.",
+    "Please consider <a>upgrading your plan</a> if you require this functionality.": "Если вам нужна эта функция, рассмотрите возможность <a>обновить тарифный план</a>.",
+    "Development environment secrets are environment variables that are <strong>encrypted</strong>. They are available to any codespace user with <b>collaborator</b> access to the repositories with access to that secret.": "Секреты среды разработки — это <strong>зашифрованные</strong> переменные среды. Они доступны любому пользователю codespace с доступом <b>соавтора</b> к репозиториям, имеющим доступ к этому секрету.",
+    "Secrets are credentials that are <strong>encrypted</strong>. Anyone with <b>collaborator</b> access to the repositories with access to each secret can use it for Dependabot.": "Секреты — это <strong>зашифрованные</strong> учётные данные. Любой пользователь с доступом <b>соавтора</b> к репозиториям, имеющим доступ к секрету, может использовать его для Dependabot.",
+    "Private registry configurations include passwords or tokens that are handled as encrypted secrets. Access to private registry configurations is limited to <strong>CodeQL default setup</strong> and <strong>Dependabot</strong>.": "Конфигурации частных реестров содержат пароли или токены, которые обрабатываются как зашифрованные секреты. Доступ к конфигурациям частных реестров есть только у <strong>стандартной настройки CodeQL</strong> и <strong>Dependabot</strong>.",
+    "As members request access for specific applications, those requests will be listed here for your approval. You can start by browsing <a>your own authorized applications</a>.": "Когда участники запрашивают доступ для определённых приложений, запросы появляются здесь для одобрения. Для начала можно просмотреть <a>свои авторизованные приложения</a>.",
+    "Control the maximum lifetime for fine-grained personal access tokens in your organizations. If set, your organization members can only use fine-grained personal access tokens against your resources if the tokens are set to expire within the period you provide. <a>Learn more about token expiration policies.</a>": "Управляйте максимальным сроком действия детализированных личных токенов доступа в организациях. Если он задан, участники организации смогут использовать такие токены для доступа к вашим ресурсам, только если срок их действия истекает в пределах указанного периода. <a>Подробнее о политиках срока действия токенов.</a>",
+    "To see or change who can manage GitHub Apps belonging to your organization, see <a>organization role assignments</a>. All organization owners can manage Apps, as well as users and teams with one or more of the app management permissions.": "Чтобы посмотреть или изменить, кто может управлять GitHub Apps организации, откройте <a>назначения ролей организации</a>. Управлять приложениями могут все владельцы организации, а также пользователи и команды с одним или несколькими разрешениями на управление приложениями.",
     "Images should be at least 640×320px (1280×640px for best display).": "Изображения должны быть не менее 640×320 пикселей (для наилучшего отображения — 1280×640 пикселей).",
     "Wikis host documentation for your repository.": "Вики предоставляют место для документации вашего репозитория.",
     "Public wikis will still be readable by everyone.": "Общедоступные вики останутся доступными для чтения всем.",
@@ -611,7 +773,7 @@
     "Pull requests allow others to suggest changes to your repository.": "Запросы на слияние позволяют другим предлагать изменения в вашем репозитории.",
     "If restricted, pull requests will still be readable by everyone who can see this repository.": "Даже при ограничении запросы на слияние останутся доступными для чтения всем, кто видит этот репозиторий.",
 
-    // ==== Параметры репозитория > General (параметры слияния Pull Requests) ====
+    // ==== Настройки репозитория > General (параметры слияния Pull Requests) ====
     "Pull Requests": "Запросы на слияние",
     "Allow merge commits": "Разрешить коммиты слияния",
     "Allow squash merging": "Разрешить слияние со сжатием",
@@ -646,7 +808,7 @@
     "After merging a pull request, linked issues can be closed automatically.": "После слияния запроса на слияние связанные задачи можно закрывать автоматически.",
     "Whenever linked pull requests have merged, auto-close the issue.": "Автоматически закрывать задачу при слиянии связанных запросов на слияние.",
 
-    // ==== Параметры репозитория > Access (разрешения на создание проблемы/PR) ====
+    // ==== Настройки репозитория > Access (разрешения на создание задачи/PR) ====
     "Creation allowed by:": "Создание разрешено для:",
     "All users": "Все пользователи",
     "Collaborators only": "Только соавторы",
@@ -655,7 +817,7 @@
     "Only collaborators can create PRs": "Только соавторы могут создавать запросы на слияние",
     "Only collaborators can create issues": "Только соавторы могут создавать задачи",
 
-    // ==== Параметры репозитория > Danger Zone ====
+    // ==== Настройки репозитория > Danger Zone ====
     "Danger Zone": "Опасная зона",
     "Change repository visibility": "Изменить видимость репозитория",
     "Change visibility": "Изменить видимость",
@@ -699,7 +861,7 @@
     "Status": "Статус",
     "Policies": "Политики",
 
-    // ==== Параметры репозитория > Rules (экран создания правил защиты ветвей) ====
+    // ==== Настройки репозитория > Rules (экран создания правил защиты веток) ====
     "Ruleset Name": "Имя набора правил",
     "Name": "Имя",
     "Enforcement status": "Статус применения",
@@ -780,7 +942,7 @@
     "Notes and higher": "Заметки и выше",
     "Require branches to be up to date before merging": "Требовать актуальность веток перед слиянием",
 
-    // ==== Параметры репозитория > Actions (общие параметры) ====
+    // ==== Настройки репозитория > Actions (общие параметры) ====
     "Actions permissions": "Разрешения Actions",
     "Allow all actions and reusable workflows": "Разрешить все действия и переиспользуемые рабочие процессы",
     "Disable actions": "Отключить действия",
@@ -813,16 +975,16 @@
     "Control how this repository is used by GitHub Actions workflows in other repositories.": "Определяет, как этот репозиторий используется рабочими процессами GitHub Actions в других репозиториях.",
     "Workflows in other repositories cannot access this repository.": "Рабочие процессы в других репозиториях не могут получить доступ к этому репозиторию.",
 
-    // ==== Параметры репозитория > Actions (Runners) ====
+    // ==== Настройки репозитория > Actions (Runners) ====
     "New self-hosted runner": "Новый раннер на собственном сервере",
     "There are no runners configured": "Не настроено ни одного раннера",
 
-    // ==== Параметры репозитория > Actions (Policies) ====
+    // ==== Настройки репозитория > Actions (Policies) ====
     "Actions policies": "Политики Actions",
     "You haven't created any policies": "Вы ещё не создали ни одной политики",
     "New policy": "Новая политика",
 
-    // ==== Параметры репозитория > Actions (OIDC) ====
+    // ==== Настройки репозитория > Actions (OIDC) ====
     "OIDC configuration": "Конфигурация OIDC",
     "Subject claim": "Утверждение субъекта",
     "Use default template": "Использовать шаблон по умолчанию",
@@ -830,7 +992,7 @@
     "Default subject claim prefix": "Префикс утверждения субъекта по умолчанию",
     "Save subject claim": "Сохранить утверждение субъекта",
 
-    // ==== Параметры репозитория > экран создания политики Actions ====
+    // ==== Настройки репозитория > экран создания политики Actions ====
     "New actions policy": "Новая политика действий",
     "Protect your most important actions workflows": "Защитите самые важные рабочие процессы действий",
     "Policy": "Политика",
@@ -848,7 +1010,7 @@
     "Roles": "Роли",
     "Automations": "Автоматизации",
 
-    // ==== Параметры репозитория > Pages ====
+    // ==== Настройки репозитория > Pages ====
     "Build and deployment": "Сборка и развёртывание",
     "Source": "Источник",
     "Deploy from a branch": "Развернуть из ветки",
@@ -857,7 +1019,7 @@
     "Workflow details will appear here once your site has been deployed.": "Сведения о рабочем процессе появятся здесь после развёртывания вашего сайта.",
     "With a GitHub Enterprise account, you can restrict access to your GitHub Pages site by publishing it privately. You can use privately published sites to share your internal documentation or knowledge base with members of your enterprise. You can try GitHub Enterprise risk-free for 30 days.": "С аккаунтом GitHub Enterprise можно ограничить доступ к сайту GitHub Pages, опубликовав его в приватном режиме. Приватно опубликованные сайты можно использовать для обмена внутренней документацией или базой знаний с участниками вашего предприятия. Вы можете попробовать GitHub Enterprise без риска в течение 30 дней.",
 
-    // ==== Параметры репозитория > секреты и переменные (/settings/secrets/actions) ====
+    // ==== Настройки репозитория > секреты и переменные (/settings/secrets/actions) ====
     "Actions secrets and variables": "Секреты и переменные Actions",
     "Variables": "Переменные",
     "Environment secrets": "Секреты среды",
@@ -865,11 +1027,11 @@
     "Repository secrets": "Секреты репозитория",
     "New repository secret": "Новый секрет репозитория",
 
-    // ==== Параметры репозитория > ключи развёртывания ====
+    // ==== Настройки репозитория > ключи деплоя ====
     "Add deploy key": "Добавить ключ деплоя",
     "There are no deploy keys for this repository": "Для этого репозитория нет ключей деплоя",
 
-    // ==== Параметры репозитория > Webhook ====
+    // ==== Настройки репозитория > Webhook ====
     "Add webhook": "Добавить вебхук",
     "Payload URL": "URL-адрес полезной нагрузки",
     "Content type": "Тип содержимого",
@@ -1032,7 +1194,7 @@
     "There was an error while loading.": "При загрузке произошла ошибка.",
     "Please reload this page": "Перезагрузите страницу",
 
-    // ==== Параметры репозитория > облачный агент Copilot ====
+    // ==== Настройки репозитория > облачный агент Copilot ====
     "Copilot cloud agent": "Облачный агент Copilot",
     "Cloud agent": "Облачный агент",
     "Internet access": "Доступ в Интернет",
@@ -1050,7 +1212,7 @@
     "MCP configuration": "Конфигурация MCP",
     "Save MCP configuration": "Сохранить конфигурацию MCP",
 
-    // ==== Параметры репозитория > Advanced Security ====
+    // ==== Настройки репозитория > Advanced Security ====
     "Private vulnerability reporting": "Приватное сообщение об уязвимостях",
     "Dependency graph": "Граф зависимостей",
     "Dependabot alerts": "Оповещения Dependabot",
@@ -1866,7 +2028,7 @@
     "Annotations": "Аннотации",
     "Show more": "Показать больше",
 
-    // ==== Параметры репозитория > Collaborators and teams (/settings/access) ====
+    // ==== Настройки репозитория > Collaborators and teams (/settings/access) ====
     "Collaborators and teams": "Соавторы и команды",
     "Public repository": "Публичный репозиторий",
     "Private repository": "Приватный репозиторий",
@@ -1878,7 +2040,7 @@
     "Search by username, full name, or email": "Поиск по имени пользователя, полному имени или адресу электронной почты",
     "Add to repository": "Добавить в репозиторий",
 
-    // ==== Параметры репозитория > параметры модерации ====
+    // ==== Настройки репозитория > параметры модерации ====
     "Interaction limits": "Ограничения взаимодействия",
     "Temporary interaction restrictions": "Временные ограничения взаимодействия",
     "Limit to existing users": "Ограничить существующими пользователями",

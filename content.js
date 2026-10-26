@@ -5,6 +5,8 @@
 // - 走査対象（許可リスト）はCSSクラス名やdata-testidには依存しない
 //   （ユーザー作成コンテンツの除外のみ、CSSクラス名への限定的な例外あり）
 // - 辞書に完全一致した文字列のみ置換し、動的文字列（数値・日付混じり）は対象外
+// - リンク等のインライン要素で分割された文は、タグ付きキー（例: "… <a>Learn more</a>."）
+//   として文全体で完全一致させる
 // - 一致しない場合は原文表示のまま（翻訳失敗時のフォールバック）
 
 (() => {
@@ -186,6 +188,14 @@
     'button[aria-label="Search or jump to..."]',
     'qbsearch-input',
     'modal-dialog#search-suggestions-dialog',
+    // 新しいグローバルヘッダー（GlobalNav）のクイック検索。起動ボタンは自身が除外対象
+    // なのでaria-labelが翻訳されて一致しなくなることはない。開くダイアログは
+    // 見出し・候補グループ名（Code、Suggestions等）が固定UIなので翻訳対象に残し、
+    // ユーザーが入力した検索語を重ねて表示するオーバーレイと、リポジトリ名・ファイル名・
+    // オーナー名が並ぶ候補行だけを、言語非依存なdata-testidで除外する
+    'button[aria-label="Open quick search dialog, type / to search"]',
+    '[data-testid="quick-search-input-overlay"]',
+    '[data-testid="quick-search-suggestion"]',
     // Wikiページの見出し（ページ名そのもの）。issue/PRのタイトルとは異なりbdiで
     // 保護されておらず、Wiki固有のクラスのためこのタグ自体はaria/role等を
     // 持たない。.markdown-body同様、除外専用の目印としてCSSクラスに頼る例外とする
@@ -206,13 +216,28 @@
   // ユーザー入力（bio、トークン名等）が<p>に出るか異なるため、確認済みの
   // 画面だけをここに追記していく方針とする。
   const EXACT_PATH_EXTRA_SELECTOR = {
-    '/settings/profile': ['p'],
-    '/settings/admin': ['p'],
-    '/settings/notifications': ['p'],
+    // チェックボックス下の説明（span.note）も固定文言。自己紹介等のユーザー入力は
+    // input/textareaの値なので対象にならない
+    '/settings/profile': ['p', '.form-checkbox .note'],
+    // ユーザー名変更ダイアログ（<dialog>にroleが付かず許可リスト外）の注意事項リスト
+    '/settings/admin': ['p', '.Overlay-body li'],
+    // React製のシステム通知設定の各行の説明（Row-module__rowSubtitle__、末尾はハッシュ）
+    '/settings/notifications': ['p', '[class*="Row-module__rowSubtitle__"]'],
+    // 以下は検証用アカウント（ブロック・アプリ一覧が空の状態）で<p>が固定文言だけで
+    // あることを確認済みの画面。ブロックしたユーザー名はhovercard付きリンクで除外される
+    '/settings/blocked_users': ['p'],
+    '/settings/interaction_limits': ['p'],
+    '/settings/copilot/coding_agent': ['p'],
+    '/settings/apps': ['p'],
+    // GitHub App / OAuth App登録フォーム。名前やURL等の入力内容はinputの値なので対象外
+    '/settings/apps/new': ['p'],
+    // OAuth App登録フォームはformにaria-labelがなく、見出し下の説明（.Subhead-description）も許可する
+    '/settings/applications/new': ['p', '.Subhead-description'],
     '/settings/security_analysis': ['p'],
     '/settings/keys': ['p'],
     '/settings/repositories': ['p'],
-    '/settings/codespaces': ['p'],
+    // Codespacesのシークレット欄の説明はReact製の素の<span>（末尾はハッシュ）
+    '/settings/codespaces': ['p', '[class*="DescriptionElement-module__descriptionText__"]'],
     '/settings/packages': ['p'],
     // .FormControl-captionはdata-component="FormControl.Caption"と同様、
     // 古い世代のPrimer CSSクラスだがハッシュ化されていない安定した公式クラス名。
@@ -279,6 +304,55 @@
       pattern: /^\/[^/]+\/[^/]+\/settings\/copilot\/[a-z_]+$/,
       selectors: ['p', '[class*="Description-module__Box__"]', '[data-component="FormControl.Caption"]']
     },
+    // リポジトリSettingsの一覧系画面（Branches、Runners・Runner追加、Webhook一覧、
+    // Environments、Deploy keys、Secrets・Variables、Autolink references）。
+    // いずれもページ冒頭の説明文が<p>で、リンクを含むものはタグ付きキーで訳す。
+    // 検証用リポジトリ（一覧が空の状態）で<p>が固定文言だけであることを確認済み。
+    // Webhook一覧の削除確認文はPayload URLを含むが、URL入りで辞書キーと一致しえない
+    {
+      pattern: /^\/[^/]+\/[^/]+\/settings\/(branches|actions\/runners(\/new)?|hooks|environments|keys|secrets\/(actions|agents|codespaces|dependabot)|variables\/actions|key_links)$/,
+      selectors: ['p']
+    },
+    // Organization Settings（/organizations/<org>/settings/…）。actions・security_analysis・
+    // secrets・copilot・hooks・OIDC等はパスが2セグメント＋settings/…の構成のため、上の
+    // リポジトリSettings用パターンにそのまま一致して翻訳される。ここではそれ以外の
+    // 画面のうち、検証用Organizationで<p>が固定文言だけであることを確認した画面を許可する。
+    // Organization名を含む文（削除確認等）は長文中への埋め込みで辞書キーと一致しえない
+    {
+      pattern: /^\/organizations\/[^/]+\/settings\/(profile|member_privileges|blocked_users|interaction_limits|moderators|repository-defaults|actions\/caches|security|code-quality|deploy_keys|secrets\/private_registries|oauth_application_policy|personal-access-tokens|apps)$/,
+      selectors: ['p']
+    },
+    // Organization名の変更・削除ダイアログ（<dialog>にroleが付かず許可リスト外）の注意事項リストと、
+    // Danger zoneの各項目の説明（Primer CSSの.listgroup-item-body）
+    { pattern: /^\/organizations\/[^/]+\/settings\/profile$/, selectors: ['.Overlay-body li', '.listgroup-item-body'] },
+    // Organization Settings > Codespaces。プラン未対応時の案内（.flash）
+    { pattern: /^\/organizations\/[^/]+\/settings\/codespaces$/, selectors: ['.flash'] },
+    // Organization Settings > 高度なセキュリティ（security_products）の未契約バナー。
+    // PrimerのBanner.Descriptionという素の<div>で実装されている
+    { pattern: /^\/organizations\/[^/]+\/settings\/security_products$/, selectors: ['[data-component="Banner.Description"]'] },
+    // Organization Settings > Code quality。FAQアコーディオンの回答（React製、末尾はハッシュ）
+    { pattern: /^\/organizations\/[^/]+\/settings\/code-quality$/, selectors: ['[class*="CodeQualitySettingsFaq-module__"]'] },
+    // Tag protection（非推奨化の案内バナー）。BranchesのバナーはReact製GrowthBannerの
+    // <p>だが、この画面では同じバナーの本文が素の<span>に入っているため、バナー本文の
+    // コンテナだけを許可する（末尾はビルドごとに変わるハッシュなので接頭辞で指定）
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/tag_protection$/, selectors: ['[class*="GrowthBanner-module__childrenText__"]'] },
+    // Actions > OIDC。ページ概要はPrimerのPageHeader.Description、設定項目の説明は
+    // FormControl.Captionという素の<div>/<span>で実装されている。カスタマイズ対象の
+    // クレームはGitHubが定義する固定の選択肢で、ユーザー入力の説明文は含まない
+    {
+      pattern: /^\/[^/]+\/[^/]+\/settings\/actions\/oidc-configuration$/,
+      // Organizationの同画面（/organizations/<org>/settings/…）もこのパターンに一致し、
+      // カスタムプロパティ欄の説明はCopilot設定と同じDescription-module__Box__に入る
+      selectors: ['[data-component="PageHeader.Description"]', '[data-component="FormControl.Caption"]', '[class*="Description-module__Box__"]']
+    },
+    // 高度なセキュリティの各セクション見出し下の説明文（Primer CSSの.Subhead-description）
+    // Organizationの同画面では各機能の補足（Copilotライセンスが必要等）がPrimer CSSの
+    // .ControlGroup-item-footerに入る
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/security_analysis$/, selectors: ['.Subhead-description', '.ControlGroup-item-footer'] },
+    // Deploy key追加画面・メール通知設定画面のチェックボックス/入力欄の説明文。
+    // /settings/personal-access-tokens/newと同じ旧世代Primerの.FormControl-caption。
+    // タイトル・キー・メールアドレスは入力欄（value）なので翻訳されない
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/(keys\/new|notifications\/edit)$/, selectors: ['.FormControl-caption'] },
     // リリース作成画面。説明欄はtextarea、タグ・ブランチ・コミット候補は専用の
     // 除外セレクターで保護済みのため、画面下部の固定ガイド文だけを許可する
     { pattern: /^\/[^/]+\/[^/]+\/releases\/new$/, selectors: ['p'] },
@@ -423,7 +497,22 @@
     return [...new Set([...exact, ...pattern])];
   }
 
-  function getAllowlistSelector() {
+  // セレクター文字列はパスと設定だけで決まるが、テキストノードごとの除外判定から
+  // 呼ばれるため毎回組み立て直すと重い。SPA遷移でパスが変わったときだけ作り直す
+  function memoizeByPath(build) {
+    let cachedKey = null;
+    let cachedValue;
+    return () => {
+      const key = `${translateGlobalHeader}:${location.pathname}`;
+      if (key !== cachedKey) {
+        cachedValue = build();
+        cachedKey = key;
+      }
+      return cachedValue;
+    };
+  }
+
+  const getAllowlistSelector = memoizeByPath(() => {
     const isExtendedScopePage =
       /\/settings(\/|$)/.test(location.pathname) ||
       /^\/orgs\/[^/]+\/(people|teams|security-managers|packages|sponsoring|repositories|actions)(\/|$)/.test(location.pathname) ||
@@ -453,9 +542,9 @@
       : BASE_SELECTOR.slice();
 
     return selector.concat(getPathExtraSelector()).join(',');
-  }
+  });
 
-  function getExcludeSelector() {
+  const getExcludeSelector = memoizeByPath(() => {
     const pathExtra = getPathExtraSelector();
     const exclude = EXCLUDE_SELECTOR_BASE
       .filter((selector) => !translateGlobalHeader || selector !== GLOBAL_HEADER_SELECTOR)
@@ -463,7 +552,7 @@
     // このページでpを許可リスト側に回した場合のみ、除外リストからは外す
     if (!pathExtra.includes('p')) exclude.push('p');
     return exclude.join(',');
-  }
+  });
 
   function isUserContentLink(el) {
     const link = el.closest('a[href]');
@@ -631,10 +720,29 @@
     return !el || Boolean(el.closest(getExcludeSelector())) || isUserContentLink(el) || isSavedViewsLink(el) || isWorkflowUserStep(el) || isRepositorySwitcherOption(el) || isCustomDiscussionCategory(el);
   }
 
+  // 拡張自身が書き換えたテキストノード。書き込みはcharacterDataミューテーションとして
+  // 観測されるが、再走査しても結果は変わらないため、翻訳処理の直後にこれらの
+  // レコードだけを捨てて無駄な再走査（許可リスト祖先全体の再走査）を防ぐ
+  const selfWrittenNodes = new Set();
+
+  // 値が変わるときだけ書き込む。nodeValueへの代入は同じ文字列でも
+  // characterDataミューテーションを発火させる仕様のため、辞書に
+  // "Wiki": "Wiki" のような自己マッピング（意図的に未翻訳の固有名詞）が
+  // あると収束せず、requestAnimationFrameが実行されるたびに同じ処理が続く。
+  // 表示は一切変わらないので気づきにくいが、不要な再走査が継続する。
+  // "Wikis" -> "Wiki" のように訳文が別のキーでもある場合も、2巡目でここに
+  // 到達して同じループになるため、書き込み直前の比較で止めるのが確実
+  function setNodeValue(node, value) {
+    if (node.nodeValue === value) return;
+    node.nodeValue = value;
+    selfWrittenNodes.add(node);
+  }
+
   async function loadDictionary(language) {
     try {
       const url = chrome.runtime.getURL(`dictionaries/${language}.json`);
       const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const text = await res.text();
       const data = JSON.parse(globalThis.GitHubUITranslator.stripJsonComments(text));
       // プロトタイプなしオブジェクトに詰め替える。通常オブジェクトだと画面上の
@@ -656,30 +764,132 @@
     });
   }
 
-  function translateElement(el, dict) {
-    const label = el.getAttribute('aria-label');
-    if (label) {
-      const trimmed = label.trim();
-      const targetMatch = el.closest('.js-release-target-wrapper') && trimmed.match(/^Target:\s+(.+)$/);
-      const translated = dict[trimmed] || (targetMatch && dict['Target:'] && `${dict['Target:']} ${targetMatch[1]}`);
-      if (translated) {
-        // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
-        const replacement = label.replace(trimmed, () => translated);
-        // 書き込みは値が変わるときだけ（理由はテキストノード側の同じガードを参照）
-        if (replacement !== label) el.setAttribute('aria-label', replacement);
-      }
-    }
+  // 文中にリンク等が入るとテキストノードが「前半 / リンク文言 / 句点」に分割され、
+  // 1行キーの完全一致では訳せない。そこで子ノードを連結した
+  // "前半 <a>リンク文言</a>." 形式のタグ付きキーで文全体を照合する。
+  // 要素ノードは移動・生成せず既存テキストノードの値だけを書き換えるため、
+  // 訳文はタグの種類と順序を原文と揃える必要がある（scripts/validate.mjsで検証）
+  const INLINE_TAGS = new Set(['A', 'B', 'CODE', 'EM', 'I', 'KBD', 'STRONG']);
+  const INLINE_TAG_PATTERN = /<([a-z]+)>([^<]*)<\/\1>/g;
 
-    // placeholder属性もテキストノードではないため個別に処理する
-    const placeholder = el.getAttribute('placeholder');
-    if (placeholder) {
-      const trimmed = placeholder.trim();
-      const translated = dict[trimmed];
-      if (translated) {
-        const replacement = placeholder.replace(trimmed, () => translated);
-        if (replacement !== placeholder) el.setAttribute('placeholder', replacement);
+  function translateMixedContent(el, dict) {
+    // gaps[i]はi番目のインライン要素の直前にあるテキストノード群（末尾は最後の要素の後）
+    const gaps = [[]];
+    const inlines = [];
+    let key = '';
+    let hasText = false;
+    for (const child of el.childNodes) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        gaps[gaps.length - 1].push(child);
+        key += child.nodeValue;
+        if (child.nodeValue.trim()) hasText = true;
+      } else if (child.nodeType === Node.ELEMENT_NODE && INLINE_TAGS.has(child.tagName)) {
+        // アイコン用svg等は無視し、文言を持つテキストノードが1つだけの要素に限る
+        const walker = document.createTreeWalker(child, NodeFilter.SHOW_TEXT, null);
+        const textNodes = [];
+        let node;
+        while ((node = walker.nextNode())) {
+          if (node.nodeValue.trim()) textNodes.push(node);
+        }
+        if (textNodes.length !== 1) return;
+        const tag = child.tagName.toLowerCase();
+        const raw = textNodes[0].nodeValue;
+        const text = raw.trim();
+        inlines.push({ tag, node: textNodes[0], text });
+        gaps.push([]);
+        // 要素内側の前後空白は表示上タグの外側の空白と同じなので、キーではタグの外に出す
+        key += `${raw.match(/^\s*/)[0]}<${tag}>${text}</${tag}>${raw.match(/\s*$/)[0]}`;
+      } else if (child.nodeType !== Node.COMMENT_NODE) {
+        return;
       }
     }
+    if (inlines.length === 0 || !hasText) return;
+
+    // 大半の要素は辞書に載らないため、重い除外判定より先に辞書を引く
+    const translated = dict[key.trim().replace(/\s+/g, ' ')];
+    if (!translated || isExcludedElement(el)) return;
+
+    const parts = [];
+    const pieces = [];
+    let last = 0;
+    for (const match of translated.matchAll(INLINE_TAG_PATTERN)) {
+      parts.push(translated.slice(last, match.index));
+      pieces.push({ tag: match[1], text: match[2] });
+      last = match.index + match[0].length;
+    }
+    parts.push(translated.slice(last));
+
+    if (pieces.length !== inlines.length) return;
+    for (let i = 0; i < inlines.length; i++) {
+      if (pieces[i].tag !== inlines[i].tag) return;
+      // code・bdi・hovercard等の除外セレクターに該当する要素は、訳文でも原文のままの場合のみ
+      // 許可する。isUserContentLink等のURL判定は短いリンク文言と辞書キーの偶然一致を防ぐ
+      // ためのもので、固定文を含む文全体の完全一致では不要（FUNDING.ymlへのblobリンク等）
+      if (inlines[i].node.parentElement.closest(getExcludeSelector()) && pieces[i].text !== inlines[i].text) return;
+    }
+    // 訳文の文言を置く既存テキストノードがない位置があれば、書き換え前に諦める
+    if (parts.some((part, i) => part.trim() && gaps[i].length === 0)) return;
+
+    gaps.forEach((nodes, i) => nodes.forEach((node, j) => setNodeValue(node, j === 0 ? parts[i] : '')));
+    inlines.forEach(({ node, text }, i) => setNodeValue(node, node.nodeValue.replace(text, () => pieces[i].text)));
+  }
+
+  // テキストノード・属性値に共通の辞書引き。改行やインデントを含む複数行の値も
+  // 辞書の1行キーと一致させるため、前後の空白を除いて連続空白を単一スペースに
+  // 正規化してから完全一致させる
+  function lookup(text, el, dict) {
+    const key = text.trim().replace(/\s+/g, ' ');
+    if (!key) return null;
+    if (dict[key]) return dict[key];
+    // リリース作成画面のTargetボタンは固定ラベルとユーザーが選択したブランチ名を
+    // 1つの文字列（例: "Target: main"）に結合する。完全一致の原則を保ちつつ、
+    // 用途を限定して固定の接頭辞だけを訳し、選択値は原文のまま保持する
+    if (key.startsWith('Target:') && dict['Target:'] && el.closest('.js-release-target-wrapper')) {
+      const match = key.match(/^Target:\s+(.+)$/);
+      if (match) return `${dict['Target:']} ${match[1]}`;
+    }
+    return null;
+  }
+
+  // 前後の空白は残したまま訳文に置き換えた値を返す。辞書に一致しなければnull。
+  // 置換対象は正規化前のtrim結果なので、値の中の余分な改行も訳文で解消される
+  function translateValue(value, el, dict) {
+    const translated = lookup(value, el, dict);
+    // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
+    return translated ? value.replace(value.trim(), () => translated) : null;
+  }
+
+  // 属性値の翻訳。書き込みは値が変わるときだけ（理由はsetNodeValueを参照）
+  function translateAttribute(el, name, dict) {
+    const value = el.getAttribute(name);
+    if (!value) return;
+    const replacement = translateValue(value, el, dict);
+    if (replacement !== null && replacement !== value) el.setAttribute(name, replacement);
+  }
+
+  // GitHubの日付・相対時刻（<relative-time>）は表示文字列がShadow DOM内にあり、
+  // テキストノードの走査では届かない。この要素はlang属性に応じてIntlで書式を
+  // 切り替えるため、辞書を使わず属性だけで翻訳先の言語にする（"last week"→"先週"）。
+  // prefix未指定時の既定値は英語の"on"で「on 9月9日」となるため空にする。
+  // GitHubがprefixを明示している要素はその指定を尊重して触らない
+  let relativeTimeLang = null;
+
+  function localizeRelativeTimes(root) {
+    if (!relativeTimeLang || !(root instanceof Element)) return;
+    const elements = root.matches('relative-time') ? [root] : root.querySelectorAll('relative-time');
+    for (const el of elements) {
+      // hydration前のReactパーシャル内は触らない（理由はEXCLUDE_SELECTOR_BASEの
+      // react-partial:not(.loaded)を参照）。hydration完了時のtranslateAllで処理される
+      if (el.closest('react-partial:not(.loaded)')) continue;
+      if (el.getAttribute('lang') !== relativeTimeLang) el.setAttribute('lang', relativeTimeLang);
+      if (!el.hasAttribute('prefix')) el.setAttribute('prefix', '');
+    }
+  }
+
+  function translateElement(el, dict) {
+    translateAttribute(el, 'aria-label', dict);
+    // placeholder属性もテキストノードではないため個別に処理する
+    translateAttribute(el, 'placeholder', dict);
 
     // <select>の<option>群（国名一覧など巨大な参照データ）は翻訳対象外
     if (el.tagName === 'SELECT') return;
@@ -697,22 +907,9 @@
     // 入力内容そのものであり、翻訳すると入力中の値を書き換えてしまうため
     if (el.tagName === 'INPUT') {
       if (el.type !== 'submit' && el.type !== 'button' && el.type !== 'reset') return;
-      const value = el.value;
-      const trimmed = value.trim();
-      const translated = dict[trimmed];
-      if (translated) {
-        const replacement = value.replace(trimmed, () => translated);
-        if (replacement !== value) el.value = replacement;
-      }
-      const disableWith = el.getAttribute('data-disable-with');
-      if (disableWith) {
-        const disableWithTrimmed = disableWith.trim();
-        const disableWithTranslated = dict[disableWithTrimmed];
-        if (disableWithTranslated) {
-          const replacement = disableWith.replace(disableWithTrimmed, () => disableWithTranslated);
-          if (replacement !== disableWith) el.setAttribute('data-disable-with', replacement);
-        }
-      }
+      const replacement = translateValue(el.value, el, dict);
+      if (replacement !== null && replacement !== el.value) el.value = replacement;
+      translateAttribute(el, 'data-disable-with', dict);
       return;
     }
 
@@ -731,36 +928,29 @@
       if (isBoundedContainer && textNodes.length > 100) return;
     }
 
+    // インライン要素で分割された文を、個々のテキストノードより先に文単位で訳す。
+    // 先にリンク文言だけが単独キー（"Learn more"等）で訳されると文全体が一致しなくなるため。
+    // 走査起点がリンク自身の場合（動的更新時）も、許可リスト内なら親の文を対象にする
+    const mixedCandidates = new Set();
     for (const textNode of textNodes) {
-      if (isExcludedElement(textNode.parentElement)) continue;
-      const value = textNode.nodeValue;
-      const trimmed = value.trim();
-      if (!trimmed) continue;
-      // 改行やインデントを含む複数行のテキストノードも辞書の1行キーと
-      // 一致させるため、辞書引き用にのみ連続空白を単一スペースに正規化する
-      // （置換対象は元のtrimmedのままなので、余分な改行も訳文で解消される）
-      const lookupText = trimmed.replace(/\s+/g, ' ');
-      // リリース作成画面のTargetボタンは固定ラベルとユーザーが選択したブランチ名を
-      // 1つのテキストノード（例: "Target: main"）に結合する。完全一致の原則を保ち
-      // つつ、用途を限定して固定の接頭辞だけを訳し、選択値は原文のまま保持する
-      const targetMatch = textNode.parentElement.closest('.js-release-target-wrapper') && lookupText.match(/^Target:\s+(.+)$/);
-      const translated = dict[lookupText] || (targetMatch && dict['Target:'] && `${dict['Target:']} ${targetMatch[1]}`);
-      if (translated) {
-        // 置換文字列中の "$&" 等が特殊解釈されないよう関数形式で渡す
-        const replacement = value.replace(trimmed, () => translated);
-        // 値が変わらない場合は書き込まない。nodeValueへの代入は同じ文字列でも
-        // characterDataミューテーションを発火させる仕様のため、辞書に
-        // "Wiki": "Wiki" のような自己マッピング（意図的に未翻訳の固有名詞）が
-        // あると収束せず、requestAnimationFrameが実行されるたびに同じ処理が続く。
-        // 表示は一切変わらないので気づきにくいが、不要な再走査が継続する。
-        // "Wikis" -> "Wiki" のように訳文が別のキーでもある場合も、2巡目でここに
-        // 到達して同じループになるため、書き込み直前の比較で止めるのが確実
-        if (replacement !== value) textNode.nodeValue = replacement;
+      const parent = textNode.parentElement;
+      const candidate = INLINE_TAGS.has(parent.tagName) ? parent.parentElement : parent;
+      if (candidate && (el.contains(candidate) || candidate.closest(getAllowlistSelector()))) {
+        mixedCandidates.add(candidate);
       }
+    }
+    mixedCandidates.forEach((candidate) => translateMixedContent(candidate, dict));
+
+    for (const textNode of textNodes) {
+      const replacement = translateValue(textNode.nodeValue, textNode.parentElement, dict);
+      // 大半のテキストノードは辞書に載らないため、重い除外判定は辞書ヒット時だけ行う
+      if (replacement === null || isExcludedElement(textNode.parentElement)) continue;
+      setNodeValue(textNode, replacement);
     }
   }
 
   function translateAll(root, dict) {
+    localizeRelativeTimes(root);
     const allowlistSelector = getAllowlistSelector();
     if (root.matches && root.matches(allowlistSelector) && !isExcludedElement(root)) {
       translateElement(root, dict);
@@ -777,11 +967,13 @@
 
     const dict = await loadDictionary(language);
     if (Object.keys(dict).length === 0) return;
+    // 言語コード（ja、zh-CN、pt-BR等）はそのままBCP 47の言語タグとして使える
+    relativeTimeLang = language;
 
     // SPA対応: GitHubの動的DOM更新に追従する
-    // 自分の書き込みもcharacterDataミューテーションとして観測されるため、再走査が
-    // ループしないことはtranslateElement側の「値が変わるときだけ書き込む」ガードに
-    // 依存している（訳文が原文と同じ自己マッピングでも止まる）。
+    // 自分の書き込みもcharacterDataミューテーションとして観測されるため、翻訳処理の
+    // 直後にtranslateAndFlushでそのレコードを捨てる。捨て損ねても再走査がループしない
+    // ことはsetNodeValueの「値が変わるときだけ書き込む」ガードが保証する。
     // 複数ミューテーションはrequestAnimationFrameで1回にまとめる
     //
     // 監視対象はdocument.bodyではなくdocumentElement（<html>）にする。
@@ -820,7 +1012,7 @@
       const hydrationObserver = new MutationObserver(() => {
         if (!partial.classList.contains('loaded')) return;
         hydrationObserver.disconnect();
-        translateAll(partial, dict);
+        translateAndFlush([partial]);
       });
       hydrationObserver.observe(partial, { attributes: true, attributeFilter: ['class'] });
     }
@@ -832,7 +1024,7 @@
       node.querySelectorAll(selector).forEach(watchPartialHydration);
     }
 
-    const observer = new MutationObserver((mutations) => {
+    function handleMutations(mutations) {
       for (const mutation of mutations) {
         if (mutation.type === 'characterData') {
           addPendingRoot(mutation.target);
@@ -840,6 +1032,10 @@
         }
         mutation.addedNodes.forEach((node) => {
           watchPendingPartials(node);
+          // 日付はユーザー作成コンテンツではないため、除外領域（Issueへのリンク内等）で
+          // 再走査の起点にならない場合も含め、追加された時点で必ず処理する。
+          // 属性の書き換えはこのobserverの監視対象外なのでミューテーションのループは起きない
+          localizeRelativeTimes(node);
           addPendingRoot(node);
         });
       }
@@ -850,11 +1046,25 @@
         scheduled = false;
         const roots = [...pendingRoots];
         pendingRoots.clear();
-        for (const root of roots) {
-          if (root.isConnected) translateAll(root, dict);
-        }
+        translateAndFlush(roots);
       });
-    });
+    }
+
+    const observer = new MutationObserver(handleMutations);
+
+    // 翻訳した直後、拡張自身の書き込みによるレコードだけを捨てる。翻訳処理は同期的で
+    // その間にGitHub側のスクリプトは走らないが、属性の書き換えでカスタム要素の
+    // コールバックが同期的にDOMを変えうるため、それ以外のレコードは通常どおり処理する
+    function translateAndFlush(roots) {
+      for (const root of roots) {
+        if (root.isConnected) translateAll(root, dict);
+      }
+      const records = observer.takeRecords()
+        .filter((record) => !(record.type === 'characterData' && selfWrittenNodes.has(record.target)));
+      selfWrittenNodes.clear();
+      if (records.length > 0) handleMutations(records);
+    }
+
     // 初回翻訳より先に監視を開始し、その間のDOM変更を取りこぼさないようにする
     observer.observe(document.documentElement, {
       childList: true,
@@ -864,14 +1074,14 @@
 
     // 初回翻訳の時点で既に存在するhydration待ちパーシャルにも監視を張る
     watchPendingPartials(document.body);
-    translateAll(document.body, dict);
+    translateAndFlush([document.body]);
 
     // ブラウザの「戻る/進む」でbfcacheからページが復元された場合、
     // DOM変更を伴わないことがありMutationObserverだけでは検知できないため、
     // pageshowイベントでも再翻訳する。
     window.addEventListener('pageshow', (event) => {
       if (event.persisted) {
-        translateAll(document.body, dict);
+        translateAndFlush([document.body]);
       }
     });
   })();
