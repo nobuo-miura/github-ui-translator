@@ -142,6 +142,14 @@ github-ui-translator/
 └─ icons/
 ```
 
+## Участие в разработке
+
+Мы рады улучшениям переводов и сообщениям об ошибках. Особенно ценны исправления от носителей языка, которые делают перевод более естественным.
+
+- Предлагайте улучшенные или недостающие переводы через [запрос на перевод](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml). Писать можно на английском или на русском
+- Сообщайте об ошибках и предлагайте новые функции в разделе [Issues](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
+- Перед отправкой запроса на слияние ознакомьтесь с [руководством для участников (English)](.github/CONTRIBUTING.md) ([日本語](.github/CONTRIBUTING.ja.md))
+
 ## Лицензия
 
 [Лицензия MIT](./LICENSE)

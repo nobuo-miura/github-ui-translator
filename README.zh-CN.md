@@ -142,6 +142,14 @@ github-ui-translator/
 └─ icons/
 ```
 
+## 参与贡献
+
+欢迎改进翻译和报告问题。特别欢迎各语言的母语者帮助修改译文，使其更加自然。
+
+- 如需改进译文或补充缺失的翻译，请提交[翻译请求](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml)，可以使用英文或中文填写
+- 如需报告问题或提出功能建议，请提交 [Issue](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
+- 提交 Pull Request 之前，请先阅读[贡献指南（English）](.github/CONTRIBUTING.md)（[日本語](.github/CONTRIBUTING.ja.md)）
+
 ## 许可证
 
 [MIT 许可证](./LICENSE)

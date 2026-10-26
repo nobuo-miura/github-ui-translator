@@ -11,6 +11,18 @@ body:
 
         This template is for languages that the extension already supports. To request support for a language that is not listed below, please open a Feature request instead.
 
+        Suggestions can be written in English or your own language.
+
+  - type: dropdown
+    id: request-type
+    attributes:
+      label: Request type
+      options:
+        - A single string
+        - Terminology across the UI
+    validations:
+      required: true
+
   - type: dropdown
     id: language
     attributes:
@@ -27,25 +39,28 @@ body:
     validations:
       required: true
 
-  - type: input
+  - type: textarea
     id: source-text
     attributes:
       label: Original English text
-      description: Enter the fixed GitHub UI text exactly as it appears.
-      placeholder: "For example: Compare & pull request"
+      description: Enter the fixed GitHub UI text exactly as it appears. For terminology requests, list the English terms, one per line.
+      placeholder: |
+        For example:
+        Compare & pull request
     validations:
       required: true
 
-  - type: input
+  - type: textarea
     id: current-translation
     attributes:
       label: Current translation
-      description: Leave this blank if the text is not currently translated.
+      description: Leave this blank if the text is not currently translated. For multiple strings or terms, use the same order as above.
 
-  - type: input
+  - type: textarea
     id: suggested-translation
     attributes:
       label: Suggested translation
+      description: For multiple strings or terms, use the same order as above.
     validations:
       required: true
 
@@ -53,7 +68,7 @@ body:
     id: affected-url
     attributes:
       label: GitHub URL where the text appears
-      description: Remove private repository names or other sensitive information before submitting.
+      description: For terminology requests, one example page is enough. Remove private repository names or other sensitive information before submitting.
       placeholder: "https://github.com/..."
     validations:
       required: true

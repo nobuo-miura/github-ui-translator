@@ -142,6 +142,14 @@ github-ui-translator/
 └─ icons/
 ```
 
+## 기여하기
+
+번역 개선과 버그 신고를 환영합니다. 특히 각 언어의 원어민이 번역을 더 자연스럽게 다듬어 주시면 큰 도움이 됩니다.
+
+- 번역 개선이나 아직 번역되지 않은 문구는 [번역 요청](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml)으로 제안해 주세요. 영어나 한국어로 작성할 수 있습니다
+- 버그 신고나 기능 요청은 [이슈](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)에 남겨 주세요
+- 풀 리퀘스트를 보내기 전에 [기여 가이드(English)](.github/CONTRIBUTING.md)([日本語](.github/CONTRIBUTING.ja.md))를 읽어 주세요
+
 ## 라이선스
 
 [MIT 라이선스](./LICENSE)
