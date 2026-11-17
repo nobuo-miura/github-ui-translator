@@ -17,6 +17,35 @@
     return data.languages;
   }
 
+  // ブラウザーの表示言語に対応する辞書がないときに使う言語
+  const FALLBACK_LANGUAGE = 'ja';
+
+  // ブラウザーの表示言語（"de"、"pt-BR"、"zh_CN"等）から、同梱辞書の言語コードを選ぶ。
+  // 完全一致を優先し、なければ言語部分が同じもの（"pt-PT" → "pt-BR"等）を使う。
+  // どれにも当てはまらなければFALLBACK_LANGUAGEを返す
+  function resolveDefaultLanguage(uiLanguage, codes) {
+    const normalized = String(uiLanguage || '').replace(/_/g, '-').toLowerCase();
+    if (!normalized) return FALLBACK_LANGUAGE;
+
+    const exact = codes.find((code) => code.toLowerCase() === normalized);
+    if (exact) return exact;
+
+    const base = normalized.split('-')[0];
+    const sameBase = codes.find((code) => code.toLowerCase().split('-')[0] === base);
+    return sameBase || FALLBACK_LANGUAGE;
+  }
+
+  // 言語が未設定（インストール直後など）のときの初期言語を返す。
+  // 言語一覧を読み込めなかった場合はFALLBACK_LANGUAGEにする
+  async function getDefaultLanguage() {
+    try {
+      const languages = await loadLanguages();
+      return resolveDefaultLanguage(chrome.i18n.getUILanguage(), languages.map(({ code }) => code));
+    } catch {
+      return FALLBACK_LANGUAGE;
+    }
+  }
+
   function getMessage(key, substitutions) {
     return chrome.i18n.getMessage(key, substitutions) || key;
   }
@@ -34,9 +63,11 @@
   }
 
   globalThis.GitHubUITranslator = {
+    getDefaultLanguage,
     getMessage,
     loadLanguages,
     localizeDocument,
+    resolveDefaultLanguage,
     stripJsonComments
   };
 })();

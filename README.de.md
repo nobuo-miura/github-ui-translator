@@ -81,8 +81,10 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ## Verwendung
 
 - Klicke auf das Erweiterungssymbol in der Symbolleiste, um den Übersetzungsschalter und die Sprachauswahl zu öffnen. Derzeit sind Japanisch, vereinfachtes Chinesisch, Spanisch, Deutsch, brasilianisches Portugiesisch, Koreanisch, Französisch und Russisch enthalten. Die Auswahlliste lässt sich durch weitere Wörterbücher ergänzen.
+- Solange du keine Sprache auswählst, richtet sich die Erweiterung nach der Anzeigesprache deines Browsers. Gibt es dafür kein Wörterbuch, wird Japanisch verwendet. Mit „Automatisch“ in der Sprachauswahl kehrst du zu diesem Verhalten zurück.
 - Wenn du den Schalter oder die Sprache änderst, werden geöffnete GitHub-Tabs neu geladen, damit die neue Einstellung wirksam wird.
 - Im Pop-up kannst du außerdem die Übersetzung des globalen Headers festlegen und dieses Repository öffnen. Auch eine Änderung dieser Option lädt geöffnete GitHub-Tabs neu. Die Header-Übersetzung ist standardmäßig aktiviert und wartet auf den Abschluss der React-Hydration von GitHub. Deaktiviere sie, falls sich die globale Suche nicht öffnen lässt.
+- GitHub-Tabs, die schon vor einem Update der Erweiterung geöffnet waren, werden möglicherweise nicht automatisch neu geladen. Wird eine Einstellung nicht übernommen, lade den Tab manuell neu.
 - Auf der Optionsseite der Erweiterung (`chrome://extensions` in Chrome, `edge://extensions` in Edge oder `about:addons` in Firefox) findest du Informationen zu den enthaltenen Wörterbüchern und zur Erweiterungsversion.
 
 ## Wörterbuch anpassen

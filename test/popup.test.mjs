@@ -1,0 +1,48 @@
+// ポップアップの言語選択（「自動」と手動選択の区別）のテスト
+import { describe, it, afterEach } from 'node:test';
+import assert from 'node:assert/strict';
+import { loadPopup } from './helpers.mjs';
+
+let popup;
+afterEach(() => popup?.close());
+
+function languageSelect() {
+  return popup.document.querySelector('#language');
+}
+
+describe('ポップアップの言語選択', () => {
+  it('先頭に「自動」があり、判定された言語名を表示する', async () => {
+    popup = await loadPopup({ uiLanguage: 'de' });
+    const [first, second] = languageSelect().options;
+    assert.equal(first.value, '');
+    assert.equal(first.textContent, 'autoLanguageOption(Deutsch)');
+    assert.equal(second.value, 'ja');
+  });
+
+  it('対応していない表示言語では、「自動」に日本語を表示する', async () => {
+    popup = await loadPopup({ uiLanguage: 'en-US' });
+    assert.equal(languageSelect().options[0].textContent, 'autoLanguageOption(日本語)');
+  });
+
+  it('言語が未設定なら「自動」を選択状態にする', async () => {
+    popup = await loadPopup({ uiLanguage: 'de' });
+    assert.equal(languageSelect().value, '');
+  });
+
+  it('保存済みの言語があれば、その言語を選択状態にする', async () => {
+    popup = await loadPopup({ uiLanguage: 'de', settings: { language: 'fr' } });
+    assert.equal(languageSelect().value, 'fr');
+  });
+
+  it('「自動」の状態から判定結果と同じ言語を選ぶと、その言語を保存する', async () => {
+    popup = await loadPopup({ uiLanguage: 'de' });
+    popup.select('#language', 'de');
+    assert.deepEqual(popup.storageCalls, [{ method: 'set', items: { language: 'de' } }]);
+  });
+
+  it('「自動」を選ぶと、保存済みの言語を削除する', async () => {
+    popup = await loadPopup({ uiLanguage: 'de', settings: { language: 'fr' } });
+    popup.select('#language', '');
+    assert.deepEqual(popup.storageCalls, [{ method: 'remove', keys: 'language' }]);
+  });
+});

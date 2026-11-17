@@ -82,14 +82,73 @@ function tick(window) {
 }
 
 /**
+ * popup.htmlをjsdom上で開き、shared.jsとpopup.jsを実行する。
+ * chrome.storage.localへの書き込みはstorageCallsに記録する。
+ *
+ * @param {object} [options]
+ * @param {object} [options.settings] chrome.storage.localに保存済みの値
+ * @param {string} [options.uiLanguage] chrome.i18n.getUILanguage()の戻り値
+ */
+export async function loadPopup({ settings = {}, uiLanguage = 'ja' } = {}) {
+  const dom = new JSDOM(readRepoFile('popup.html'), {
+    url: 'chrome-extension://test/popup.html',
+    runScripts: 'outside-only'
+  });
+  const { window } = dom;
+  const storageCalls = [];
+  const languages = readRepoFile('languages.json');
+
+  window.chrome = {
+    runtime: { getURL: (p) => `chrome-extension://test/${p}` },
+    i18n: {
+      // 置換文字列がどう渡されたか分かるよう、"キー(置換文字列)"の形で返す
+      getMessage: (key, substitutions) =>
+        substitutions ? `${key}(${[].concat(substitutions).join(',')})` : key,
+      getUILanguage: () => uiLanguage
+    },
+    storage: {
+      local: {
+        get: (defaults, callback) => callback({ ...defaults, ...settings }),
+        // jsdom側で作られたオブジェクトはプロトタイプが別物でdeepEqualが通らないため詰め替える
+        set: (items) => storageCalls.push({ method: 'set', items: { ...items } }),
+        remove: (keys) => storageCalls.push({ method: 'remove', keys })
+      }
+    }
+  };
+  window.fetch = async () => ({ ok: true, json: async () => JSON.parse(languages) });
+
+  window.eval(sharedSource);
+  window.eval(readRepoFile('popup.js'));
+  await tick(window);
+
+  return {
+    window,
+    document: window.document,
+    storageCalls,
+    // <select>の値を変えてchangeイベントを発火する
+    select(selector, value) {
+      const el = window.document.querySelector(selector);
+      el.value = value;
+      el.dispatchEvent(new window.Event('change', { bubbles: true }));
+    },
+    close() {
+      window.close();
+    }
+  };
+}
+
+/**
  * @param {object} options
  * @param {string} options.url ページのURL（パスで翻訳スコープが変わる）
  * @param {string} options.body <body>の中身
  * @param {Record<string, string>} [options.dict] 辞書（translationsの中身）
  * @param {object} [options.settings] chrome.storage.localの値（既定値を上書き）
  * @param {() => Promise<Response>} [options.fetchImpl] fetchの差し替え
+ * @param {string} [options.uiLanguage] chrome.i18n.getUILanguage()の戻り値
  */
-export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl } = {}) {
+export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl, uiLanguage = 'ja' } = {}) {
+  // fetchされたURL。どの言語の辞書を読みに行ったかの確認に使う
+  const fetchedUrls = [];
   // console.error()の出力（辞書読み込み失敗時など、content.jsが意図して出すもの）
   const consoleErrors = [];
   // タイマー・requestAnimationFrame・MutationObserver等のコールバック内で発生した
@@ -114,16 +173,24 @@ export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl 
 
   window.chrome = {
     runtime: { getURL: (p) => `chrome-extension://test/${p}` },
-    i18n: { getMessage: () => '', getUILanguage: () => 'ja' },
+    i18n: { getMessage: () => '', getUILanguage: () => uiLanguage },
     storage: {
       local: { get: (defaults, callback) => callback({ ...defaults, ...settings }) },
       onChanged: { addListener: () => {} }
     }
   };
-  window.fetch = fetchImpl || (async () => ({
-    ok: true,
-    text: async () => JSON.stringify({ translations: dict })
-  }));
+  // languages.jsonだけは実ファイルを返し、それ以外（辞書）はdictを返す
+  const defaultFetch = async (requestUrl) => {
+    if (String(requestUrl).endsWith('/languages.json')) {
+      const languages = readRepoFile('languages.json');
+      return { ok: true, text: async () => languages, json: async () => JSON.parse(languages) };
+    }
+    return { ok: true, text: async () => JSON.stringify({ translations: dict }) };
+  };
+  window.fetch = (requestUrl, ...rest) => {
+    fetchedUrls.push(String(requestUrl));
+    return (fetchImpl || defaultFetch)(requestUrl, ...rest);
+  };
 
   function throwIfExceptions() {
     if (exceptions.length === 0) return;
@@ -141,6 +208,7 @@ export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl 
     document: window.document,
     consoleErrors,
     exceptions,
+    fetchedUrls,
     // DOM変更後、MutationObserver→requestAnimationFrame→再翻訳が終わるまで待つ
     async settle() {
       await tick(window);

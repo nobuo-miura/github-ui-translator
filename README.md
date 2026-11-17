@@ -81,8 +81,10 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ## Usage
 
 - Click the extension icon in the toolbar to open the on/off toggle and the language selector. Japanese, Simplified Chinese, Spanish, German, Brazilian Portuguese, Korean, French, and Russian are bundled today; the dropdown is ready for additional languages once more dictionaries are added.
+- Until you pick a language, the extension follows your browser's display language. If there is no dictionary for it, Japanese is used. Choose "Auto" in the selector to return to this behavior.
 - Changing the toggle or the language reloads open GitHub tabs so the new setting takes effect.
 - The popup also lets you select whether to translate the global header and has a link to this repository. Changing this option reloads open GitHub tabs. Global header translation is on by default and waits for GitHub's React hydration to finish before translating; turn it off if the global search ever fails to open.
+- Tabs that were already open before the extension was updated may not reload automatically. If a setting does not take effect, reload the tab manually.
 - Open the extension options page (`chrome://extensions` on Chrome, `edge://extensions` on Edge, or `about:addons` on Firefox) to view the bundled dictionary information and extension version.
 
 ## Customizing the Dictionary

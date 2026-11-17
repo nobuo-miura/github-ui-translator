@@ -23,6 +23,14 @@
   "languageLabel": {
     "message": "语言"
   },
+  "autoLanguageOption": {
+    "message": "自动（$LANGUAGE$）",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
   "globalHeaderTranslationLabel": {
     "message": "翻译全局页眉"
   },

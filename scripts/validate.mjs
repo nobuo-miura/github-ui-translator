@@ -204,6 +204,11 @@ if (!manifest.content_scripts?.some((entry) => {
   errors.push('manifest.json: shared.js must load before content.js');
 }
 
+// content.jsは初期言語の判定でlanguages.jsonをfetchするため、公開リソースに含める必要がある
+if (!manifest.web_accessible_resources?.some((entry) => entry.resources?.includes('languages.json'))) {
+  errors.push('manifest.json: languages.json must be listed in web_accessible_resources');
+}
+
 if (warnings.length > 0) {
   console.warn(`\nWarnings:\n- ${warnings.join('\n- ')}`);
 }
