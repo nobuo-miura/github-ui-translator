@@ -755,13 +755,19 @@
     }
   }
 
-  function getSettings() {
-    return new Promise((resolve) => {
+  // 言語が未設定（ポップアップで一度も選んでいない）場合は、ブラウザーの表示言語から
+  // 初期言語を決める。storageには書き込まず、ユーザーが選ぶまで毎回判定する
+  async function getSettings() {
+    const items = await new Promise((resolve) => {
       chrome.storage.local.get(
-        { enabled: true, language: 'ja', translateGlobalHeader: true },
-        (items) => resolve(items)
+        { enabled: true, language: null, translateGlobalHeader: true },
+        (result) => resolve(result)
       );
     });
+    if (items.enabled && !items.language) {
+      items.language = await globalThis.GitHubUITranslator.getDefaultLanguage();
+    }
+    return items;
   }
 
   // 文中にリンク等が入るとテキストノードが「前半 / リンク文言 / 句点」に分割され、
@@ -1087,12 +1093,9 @@
   })();
 
   // ポップアップで設定（ON/OFF・言語）を変更したら、このタブ自身をリロードして
-  // 反映する。ポップアップ側でもchrome.tabs.reload()を呼んでいるが、<select>操作時に
-  // ポップアップがフォーカスを失って閉じるとchrome.storage.local.set()のコールバックが
-  // 実行されずリロードされないことがあるため、その保険としてここでも検知する。
-  // （ポップアップ側のリロードは、拡張機能更新直後などまだ新しいcontent.jsが
-  // 注入されていないタブを救うために残してある。両方が発火しても単に
-  // リロードが重複するだけで害はない）
+  // 反映する。ポップアップ側からはリロードしない（GitHubのタブを探すには"tabs"権限か
+  // ホスト権限が必要なため）。拡張機能の更新直後など、古いcontent.jsが残ったタブは
+  // この通知を受け取れないので、ユーザーが手動で再読み込みするまで反映されない
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
     if ('enabled' in changes || 'language' in changes || 'translateGlobalHeader' in changes) {

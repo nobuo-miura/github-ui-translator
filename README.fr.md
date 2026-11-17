@@ -81,8 +81,10 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ## Utilisation
 
 - Cliquez sur l’icône de l’extension dans la barre d’outils pour afficher l’interrupteur de traduction et le sélecteur de langue. Le japonais, le chinois simplifié, l’espagnol, l’allemand, le portugais brésilien, le coréen, le français et le russe sont actuellement inclus ; la liste pourra accueillir d’autres langues lorsque de nouveaux dictionnaires seront ajoutés.
+- Tant que vous n’avez pas choisi de langue, l’extension suit la langue d’affichage du navigateur. S’il n’existe pas de dictionnaire pour cette langue, le japonais est utilisé. Sélectionnez « Automatique » dans le sélecteur pour revenir à ce comportement.
 - Toute modification de l’interrupteur ou de la langue recharge les onglets GitHub ouverts afin d’appliquer le nouveau paramètre.
 - La fenêtre contextuelle permet aussi de choisir si l’en-tête global doit être traduit et contient un lien vers ce dépôt. La modification de cette option recharge également les onglets GitHub. La traduction de l’en-tête global est activée par défaut et attend la fin de l’hydratation React de GitHub ; désactivez-la si la recherche globale ne s’ouvre pas.
+- Les onglets GitHub déjà ouverts avant une mise à jour de l’extension peuvent ne pas se recharger automatiquement. Si un paramètre n’est pas appliqué, rechargez l’onglet manuellement.
 - Ouvrez la page des options de l’extension (`chrome://extensions` dans Chrome, `edge://extensions` dans Edge ou `about:addons` dans Firefox) pour consulter les informations sur les dictionnaires inclus et la version de l’extension.
 
 ## Personnalisation du dictionnaire

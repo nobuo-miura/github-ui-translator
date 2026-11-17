@@ -23,6 +23,14 @@
   "languageLabel": {
     "message": "Langue"
   },
+  "autoLanguageOption": {
+    "message": "Automatique ($LANGUAGE$)",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
   "globalHeaderTranslationLabel": {
     "message": "Traduire l’en-tête global"
   },

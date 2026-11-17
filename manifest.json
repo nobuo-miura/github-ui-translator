@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extensionName__",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "action": {
@@ -37,7 +37,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["dictionaries/*.json"],
+      "resources": ["dictionaries/*.json", "languages.json"],
       "matches": ["https://github.com/*"]
     }
   ],
