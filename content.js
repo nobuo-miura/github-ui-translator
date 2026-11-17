@@ -69,27 +69,36 @@
     // リポジトリ切替対象を示す要素で、表示テキストはユーザーが付けたリポジトリ名
     '[class*="repoPickerCrumb"]',
     // リポジトリのコード画面上部に表示されるリポジトリ名。Starボタン等の固定UIを
-    // 除外しないよう、CodeViewHeaderのタイトル内にあるstrongだけに限定する
+    // 除外しないよう、リポジトリ名の表示部分だけに限定する。CSS Modulesのクラス名は
+    // 「CodeViewHeader-module__TitleWrapper__<hash>」から「CodeViewHeader-module_<hash>_TitleWrapper」
+    // の形式に変わったため、言語にもクラス名の形式にも依存しないdata-testidを主に使う
+    '[data-testid="repo-name-wrapper"]',
     '[class*="CodeViewHeader-module__TitleWrapper__"] strong',
     // グローバルなリポジトリ一覧（/repos）の各行。React製のReposListItemが付与する
     // NwoTitleは「オーナー名 / リポジトリ名」の複合表示、FormattedDescriptionは
     // リポジトリの説明文で、いずれもユーザーが入力した内容。辞書キーと完全一致すると
-    // 誤訳されるため、行内の更新日時や可視性バッジ等の固定UIは残してこの2つを除外する
-    '[class*="ReposListItem-module__NwoTitle__"]',
-    '[class*="ReposListItem-module__FormattedDescription__"]',
+    // 誤訳されるため、行内の更新日時や可視性バッジ等の固定UIは残してこの2つを除外する。
+    // クラス名は「ReposListItem-module__NwoTitle__<hash>」から
+    // 「ReposListItem-module_<hash>_NwoTitle」に変わったため、どちらの形式にも一致させる
+    '[class*="ReposListItem-module"][class*="NwoTitle"]',
+    '[class*="ReposListItem-module"][class*="FormattedDescription"]',
     // 「新しいイシュー」ボタンから開くテンプレート選択ダイアログ（CreateIssueDialog）。
     // /issues/new/choose ページと違い各テンプレートは<a href>ではなくReactの
     // ActionList項目としてレンダリングされURLパターンでは保護できない。テンプレート名
     // （name:）と説明（description:）はリポジトリ内のYAMLでユーザーが自由に付ける値
     // なので、data-testid="template-list"配下の項目タイトルと説明を除外する。
-    // 「空のイシュー」等の固定行の文言もここに含まれ訳されなくなるが、誤訳を防ぐ側を優先する
-    '[data-testid="template-list"] [class*="IssueTemplateItem-module__actionListTitle__"]',
+    // 「空のイシュー」等の固定行の文言もここに含まれ訳されなくなるが、誤訳を防ぐ側を優先する。
+    // タイトルのクラス名は「IssueTemplateItem-module__actionListTitle__<hash>」から
+    // 「actionListTitle__<hash>」に変わったため、共通部分で一致させる
+    '[data-testid="template-list"] [class*="actionListTitle__"]',
     '[data-testid="template-list"] [class*="prc-ActionList-Description-"]',
     // Issue Form本体のラベル・説明・Markdownはリポジトリ内のYAMLで定義される内容。
     // /issues/new ページに加え、一覧などから開くCreateIssueDialog内のフォームでも
     // 同じコンテナが使われる。パスに依存せずコンテナ単位で保護する（右側の担当者等の
-    // 固定UIはコンテナ外なので影響しない）
-    '[class*="IssueFormElements-module__formElementsContainer__"]',
+    // 固定UIはコンテナ外なので影響しない）。クラス名は
+    // 「IssueFormElements-module__formElementsContainer__<hash>」から
+    // 「formElementsContainer__<hash>」に変わったため、共通部分で一致させる
+    '[class*="formElementsContainer__"]',
     // リポジトリコード画面のReactファイルツリー。treeitemはリンクではないため
     // isUserContentLinkでは保護できず、遅延描画後にファイル名・ディレクトリ名が
     // 辞書キーと完全一致すると誤訳される。固定UIを残してtree本体だけを除外する
@@ -107,6 +116,22 @@
     '[role="listbox"][aria-label="Milestone results"] [role="option"]',
     '[role="listbox"][aria-label="Project results"] [role="option"]',
     '[role="listbox"][aria-label="User results"] [role="option"]',
+    // Issueサイドバーのタイプ・フィールド・フィールド値の選択肢（Task・Priority・High等）。
+    // いずれもユーザーが設定画面で定義する値。上の4つと同じItemPickerだが、拡張自身が
+    // aria-labelを翻訳するため英語のaria-labelに依存せず、言語非依存のdata-testidで
+    // ItemPicker全体の候補行を保護する
+    '[data-testid="item-picker-root"] [role="option"]',
+    // Issueサイドバーの「Fields」に並ぶフィールド名と設定値。ボタン内にあるため
+    // 走査対象になるが、どちらもユーザーが定義した内容
+    '[class*="issueFieldLabel__"]',
+    '[class*="issueFieldValueText__"]',
+    // Issueに設定したタイプ名（詳細画面のタイトル下・サイドバー、Issue一覧の各行）。
+    // type:"Task"で絞り込むリンクのToken表示で、タイプ名はユーザーが設定画面で定義する
+    '[class*="issueTypeTokenContainer__"]',
+    // レビュー送信ポップアップの保留中コメント一覧。見出しのファイル名リンク自体は
+    // PRへのリンクとしてisUserContentLinkで保護されるが、直後のツールチップ（span）に
+    // 同じファイル名が素のテキストで入るため、リンクに続くツールチップだけを除外する
+    'h3 > a[href*="/changes#r"] + [data-component="Tooltip"]',
     // Issueの「Create a branch」ダイアログ。ベースリポジトリとベースブランチは
     // ユーザーが付けた識別子なので、候補行と選択後にボタン内へ表示される値を保護する。
     // ボタン自体のaria-labelは固定UIとして翻訳できるよう、表示値のspanだけを除外する
@@ -221,8 +246,9 @@
     '/settings/profile': ['p', '.form-checkbox .note'],
     // ユーザー名変更ダイアログ（<dialog>にroleが付かず許可リスト外）の注意事項リスト
     '/settings/admin': ['p', '.Overlay-body li'],
-    // React製のシステム通知設定の各行の説明（Row-module__rowSubtitle__、末尾はハッシュ）
-    '/settings/notifications': ['p', '[class*="Row-module__rowSubtitle__"]'],
+    // React製のシステム通知設定の各行の説明。クラス名は「Row-module__rowSubtitle__<hash>」
+    // から「rowSubtitle__<hash>」に変わったため、共通部分で新旧どちらにも一致させる
+    '/settings/notifications': ['p', '[class*="rowSubtitle__"]'],
     // 以下は検証用アカウント（ブロック・アプリ一覧が空の状態）で<p>が固定文言だけで
     // あることを確認済みの画面。ブロックしたユーザー名はhovercard付きリンクで除外される
     '/settings/blocked_users': ['p'],
@@ -237,7 +263,7 @@
     '/settings/keys': ['p'],
     '/settings/repositories': ['p'],
     // Codespacesのシークレット欄の説明はReact製の素の<span>（末尾はハッシュ）
-    '/settings/codespaces': ['p', '[class*="DescriptionElement-module__descriptionText__"]'],
+    '/settings/codespaces': ['p', '[class*="descriptionText__"]'],
     '/settings/packages': ['p'],
     // .FormControl-captionはdata-component="FormControl.Caption"と同様、
     // 古い世代のPrimer CSSクラスだがハッシュ化されていない安定した公式クラス名。
@@ -254,6 +280,14 @@
   // owner/repoのように可変のパスセグメントを含むため完全一致では表現できない
   // 画面向け。末尾を$で固定し、確認済みのサブページ以外へ意図せず広がらないようにする。
   const PATTERN_EXTRA_SELECTOR = [
+    // Issue/PR詳細画面のPrimer Label（会話の「Resolved」、コメントの「Owner」等の状態バッジ）。
+    // 素の<span>で実装されているため許可リストに入らない。ユーザーが付けるラベルは
+    // prc-Token-IssueLabelという別の部品で、こちらは除外リスト側で保護される
+    { pattern: /^\/[^/]+\/[^/]+\/(issues|pull)\/\d+(\/|$)/, selectors: ['[data-component="Label"]'] },
+    // Issue typesとIssue fieldsの設定画面（個人・Organization、一覧・編集）。<p>は画面の
+    // 説明文と「Choose who should be able to see…」等の固定文言だけで、タイプ・フィールドの
+    // 説明はinput/textareaの値として表示されることを確認済み
+    { pattern: /^(\/organizations\/[^/]+)?\/settings\/issue-(types|fields)(\/|$)/, selectors: ['p'] },
     // リポジトリSettings > General。リポジトリのフルネームが素のテキストとして
     // 出現するが、常に"owner/repo"の複合形か長文中への埋め込みでしか現れず、
     // 単語単位の辞書キーと衝突する実質的なリスクはないため許可する。
@@ -297,12 +331,14 @@
     },
     // リポジトリSettings > Copilot（/settings/copilot/code_review・/mcp 等）。
     // 各設定項目の説明文はPrimerのDescription-module__Box__という素のコンテナに
-    // テキストノードとして入っており、拾うにはこのクラスが必要。リンクを含む
+    // テキストノードとして入っており、拾うにはこのクラスが必要。現在のクラス名は
+    // 「description__<hash> descriptionBox」＞「Box__<hash>」の形式で、短いBox__では
+    // 範囲が広すぎるため、ハッシュの付かないdescriptionBoxを使う。リンクを含む
     // 一部の説明はテキストノードが分割されるため翻訳されないが、この画面は
     // ユーザー入力を含まないため許可できる部分だけを許可する
     {
       pattern: /^\/[^/]+\/[^/]+\/settings\/copilot\/[a-z_]+$/,
-      selectors: ['p', '[class*="Description-module__Box__"]', '[data-component="FormControl.Caption"]']
+      selectors: ['p', '[class*="Description-module__Box__"]', '.descriptionBox', '[data-component="FormControl.Caption"]']
     },
     // リポジトリSettingsの一覧系画面（Branches、Runners・Runner追加、Webhook一覧、
     // Environments、Deploy keys、Secrets・Variables、Autolink references）。
@@ -330,20 +366,24 @@
     // Organization Settings > 高度なセキュリティ（security_products）の未契約バナー。
     // PrimerのBanner.Descriptionという素の<div>で実装されている
     { pattern: /^\/organizations\/[^/]+\/settings\/security_products$/, selectors: ['[data-component="Banner.Description"]'] },
-    // Organization Settings > Code quality。FAQアコーディオンの回答（React製、末尾はハッシュ）
-    { pattern: /^\/organizations\/[^/]+\/settings\/code-quality$/, selectors: ['[class*="CodeQualitySettingsFaq-module__"]'] },
+    // Organization Settings > Code quality。FAQアコーディオンの質問と回答（React製、末尾はハッシュ）。
+    // クラス名は「CodeQualitySettingsFaq-module__<name>__<hash>」から「accordion__<hash>」
+    // 「FAQContent__<hash>」の形式に変わったため、新旧の両方を指定する
+    { pattern: /^\/organizations\/[^/]+\/settings\/code-quality$/, selectors: ['[class*="CodeQualitySettingsFaq-module__"]', '[class*="accordion__"]', '[class*="FAQContent__"]'] },
     // Tag protection（非推奨化の案内バナー）。BranchesのバナーはReact製GrowthBannerの
     // <p>だが、この画面では同じバナーの本文が素の<span>に入っているため、バナー本文の
-    // コンテナだけを許可する（末尾はビルドごとに変わるハッシュなので接頭辞で指定）
-    { pattern: /^\/[^/]+\/[^/]+\/settings\/tag_protection$/, selectors: ['[class*="GrowthBanner-module__childrenText__"]'] },
+    // コンテナだけを許可する（末尾はビルドごとに変わるハッシュ）。クラス名は
+    // 「GrowthBanner-module__childrenText__<hash>」から「childrenText__<hash>」に変わったため、
+    // 共通部分で新旧どちらにも一致させる
+    { pattern: /^\/[^/]+\/[^/]+\/settings\/tag_protection$/, selectors: ['[class*="childrenText__"]'] },
     // Actions > OIDC。ページ概要はPrimerのPageHeader.Description、設定項目の説明は
     // FormControl.Captionという素の<div>/<span>で実装されている。カスタマイズ対象の
     // クレームはGitHubが定義する固定の選択肢で、ユーザー入力の説明文は含まない
     {
       pattern: /^\/[^/]+\/[^/]+\/settings\/actions\/oidc-configuration$/,
       // Organizationの同画面（/organizations/<org>/settings/…）もこのパターンに一致し、
-      // カスタムプロパティ欄の説明はCopilot設定と同じDescription-module__Box__に入る
-      selectors: ['[data-component="PageHeader.Description"]', '[data-component="FormControl.Caption"]', '[class*="Description-module__Box__"]']
+      // カスタムプロパティ欄の説明はCopilot設定と同じDescription-module__Box__（現在はdescriptionBox）に入る
+      selectors: ['[data-component="PageHeader.Description"]', '[data-component="FormControl.Caption"]', '[class*="Description-module__Box__"]', '.descriptionBox']
     },
     // 高度なセキュリティの各セクション見出し下の説明文（Primer CSSの.Subhead-description）
     // Organizationの同画面では各機能の補足（Copilotライセンスが必要等）がPrimer CSSの
@@ -376,6 +416,13 @@
   };
 
   const PATTERN_EXTRA_EXCLUDE_SELECTOR = [
+    // Issue typesとIssue fieldsの設定画面（個人・Organization）。一覧の各行の説明文
+    // （li直下のspan）、フィールドの選択肢（Token）、タイプに固定表示するフィールド名は
+    // いずれもユーザーが定義した内容。名前のリンクはisUserContentLinkで保護する
+    {
+      pattern: /^(\/organizations\/[^/]+)?\/settings\/issue-(types|fields)(\/|$)/,
+      selectors: ['li[data-testid] > span', '[class*="prc-Token-"]', '[class*="PinnedIssueFieldItemContent"]']
+    },
     // Fine-grained tokenの詳細画面。トークン名はh2.Subhead-heading見出しとして
     // ユーザーがつけた名前がそのまま表示される。「Access on」見出し（h3、f3修飾
     // クラス付き）配下のリンクはリソースの所有者名（ユーザー/Organization名）で、
@@ -549,23 +596,43 @@
     const exclude = EXCLUDE_SELECTOR_BASE
       .filter((selector) => !translateGlobalHeader || selector !== GLOBAL_HEADER_SELECTOR)
       .concat(getPathExtraExcludeSelector());
-    // このページでpを許可リスト側に回した場合のみ、除外リストからは外す
-    if (!pathExtra.includes('p')) exclude.push('p');
+    // このページでpを許可リスト側に回した場合のみ、除外リストからは外す。
+    // 新しいPR画面のマージボックスの各カード（data-testid="mini-status"）は
+    // 「No approvals required」等の固定文言だけを<p>で表示するため、どの画面でも除外しない
+    if (!pathExtra.includes('p')) exclude.push('p:not([data-testid="mini-status"] p)');
     return exclude.join(',');
   });
 
   function isUserContentLink(el) {
     const link = el.closest('a[href]');
     if (!link) return false;
+    // 新しいPR画面のタブ（Overview/Commits/Checks/Files changed）。リンク先が
+    // /pull/123や/pull/123/commitsのためPRへのリンクとして除外されてしまうが、
+    // 表示テキストは固定UIなので、言語に依存しないdata-dd-action-nameで判別して許可する
+    if (link.matches('[data-dd-action-name^="pull_requests.navigation."]')) return false;
 
-    let path;
+    let url;
     try {
-      path = new URL(link.getAttribute('href'), location.href).pathname;
+      url = new URL(link.getAttribute('href'), location.href);
     } catch {
+      return false;
+    }
+    const path = url.pathname;
+
+    // マージボックスの「View your comments」。表示中のPR自身へのリンクにコメントの
+    // 絞り込み条件（?comments=mode:mine）を付けたボタンで、表示テキストは固定文言。
+    // LinkButton全般を許可するとボタン形式のIssue/PRリンクに出るユーザー作成タイトルまで
+    // 翻訳されるため、表示中のPRと同じパスでcommentsパラメーターを持つものに限る
+    if (link.matches('[data-component="LinkButton"]') &&
+      /^\/[^/]+\/[^/]+\/pull\/\d+$/.test(path) &&
+      path === location.pathname &&
+      url.searchParams.has('comments')) {
       return false;
     }
 
     return /^\/[^/]+\/[^/]+\/(issues|pull|discussions)\/\d+(\/|$)/.test(path) ||
+      // Issue typesとIssue fieldsの設定画面の一覧に並ぶタイプ名・フィールド名
+      /^(\/organizations\/[^/]+)?\/settings\/issue-(types|fields)\/\d+$/.test(path) ||
       // リポジトリ固有の保存済みIssueビュー一覧（/issues/views）に表示されるビュー名。
       // リンク先のIDはGitHubが付与し（数値のこともbase64風のこともある）、
       // リンクの表示名はユーザーが自由に設定する。「新規作成」への固定リンクは除く

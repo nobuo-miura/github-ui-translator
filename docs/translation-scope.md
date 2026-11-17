@@ -47,13 +47,18 @@ The following content is intentionally excluded even when its text exactly match
 |---|---|
 | README, issue, comment, and code block content | Exclude elements inside `.markdown-body` |
 | Repository name links | Exclude `[data-hovercard-type="repository"]` |
-| Rows in the global repositories list (`/repos`): owner/repo names and descriptions | Exclude `[class*="ReposListItem-module__NwoTitle__"]` and `[class*="ReposListItem-module__FormattedDescription__"]` |
+| Rows in the global repositories list (`/repos`): owner/repo names and descriptions | Exclude `[class*="ReposListItem-module"][class*="NwoTitle"]` and `[class*="ReposListItem-module"][class*="FormattedDescription"]` (matches both the old and new CSS Modules class name formats) |
 | User name links | Exclude `[data-hovercard-type="user"]` |
 | Issue, pull request, and discussion titles | Exclude `<bdi>` (which GitHub uses for bidirectional text isolation) and the `.markdown-title` class (detail-view headings and sticky headers, the "Link an issue" menu under a pull request's Development section, and anywhere else the title is reused) |
 | Issue template names and descriptions (`name:` / `description:`) | On `/issues/new/choose`, exclude template links by URL pattern; in the picker dialog opened from list views, exclude item titles and descriptions inside `[data-testid="template-list"]` |
-| Issue form content (labels, descriptions, and Markdown defined in YAML) | Exclude `[class*="IssueFormElements-module__formElementsContainer__"]` (shared by the `/issues/new` page and the create dialog) |
+| Issue form content (labels, descriptions, and Markdown defined in YAML) | Exclude `[class*="formElementsContainer__"]` (shared by the `/issues/new` page and the create dialog) |
 | Branch and tag names in the ref selector popup | Exclude `[data-testid="overlay-content"][aria-labelledby^="ref-picker-"] [role="menuitemradio"]` (the dialog's `aria-label` is not used because the extension translates it) |
 | Milestone and project names in the sidebar picker menus | Exclude `#milestone-select-menu .select-menu-item:not(.select-menu-new-item-form)` and `#projects-select-menu [role="menuitemcheckbox"]` |
+| Issue type, field, and field value options in the issue sidebar | Exclude `[data-testid="item-picker-root"] [role="option"]` |
+| Field names and values under "Fields" in the issue sidebar | Exclude `[class*="issueFieldLabel__"]` and `[class*="issueFieldValueText__"]` |
+| Issue type names set on issues (below the title and in the sidebar of the issue page, and in issue lists) | Exclude `[class*="issueTypeTokenContainer__"]` |
+| File names in the tooltips of pending comment headings in the review popup | Exclude `h3 > a[href*="/changes#r"] + [data-component="Tooltip"]` (the link itself is excluded as a pull request link) |
+| Type names, field names, descriptions, and options on the Issue types / Issue fields settings pages (personal and organization) | Exclude name links (`/settings/issue-types/<id>`, `/settings/issue-fields/<id>`) by URL pattern, and on these pages only, list descriptions (`li[data-testid] > span`), options (`[class*="prc-Token-"]`), and pinned field names (`[class*="PinnedIssueFieldItemContent"]`) |
 | Saved issue view names in the views list (`/issues/views`) | Exclude links matching `/issues/views/<id>` (numeric or base64, excluding `new`) by URL pattern |
 | SelectPanel option rows ("Add target", "Add environments", etc.) on the ruleset editor (`/settings/rules/…`) | Exclude `[data-testid="filtered-action-list"] [role="option"]` (environment / team / user / ref names) |
 | Links to individual issues, pull requests, discussions, and commits | Exclude matching URL patterns such as `/issues/N` |
@@ -111,9 +116,11 @@ These safeguards reduce the risk of mistranslation; they do not guarantee that u
 Each of these is limited to settings pages that have been individually verified to contain no user input, and is needed because the description text for each setting lives in a bare `<span>` / `<div>` container.
 
 - `[data-component="FormControl.Caption"]` / `[data-component="RadioGroup.Caption"]` on ruleset creation/editing pages and Agent suggestions for issues (`/settings/suggestions`). These attributes are part of Primer's published component interface and are expected to be more stable than an internal `data-testid`.
-- `[class*="Description-module__Box__"]` on repository Settings > Copilot pages (`/settings/copilot/…`). A Primer module prefix; each feature setting's description sits in this container.
+- `[class*="Description-module__Box__"]` / `.descriptionBox` on repository Settings > Copilot pages (`/settings/copilot/…`). Each feature setting's description sits in this container. GitHub changed its CSS Modules class name format, so the current pages are matched by the unhashed `descriptionBox` class.
 - `p` on `/settings/suggestions` and `/settings/copilot/…`; `span` on `/settings/copilot/features` only (feature names, badges, and descriptions are all bare `<span>`, so this is limited to that single page).
 - On all of these pages, description sentences that contain links stay untranslated because their text nodes are split.
+- `[data-testid="mini-status"] p` (the cards in the merge box of the new pull request page). These cards show only fixed text such as "No approvals required" in `<p>`, so they are left out of the `p` exclusion on every page.
+- `[data-component="Label"]` on issue and pull request pages only (status badges such as "Resolved" on conversations and "Owner" on comments). Labels that users add are a separate component, `prc-Token-IssueLabel`, which stays excluded.
 
 ### Page-specific scope extensions
 
