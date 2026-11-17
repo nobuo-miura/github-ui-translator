@@ -186,6 +186,36 @@ describe('ページごとの翻訳スコープ', () => {
     page = await loadPage({ url: 'https://github.com/octo/repo/settings', dict: DICT, body: '<p id="p">Name</p>' });
     assert.equal(page.text('#p'), '名前');
   });
+
+  it('Issue/PR詳細画面ではPrimer Label（状態バッジ）を翻訳し、ほかの画面では翻訳しない', async () => {
+    page = await loadPage({ url: 'https://github.com/octo/repo/pull/2', dict: DICT, body: '<span id="l" data-component="Label">Name</span>' });
+    assert.equal(page.text('#l'), '名前');
+    page.close();
+
+    page = await loadPage({ url: REPO_URL, dict: DICT, body: '<span id="l" data-component="Label">Name</span>' });
+    assert.equal(page.text('#l'), 'Name');
+  });
+
+  // CSS Modulesのクラス名は「Name-module__Local__<hash>」から「Local__<hash>」に変わった
+  for (const [url, oldClass, newClass] of [
+    ['https://github.com/settings/notifications', 'Row-module__rowSubtitle__a1b2c', 'rowSubtitle__vCwNVV'],
+    ['https://github.com/settings/codespaces', 'DescriptionElement-module__descriptionText__a1b2c', 'descriptionText__IO_hLe'],
+    ['https://github.com/octo/repo/settings/copilot/code_review', 'Description-module__Box__a1b2c', 'description__-nN65w descriptionBox'],
+    ['https://github.com/organizations/acme/settings/actions/oidc-configuration', 'Description-module__Box__a1b2c', 'description__-nN65w descriptionBox'],
+    ['https://github.com/octo/repo/settings/tag_protection', 'GrowthBanner-module__childrenText__a1b2c', 'childrenText__Z6DNds'],
+    ['https://github.com/organizations/acme/settings/code-quality', 'CodeQualitySettingsFaq-module__answer__a1b2c', 'FAQContent__pfa5Bu']
+  ]) {
+    it(`${new URL(url).pathname} の説明文は新旧どちらのクラス名でも翻訳する`, async () => {
+      page = await loadPage({
+        url,
+        dict: DICT,
+        body: `<span id="old" class="${oldClass}">Name</span><span id="new" class="${newClass}">Name</span><span id="plain">Name</span>`
+      });
+      assert.equal(page.text('#old'), '名前');
+      assert.equal(page.text('#new'), '名前');
+      assert.equal(page.text('#plain'), 'Name');
+    });
+  }
 });
 
 describe('設定', () => {
