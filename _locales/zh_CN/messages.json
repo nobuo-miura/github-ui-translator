@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "如果全局搜索界面无法打开（例如浏览器刚启动时），请关闭此选项。"
   },
+  "showOriginalLabel": {
+    "message": "悬停时显示原文"
+  },
+  "showOriginalToggleLabel": {
+    "message": "启用或禁用悬停时显示英文原文"
+  },
+  "showOriginalHint": {
+    "message": "将鼠标悬停在已翻译的文字上即可查看英文原文，方便提出更好的翻译建议。"
+  },
+  "translationRequestLink": {
+    "message": "提出翻译建议"
+  },
   "repositoryLink": {
     "message": "在 GitHub 上查看 GitHub UI Translator"
   },

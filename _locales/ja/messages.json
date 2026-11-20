@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "起動直後などにグローバル検索画面が開かない場合は、この設定をオフにしてください。"
   },
+  "showOriginalLabel": {
+    "message": "原文をツールチップで表示"
+  },
+  "showOriginalToggleLabel": {
+    "message": "原文のツールチップ表示の有効・無効を切り替える"
+  },
+  "showOriginalHint": {
+    "message": "翻訳されたテキストにマウスを乗せると、英語の原文が表示されます。翻訳の改善を提案するときに使えます。"
+  },
+  "translationRequestLink": {
+    "message": "翻訳の改善を提案する"
+  },
   "repositoryLink": {
     "message": "GitHubでGitHub UI Translatorを見る"
   },

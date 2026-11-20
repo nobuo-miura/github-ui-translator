@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "Если глобальный поиск перестал открываться (например, сразу после запуска браузера), отключите этот параметр."
   },
+  "showOriginalLabel": {
+    "message": "Показывать оригинал при наведении"
+  },
+  "showOriginalToggleLabel": {
+    "message": "Включить или отключить показ английского оригинала при наведении"
+  },
+  "showOriginalHint": {
+    "message": "Наведите указатель на переведённый текст, чтобы увидеть английский оригинал. Это удобно, если вы хотите предложить перевод лучше."
+  },
+  "translationRequestLink": {
+    "message": "Предложить перевод"
+  },
   "repositoryLink": {
     "message": "GitHub UI Translator на GitHub"
   },

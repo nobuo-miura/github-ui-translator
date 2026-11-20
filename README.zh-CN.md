@@ -149,6 +149,7 @@ github-ui-translator/
 欢迎改进翻译和报告问题。特别欢迎各语言的母语者帮助修改译文，使其更加自然。
 
 - 如需改进译文或补充缺失的翻译，请提交[翻译请求](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml)，可以使用英文或中文填写
+- 在弹出窗口中开启“悬停时显示原文”后，将鼠标悬停在已翻译的文字上即可看到英文原文（默认关闭），便于在翻译请求中填写原文
 - 如需报告问题或提出功能建议，请提交 [Issue](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
 - 提交 Pull Request 之前，请先阅读[贡献指南（English）](.github/CONTRIBUTING.md)（[日本語](.github/CONTRIBUTING.ja.md)）
 

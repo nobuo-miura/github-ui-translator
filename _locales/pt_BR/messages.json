@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "Se a pesquisa global parar de abrir (por exemplo, logo após iniciar o navegador), desative esta opção."
   },
+  "showOriginalLabel": {
+    "message": "Mostrar o texto original ao passar o mouse"
+  },
+  "showOriginalToggleLabel": {
+    "message": "Ativar ou desativar a exibição do texto original em inglês ao passar o mouse"
+  },
+  "showOriginalHint": {
+    "message": "Passe o mouse sobre um texto traduzido para ver o original em inglês. Útil para sugerir uma tradução melhor."
+  },
+  "translationRequestLink": {
+    "message": "Sugerir uma tradução"
+  },
   "repositoryLink": {
     "message": "GitHub UI Translator no GitHub"
   },

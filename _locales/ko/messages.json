@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "전역 검색이 열리지 않게 되면(예: 브라우저 시작 직후) 이 옵션을 끄세요."
   },
+  "showOriginalLabel": {
+    "message": "마우스를 올리면 원문 표시"
+  },
+  "showOriginalToggleLabel": {
+    "message": "마우스를 올렸을 때 영어 원문 표시 사용 또는 사용 안 함"
+  },
+  "showOriginalHint": {
+    "message": "번역된 텍스트에 마우스를 올리면 영어 원문이 표시됩니다. 더 나은 번역을 제안할 때 유용합니다."
+  },
+  "translationRequestLink": {
+    "message": "번역 제안하기"
+  },
   "repositoryLink": {
     "message": "GitHub에서 GitHub UI Translator 보기"
   },

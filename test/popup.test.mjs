@@ -46,3 +46,23 @@ describe('ポップアップの言語選択', () => {
     assert.deepEqual(popup.storageCalls, [{ method: 'remove', keys: 'language' }]);
   });
 });
+
+describe('ポップアップの原文ツールチップ設定', () => {
+  it('既定ではOFFを表示する', async () => {
+    popup = await loadPopup();
+    assert.equal(popup.document.querySelector('#show-original-toggle').checked, false);
+  });
+
+  it('保存済みの設定がONなら、ONを表示する', async () => {
+    popup = await loadPopup({ settings: { showOriginalOnHover: true } });
+    assert.equal(popup.document.querySelector('#show-original-toggle').checked, true);
+  });
+
+  it('切り替えると設定を保存する', async () => {
+    popup = await loadPopup();
+    const toggle = popup.document.querySelector('#show-original-toggle');
+    toggle.checked = true;
+    toggle.dispatchEvent(new popup.window.Event('change', { bubbles: true }));
+    assert.deepEqual(popup.storageCalls, [{ method: 'set', items: { showOriginalOnHover: true } }]);
+  });
+});
