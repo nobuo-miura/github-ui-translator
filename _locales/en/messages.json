@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "If the global search stops opening (e.g. right after the browser starts), turn this off."
   },
+  "showOriginalLabel": {
+    "message": "Show original text on hover"
+  },
+  "showOriginalToggleLabel": {
+    "message": "Enable or disable showing the original English text on hover"
+  },
+  "showOriginalHint": {
+    "message": "Hover over translated text to see the original English. Useful when suggesting a better translation."
+  },
+  "translationRequestLink": {
+    "message": "Suggest a translation"
+  },
   "repositoryLink": {
     "message": "GitHub UI Translator on GitHub"
   },

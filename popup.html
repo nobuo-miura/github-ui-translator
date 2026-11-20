@@ -97,6 +97,22 @@
     font-size: 11px;
     line-height: 1.4;
   }
+  .hint {
+    margin: 6px 0 0;
+    color: #57606a;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .hint-link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #0969da;
+    text-decoration: none;
+  }
+  .hint-link:hover {
+    text-decoration: underline;
+  }
   .footer {
     margin-top: 12px;
     padding-top: 8px;
@@ -135,6 +151,17 @@
       </label>
     </div>
     <p class="warning" data-i18n="globalHeaderTranslationWarning">If the global search stops opening (e.g. right after the browser starts), turn this off.</p>
+  </div>
+  <div class="option-section">
+    <div class="row">
+      <label class="option-label" for="show-original-toggle" data-i18n="showOriginalLabel">Show original text on hover</label>
+      <label class="switch">
+        <input type="checkbox" id="show-original-toggle" data-i18n-aria-label="showOriginalToggleLabel">
+        <span class="slider"></span>
+      </label>
+    </div>
+    <p class="hint" data-i18n="showOriginalHint">Hover over translated text to see the original English. Useful when suggesting a better translation.</p>
+    <a class="hint-link" id="translation-request-link" href="https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml" target="_blank" rel="noopener noreferrer" data-i18n="translationRequestLink">Suggest a translation</a>
   </div>
   <div class="footer">
     <a id="repo-link" href="https://github.com/nobuo-miura/github-ui-translator" target="_blank" rel="noopener noreferrer" data-i18n="repositoryLink">GitHub UI Translator on GitHub</a>

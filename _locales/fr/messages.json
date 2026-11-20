@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "Si la recherche globale cesse de s’ouvrir (par exemple juste après le démarrage du navigateur), désactivez cette option."
   },
+  "showOriginalLabel": {
+    "message": "Afficher le texte original au survol"
+  },
+  "showOriginalToggleLabel": {
+    "message": "Activer ou désactiver l’affichage du texte original en anglais au survol"
+  },
+  "showOriginalHint": {
+    "message": "Survolez un texte traduit pour voir l’original en anglais. Pratique pour proposer une meilleure traduction."
+  },
+  "translationRequestLink": {
+    "message": "Proposer une traduction"
+  },
   "repositoryLink": {
     "message": "GitHub UI Translator sur GitHub"
   },

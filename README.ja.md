@@ -150,6 +150,7 @@ github-ui-translator/
 翻訳の改善や不具合の報告を歓迎します。特に、各言語のネイティブの方による、より自然な訳への修正はとても助かります。
 
 - 訳の改善や、まだ訳されていない文言の提案は [翻訳リクエスト](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml) からお願いします。英語でも母国語でも書けます
+- ポップアップで「原文をツールチップで表示」をONにすると、翻訳されたテキストにマウスを乗せたときに英語の原文が表示されます（既定はOFF）。翻訳リクエストに原文を書くときに使えます
 - 不具合の報告や機能の要望は [Issue](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose) からお願いします
 - プルリクエストを送る前に [コントリビューションガイド](.github/CONTRIBUTING.ja.md)（[English](.github/CONTRIBUTING.md)）をお読みください
 

@@ -13,6 +13,8 @@ body:
 
         Suggestions can be written in English or your own language.
 
+        Tip: Turn on "Show original text on hover" in the extension popup. You can then hover over translated text to see the original English text.
+
   - type: dropdown
     id: request-type
     attributes:
@@ -43,7 +45,7 @@ body:
     id: source-text
     attributes:
       label: Original English text
-      description: Enter the fixed GitHub UI text exactly as it appears. For terminology requests, list the English terms, one per line.
+      description: Enter the fixed GitHub UI text exactly as it appears. If the page is translated, turn on "Show original text on hover" in the extension popup to see it. For terminology requests, list the English terms, one per line.
       placeholder: |
         For example:
         Compare & pull request
@@ -68,18 +70,14 @@ body:
     id: affected-url
     attributes:
       label: GitHub URL where the text appears
-      description: For terminology requests, one example page is enough. Remove private repository names or other sensitive information before submitting.
+      description: Optional, but it helps us find the text. For terminology requests, one example page is enough. Remove private repository names or other sensitive information before submitting.
       placeholder: "https://github.com/..."
-    validations:
-      required: true
 
   - type: textarea
     id: context
     attributes:
       label: Context
-      description: Explain where the text appears and why the suggested translation is appropriate.
-    validations:
-      required: true
+      description: Optional. Explain where the text appears and why the suggested translation is appropriate.
 
   - type: textarea
     id: screenshots

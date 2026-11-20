@@ -805,6 +805,79 @@
     selfWrittenNodes.add(node);
   }
 
+  // ポップアップの「原文をツールチップで表示」がONのとき、翻訳した要素のtitle属性に
+  // 英語の原文を入れる。翻訳の改善を提案するとき、拡張機能をOFFにしなくても
+  // 原文（辞書のキー）を確認できるようにするため
+  let showOriginalOnHover = false;
+  // 拡張がtitleを付けた要素ごとの記録。entriesは翻訳した箇所（テキストノード、
+  // または'value'・'placeholder'・'mixed'）から{ original, isCurrent }への対応で、
+  // isCurrentはその箇所に拡張の訳文がまだ表示されているかを返す。
+  // writtenTitleは拡張が最後に書いたtitleで、現在の値と比べてページ側の変更を検知する
+  const originalTitles = new WeakMap();
+
+  // 記録済みの原文のうち、訳文が表示されなくなった箇所のものを捨て、titleを更新する。
+  // 有効な原文が残っていなければtitleを削除する。GitHubが独自のtitleに書き換えて
+  // いた場合（title属性を削除した場合も含む）は、ページ側の値を優先して触らず、
+  // 以後この要素では管理しない。管理を続けるときはtrueを返す
+  function refreshOriginalTitle(el, record) {
+    if (el.getAttribute('title') !== record.writtenTitle) {
+      originalTitles.delete(el);
+      return false;
+    }
+    for (const [key, entry] of record.entries) {
+      if (!entry.isCurrent()) record.entries.delete(key);
+    }
+    if (record.entries.size === 0) {
+      el.removeAttribute('title');
+      originalTitles.delete(el);
+      return false;
+    }
+    const title = [...new Set([...record.entries.values()].map((entry) => entry.original))].join(' / ');
+    record.writtenTitle = title;
+    // title属性の書き換えは属性ミューテーションで、メインのobserverは
+    // 属性を監視していないため再走査のループは起きない
+    if (el.getAttribute('title') !== title) el.setAttribute('title', title);
+    return true;
+  }
+
+  function recordOriginal(el, source, original, isCurrent) {
+    if (!showOriginalOnHover || !el || !original) return;
+    let record = originalTitles.get(el);
+    if (record && el.getAttribute('title') !== record.writtenTitle) {
+      // 拡張がtitleを付けたあとにページが書き換えた。ページ側の値を優先する
+      originalTitles.delete(el);
+      return;
+    }
+    if (!record) {
+      // GitHub自身のtitle（省略表示された文字列の全文など）は上書きしない
+      if (el.hasAttribute('title')) return;
+      record = { entries: new Map(), writtenTitle: null };
+      originalTitles.set(el, record);
+    }
+    record.entries.set(source, { original, isCurrent });
+    refreshOriginalTitle(el, record);
+  }
+
+  // GitHubによるテキストの書き換え・差し替え・削除を受けて、原文を記録済みの要素だけ
+  // 再検証する。訳文が辞書にない文言に置き換わった場合は再翻訳が起きず
+  // recordOriginalも呼ばれないため、ここで古い原文を取り除く。
+  // インライン要素を含む文（'mixed'）は、<a><span>guide</span></a>のように
+  // インライン要素の子孫にあるテキストも受け付けるため、変更箇所の深さは決まらない。
+  // そこで祖先をすべてたどる。各段はWeakMapを引くだけで、設定がONのときしか呼ばれない
+  function revalidateOriginalsAround(el) {
+    for (let current = el; current; current = current.parentElement) {
+      const record = originalTitles.get(current);
+      if (record) refreshOriginalTitle(current, record);
+    }
+  }
+
+  // テキストノードの原文を、そのノードの親要素に記録する
+  function recordTextNodeOriginal(node, original) {
+    const el = node.parentElement;
+    const written = node.nodeValue;
+    recordOriginal(el, node, original, () => node.parentElement === el && node.nodeValue === written);
+  }
+
   async function loadDictionary(language) {
     try {
       const url = chrome.runtime.getURL(`dictionaries/${language}.json`);
@@ -827,7 +900,7 @@
   async function getSettings() {
     const items = await new Promise((resolve) => {
       chrome.storage.local.get(
-        { enabled: true, language: null, translateGlobalHeader: true },
+        { enabled: true, language: null, translateGlobalHeader: true, showOriginalOnHover: false },
         (result) => resolve(result)
       );
     });
@@ -905,13 +978,20 @@
 
     gaps.forEach((nodes, i) => nodes.forEach((node, j) => setNodeValue(node, j === 0 ? parts[i] : '')));
     inlines.forEach(({ node, text }, i) => setNodeValue(node, node.nodeValue.replace(text, () => pieces[i].text)));
+    // ツールチップにはタグを除いた文全体の原文を表示する
+    const written = el.textContent;
+    recordOriginal(el, 'mixed', normalizeText(key).replace(INLINE_TAG_PATTERN, '$2'), () => el.textContent === written);
   }
 
   // テキストノード・属性値に共通の辞書引き。改行やインデントを含む複数行の値も
   // 辞書の1行キーと一致させるため、前後の空白を除いて連続空白を単一スペースに
   // 正規化してから完全一致させる
+  function normalizeText(text) {
+    return text.trim().replace(/\s+/g, ' ');
+  }
+
   function lookup(text, el, dict) {
-    const key = text.trim().replace(/\s+/g, ' ');
+    const key = normalizeText(text);
     if (!key) return null;
     if (dict[key]) return dict[key];
     // リリース作成画面のTargetボタンは固定ラベルとユーザーが選択したブランチ名を
@@ -937,7 +1017,14 @@
     const value = el.getAttribute(name);
     if (!value) return;
     const replacement = translateValue(value, el, dict);
-    if (replacement !== null && replacement !== value) el.setAttribute(name, replacement);
+    if (replacement === null || replacement === value) return;
+    el.setAttribute(name, replacement);
+    // placeholderは画面に表示されるため、テキストと同じく原文をツールチップに出す。
+    // aria-labelはGitHub自身のツールチップに使われることが多く、titleと二重に
+    // 表示されるため対象にしない
+    if (name === 'placeholder') {
+      recordOriginal(el, 'placeholder', normalizeText(value), () => el.getAttribute('placeholder') === replacement);
+    }
   }
 
   // GitHubの日付・相対時刻（<relative-time>）は表示文字列がShadow DOM内にあり、
@@ -980,8 +1067,12 @@
     // 入力内容そのものであり、翻訳すると入力中の値を書き換えてしまうため
     if (el.tagName === 'INPUT') {
       if (el.type !== 'submit' && el.type !== 'button' && el.type !== 'reset') return;
-      const replacement = translateValue(el.value, el, dict);
-      if (replacement !== null && replacement !== el.value) el.value = replacement;
+      const original = el.value;
+      const replacement = translateValue(original, el, dict);
+      if (replacement !== null && replacement !== original) {
+        el.value = replacement;
+        recordOriginal(el, 'value', normalizeText(original), () => el.value === replacement);
+      }
       translateAttribute(el, 'data-disable-with', dict);
       return;
     }
@@ -1018,7 +1109,11 @@
       const replacement = translateValue(textNode.nodeValue, textNode.parentElement, dict);
       // 大半のテキストノードは辞書に載らないため、重い除外判定は辞書ヒット時だけ行う
       if (replacement === null || isExcludedElement(textNode.parentElement)) continue;
+      // 自己マッピング（"Wiki": "Wiki"）など、表示が変わらないものは原文を記録しない
+      if (replacement === textNode.nodeValue) continue;
+      const original = normalizeText(textNode.nodeValue);
       setNodeValue(textNode, replacement);
+      recordTextNodeOriginal(textNode, original);
     }
   }
 
@@ -1034,9 +1129,15 @@
   }
 
   (async () => {
-    const { enabled, language, translateGlobalHeader: globalHeaderEnabled } = await getSettings();
+    const {
+      enabled,
+      language,
+      translateGlobalHeader: globalHeaderEnabled,
+      showOriginalOnHover: originalOnHoverEnabled
+    } = await getSettings();
     if (!enabled) return;
     translateGlobalHeader = globalHeaderEnabled;
+    showOriginalOnHover = originalOnHoverEnabled;
 
     const dict = await loadDictionary(language);
     if (Object.keys(dict).length === 0) return;
@@ -1099,6 +1200,11 @@
 
     function handleMutations(mutations) {
       for (const mutation of mutations) {
+        if (showOriginalOnHover) {
+          // characterDataは変更されたテキストノードの親要素、childListは子ノードの
+          // 追加・削除が起きた要素自身を起点にする（削除だけの変更も拾うため）
+          revalidateOriginalsAround(mutation.type === 'characterData' ? mutation.target.parentElement : mutation.target);
+        }
         if (mutation.type === 'characterData') {
           addPendingRoot(mutation.target);
           continue;
@@ -1165,7 +1271,8 @@
   // この通知を受け取れないので、ユーザーが手動で再読み込みするまで反映されない
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
-    if ('enabled' in changes || 'language' in changes || 'translateGlobalHeader' in changes) {
+    const reloadKeys = ['enabled', 'language', 'translateGlobalHeader', 'showOriginalOnHover'];
+    if (reloadKeys.some((key) => key in changes)) {
       location.reload();
     }
   });

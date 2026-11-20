@@ -40,6 +40,18 @@
   "globalHeaderTranslationWarning": {
     "message": "Wenn sich die globale Suche nicht mehr öffnen lässt (z. B. direkt nach dem Start des Browsers), deaktiviere diese Option."
   },
+  "showOriginalLabel": {
+    "message": "Originaltext beim Überfahren anzeigen"
+  },
+  "showOriginalToggleLabel": {
+    "message": "Anzeige des englischen Originaltexts beim Überfahren aktivieren oder deaktivieren"
+  },
+  "showOriginalHint": {
+    "message": "Fahre mit der Maus über übersetzten Text, um das englische Original zu sehen. Hilfreich, wenn du eine bessere Übersetzung vorschlagen möchtest."
+  },
+  "translationRequestLink": {
+    "message": "Übersetzung vorschlagen"
+  },
   "repositoryLink": {
     "message": "GitHub UI Translator auf GitHub"
   },

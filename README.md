@@ -149,6 +149,7 @@ github-ui-translator/
 Translation improvements and bug reports are welcome. Fixes from native speakers that make the translations sound more natural are especially helpful.
 
 - Suggest better translations or missing ones with a [translation request](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml). You can write in English or your own language
+- Turn on "Show original text on hover" in the popup to see the original English when you hover over translated text (off by default). This helps you fill in the original text in a translation request
 - Report bugs or request features in [Issues](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
 - Before opening a pull request, please read the [contribution guide](.github/CONTRIBUTING.md) ([日本語](.github/CONTRIBUTING.ja.md))
 

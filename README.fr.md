@@ -149,6 +149,7 @@ github-ui-translator/
 Les améliorations des traductions et les signalements de bugs sont les bienvenus. Les corrections proposées par des locuteurs natifs pour rendre les traductions plus naturelles sont particulièrement utiles.
 
 - Proposez des traductions améliorées ou manquantes via une [demande de traduction](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml). Vous pouvez écrire en anglais ou en français
+- Activez « Afficher le texte original au survol » dans la fenêtre contextuelle pour voir l’original en anglais en survolant un texte traduit (désactivé par défaut). Cela facilite l’indication du texte original dans une demande de traduction
 - Signalez les bugs ou proposez des fonctionnalités dans les [Issues](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
 - Avant d’ouvrir une pull request, veuillez lire le [guide de contribution (English)](.github/CONTRIBUTING.md) ([日本語](.github/CONTRIBUTING.ja.md))
 

@@ -249,6 +249,178 @@ describe('設定', () => {
     assert.equal(page.text('#n'), 'コード');
   });
 
+  it('原文のツールチップ表示は既定でOFFで、title属性を付けない', async () => {
+    page = await loadPage({ url: REPO_URL, dict: DICT, body: '<button id="b">Code</button>' });
+    assert.equal(page.text('#b'), 'コード');
+    assert.equal(page.document.querySelector('#b').hasAttribute('title'), false);
+  });
+
+  it('原文のツールチップ表示をONにすると、翻訳した要素のtitleに正規化した原文を入れる', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: DICT,
+      settings: { showOriginalOnHover: true },
+      body: '<button id="b">\n  Pull\n  requests\n</button><input id="s" type="submit" value="Save changes"><button id="x">Other</button>'
+    });
+    assert.equal(page.document.querySelector('#b').getAttribute('title'), 'Pull requests');
+    assert.equal(page.document.querySelector('#s').getAttribute('title'), 'Save changes');
+    // 翻訳しなかった要素には付けない
+    assert.equal(page.document.querySelector('#x').hasAttribute('title'), false);
+  });
+
+  it('原文のツールチップ表示で、GitHub自身のtitleは上書きしない', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: DICT,
+      settings: { showOriginalOnHover: true },
+      body: '<button id="b" title="Original title">Code</button>'
+    });
+    assert.equal(page.text('#b'), 'コード');
+    assert.equal(page.document.querySelector('#b').getAttribute('title'), 'Original title');
+  });
+
+  it('原文のツールチップ表示で、自己マッピング（表示が変わらない訳）にはtitleを付けない', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: { Wiki: 'Wiki' },
+      settings: { showOriginalOnHover: true },
+      body: '<button id="b">Wiki</button>'
+    });
+    assert.equal(page.document.querySelector('#b').hasAttribute('title'), false);
+  });
+
+  it('原文のツールチップ表示で、インライン要素を含む文はタグを除いた原文を表示する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/settings',
+      dict: { 'Read the <a>guide</a> first.': '先に<a>ガイド</a>を読んでください。' },
+      settings: { showOriginalOnHover: true },
+      body: '<p id="p">Read the <a href="https://docs.github.com/x">guide</a> first.</p>'
+    });
+    assert.equal(page.text('#p'), '先にガイドを読んでください。');
+    assert.equal(page.document.querySelector('#p').getAttribute('title'), 'Read the guide first.');
+  });
+
+  it('原文のツールチップ表示で、表示が別の訳に変わったら現在の原文だけを表示する', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: { ...DICT, Issues: 'イシュー' },
+      settings: { showOriginalOnHover: true },
+      body: '<button id="b">Code</button>'
+    });
+    const button = page.document.querySelector('#b');
+    assert.equal(button.getAttribute('title'), 'Code');
+
+    // 同じテキストノードの書き換え
+    button.firstChild.nodeValue = 'Issues';
+    await page.settle();
+    assert.equal(page.text('#b'), 'イシュー');
+    assert.equal(button.getAttribute('title'), 'Issues');
+
+    // テキストノードの差し替え
+    button.textContent = 'Settings';
+    await page.settle();
+    assert.equal(page.text('#b'), '設定');
+    assert.equal(button.getAttribute('title'), 'Settings');
+  });
+
+  it('原文のツールチップ表示で、辞書にない文言に書き換わったら古い原文のtitleを削除する', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: DICT,
+      settings: { showOriginalOnHover: true },
+      body: '<button id="a">Code</button><button id="b">Star</button><button id="c"><span>Settings</span></button>'
+    });
+    const [a, b, c] = ['#a', '#b', '#c'].map((selector) => page.document.querySelector(selector));
+    assert.equal(a.getAttribute('title'), 'Code');
+    assert.equal(b.getAttribute('title'), 'Star');
+    assert.equal(c.querySelector('span').getAttribute('title'), 'Settings');
+
+    // テキストノードの書き換え（characterData）
+    a.firstChild.nodeValue = 'Unknown';
+    // テキストノードの差し替え（childList）
+    b.textContent = 'Unknown';
+    // 子ノードの削除だけ（childList）
+    c.querySelector('span').firstChild.remove();
+    await page.settle();
+    assert.equal(a.hasAttribute('title'), false);
+    assert.equal(b.hasAttribute('title'), false);
+    assert.equal(c.querySelector('span').hasAttribute('title'), false);
+  });
+
+  it('原文のツールチップ表示で、インライン要素内の文言が変わったら文全体の原文を削除する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/settings',
+      dict: { 'Read the <a>guide</a> first.': '先に<a>ガイド</a>を読んでください。' },
+      settings: { showOriginalOnHover: true },
+      body: '<p id="p">Read the <a href="https://docs.github.com/x">guide</a> first.</p>'
+    });
+    const p = page.document.querySelector('#p');
+    assert.equal(p.getAttribute('title'), 'Read the guide first.');
+
+    p.querySelector('a').firstChild.nodeValue = 'manual';
+    await page.settle();
+    assert.equal(p.hasAttribute('title'), false);
+  });
+
+  it('原文のツールチップ表示で、入れ子のインライン要素内の文言が変わっても文全体の原文を削除する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/settings',
+      dict: { 'Read the <a>guide</a> first.': '先に<a>ガイド</a>を読んでください。' },
+      settings: { showOriginalOnHover: true },
+      body: '<p id="p">Read the <a href="https://docs.github.com/x"><span>guide</span></a> first.</p>'
+    });
+    const p = page.document.querySelector('#p');
+    assert.equal(page.text('#p'), '先にガイドを読んでください。');
+    assert.equal(p.getAttribute('title'), 'Read the guide first.');
+
+    p.querySelector('span').firstChild.nodeValue = 'manual';
+    await page.settle();
+    assert.equal(p.hasAttribute('title'), false);
+  });
+
+  it('原文のツールチップ表示で、記録済みの要素にページがtitleを付けたら削除しない', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: DICT,
+      settings: { showOriginalOnHover: true },
+      body: '<button id="b">Code</button>'
+    });
+    const button = page.document.querySelector('#b');
+    button.setAttribute('title', 'Page title');
+    button.textContent = 'Unknown';
+    await page.settle();
+    assert.equal(button.getAttribute('title'), 'Page title');
+  });
+
+  it('原文のツールチップ表示で、拡張がtitleを付けたあとにページが設定したtitleは上書きしない', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: DICT,
+      settings: { showOriginalOnHover: true },
+      body: '<button id="b">Code</button>'
+    });
+    const button = page.document.querySelector('#b');
+    assert.equal(button.getAttribute('title'), 'Code');
+
+    button.setAttribute('title', 'Page title');
+    button.textContent = 'Star';
+    await page.settle();
+    assert.equal(page.text('#b'), 'スター');
+    assert.equal(button.getAttribute('title'), 'Page title');
+  });
+
+  it('原文のツールチップ表示で、翻訳したplaceholderの原文を表示する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/issues',
+      dict: DICT,
+      settings: { showOriginalOnHover: true },
+      body: '<input id="i" placeholder="Description">'
+    });
+    const input = page.document.querySelector('#i');
+    assert.equal(input.getAttribute('placeholder'), '説明');
+    assert.equal(input.getAttribute('title'), 'Description');
+  });
+
   it('辞書の読み込みに失敗しても例外を投げず原文のまま表示する', async () => {
     page = await loadPage({
       url: REPO_URL,

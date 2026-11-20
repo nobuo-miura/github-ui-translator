@@ -4,6 +4,7 @@ const toggle = document.getElementById('toggle');
 const status = document.getElementById('status');
 const languageSelect = document.getElementById('language');
 const globalHeaderToggle = document.getElementById('global-header-toggle');
+const showOriginalToggle = document.getElementById('show-original-toggle');
 
 // 言語選択の「自動」（ブラウザの表示言語に従う）を表す<option>の値
 const AUTO_LANGUAGE = '';
@@ -42,12 +43,13 @@ async function initialize() {
   }
 
   chrome.storage.local.get(
-    { enabled: true, language: null, translateGlobalHeader: true },
+    { enabled: true, language: null, translateGlobalHeader: true, showOriginalOnHover: false },
     (items) => {
       toggle.checked = items.enabled;
       updateStatus(items.enabled);
       languageSelect.value = items.language || AUTO_LANGUAGE;
       globalHeaderToggle.checked = items.translateGlobalHeader;
+      showOriginalToggle.checked = items.showOriginalOnHover;
     }
   );
 }
@@ -68,6 +70,10 @@ languageSelect.addEventListener('change', () => {
 
 globalHeaderToggle.addEventListener('change', () => {
   chrome.storage.local.set({ translateGlobalHeader: globalHeaderToggle.checked });
+});
+
+showOriginalToggle.addEventListener('change', () => {
+  chrome.storage.local.set({ showOriginalOnHover: showOriginalToggle.checked });
 });
 
 function updateStatus(enabled) {
