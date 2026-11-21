@@ -47,13 +47,22 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 |---|---|
 | README・Issue・コメント・コードブロック等の本文 | `.markdown-body` を除外セレクタに指定 |
 | リポジトリ名リンク | `[data-hovercard-type="repository"]` を除外 |
-| グローバルなリポジトリ一覧（`/repos`）の各行（オーナー名／リポジトリ名・説明文） | `[class*="ReposListItem-module"][class*="NwoTitle"]`、`[class*="ReposListItem-module"][class*="FormattedDescription"]` を除外（CSS Modulesのクラス名の新旧どちらの形式にも一致） |
+| グローバルなリポジトリ一覧（`/repos`）の各行（オーナー名／リポジトリ名・説明文） | `[class*="ReposListItem-module"][class*="NwoTitle"]`、`[class*="ReposListItem-module"][class*="FormattedDescription"]` を除外（CSS Modulesのクラス名の新旧どちらの形式にも一致）。Organizationのリポジトリ一覧（`/orgs/<org>/repositories`）は `[class*="ReposListContainer"] li h4`、`[class*="ReposListContainer"] [class*="FormattedDescription"]` で除外 |
 | ユーザー名リンク | `[data-hovercard-type="user"]` を除外 |
-| Issue/PR/Discussionのタイトル | `<bdi>` タグ（GitHubが双方向テキスト対応のため使用）と `.markdown-title` クラス（詳細画面の見出し・追従ヘッダー、PRの「開発」でイシューをリンクする選択メニュー等、タイトルが再利用される箇所）を除外 |
+| Issue/PR/Discussionのタイトル | `<bdi>` タグ（GitHubが双方向テキスト対応のため使用）と `.markdown-title` クラス（詳細画面の見出し・追従ヘッダー、PRの「開発」でイシューをリンクする選択メニュー等、タイトルが再利用される箇所）を除外。新しいPR画面の見出しはCSS Modulesのクラス名 `markdownTitle__<hash>` で描画されるため `[class*="markdownTitle__"]` も除外 |
 | イシューテンプレートの名前・説明（`name:` / `description:`） | `/issues/new/choose` ページはテンプレートリンクのURLパターン、一覧等から開く選択ダイアログは `[data-testid="template-list"]` 配下の項目タイトル・説明を除外 |
 | イシューフォーム（YAMLで定義したラベル・説明・Markdown） | `[class*="formElementsContainer__"]` を除外（`/issues/new` ページ・作成ダイアログ共通） |
 | ブランチ／タグ選択ポップアップの候補行 | `[data-testid="overlay-content"][aria-labelledby^="ref-picker-"] [role="menuitemradio"]` を除外（ダイアログの `aria-label` は拡張自身が翻訳するため使わない） |
 | サイドバーのマイルストーン／プロジェクト選択メニューの候補行 | `#milestone-select-menu .select-menu-item:not(.select-menu-new-item-form)`、`#projects-select-menu [role="menuitemcheckbox"]` を除外 |
+| Organizationのチーム作成・編集画面の親チーム選択メニュー（候補のチーム名、選択後のボタン表示） | `#team-search-results [role="menuitemradio"]` と、候補が選択済み（`aria-checked="true"`）のときの `#team-search-button-text` を除外 |
+| Organizationのチーム名（チーム一覧の各行、チーム画面のパンくず等） | `/orgs/<org>/teams/<slug>` へのリンク（クエリなし）をURLパターンで除外。チームのタブ（`/teams/<slug>/members` 等）とロール絞り込み（`?query=role:…`）は翻訳する |
+| 比較画面（`/compare`）の「Example comparisons」等に並ぶ比較範囲（ブランチ名・タグ名） | `/<owner>/<repo>/compare/<範囲>` へのリンクをURLパターンで除外。`?expand=1` 付きのリンク（「Compare & pull request」等）は翻訳する |
+| Actionsの実行一覧のワークフロー名（全ワークフロー・ワークフロー別） | `/actions` と `/actions/workflows/<file>` に限り各行の `li strong` を、ワークフロー別の画面では見出し（`h1[data-component="PH_Title"]`）も除外 |
+| Organizationのチーム画面のサイドバーのチーム名・説明 | チーム画面（`/orgs/<org>/teams/<slug>` 以下）に限り `.Layout-sidebar .border-bottom > h2`、`.Layout-sidebar p.description` を除外 |
+| Organization Settings > カスタムプロパティの「Set values」タブのリポジトリの行（名前・説明文・プロパティ値） | `[data-testid="targets-properties-list"] li` を除外（「No properties」等の固定文言も訳されない） |
+| Organization Settings > カスタムプロパティのプロパティ名・説明・選択肢（「Properties」タブの一覧、値を設定するフォーム、プロパティ詳細画面） | `[data-testid="repos-definitions-list"] li`、`[data-testid="property-row"]` を除外。詳細画面へのリンク（`/settings/custom-property/<名前>`）はURLパターンで、詳細画面の見出し（`h1[data-component="PH_Title"]`）とパンくず末尾はこの画面に限って除外 |
+| Organization Settings > カスタムプロパティの作成・編集フォームの選択肢と既定値 | 作成・編集画面に限り `[data-testid="property-definition-form"] li`（選択肢一覧）、`button[aria-labelledby="property-default-value-label"]`（既定値の選択ボタン）、`[data-testid="filtered-action-list"] [role="option"]`（既定値の候補）を除外。値設定画面（`/settings/custom-properties`）でもPortalに描画される選択肢の候補（`[data-testid="filtered-action-list"] [role="option"]`）を除外 |
+| Organizationのチーム設定（コードレビュー）で割り当てから外すメンバーの候補（ユーザー名） | この画面に限り `[role="menuitemcheckbox"] .select-menu-item-text` を除外 |
 | Issueサイドバーのタイプ・フィールド・フィールド値の選択肢 | `[data-testid="item-picker-root"] [role="option"]` を除外 |
 | Issueサイドバーの「Fields」のフィールド名と設定値 | `[class*="issueFieldLabel__"]`、`[class*="issueFieldValueText__"]` を除外 |
 | Issueに設定したタイプ名（詳細画面のタイトル下・サイドバー、Issue一覧） | `[class*="issueTypeTokenContainer__"]` を除外 |
@@ -68,7 +77,7 @@ GitHubの固定UI文言（ナビゲーション、ボタン、見出し、ラベ
 | グローバルナビゲーションヘッダー | 既定で翻訳対象だが、`react-partial` のhydration完了後にのみ翻訳する（上記参照）。ポップアップでOFFにすると `header[role="banner"]` を丸ごと除外する |
 | グローバル検索UI | 検索起動ボタン、`qbsearch-input`、`modal-dialog#search-suggestions-dialog` を除外（初期化処理との競合防止、およびユーザー名・Organization名・リポジトリ名の保護） |
 | インラインコード・コードブロック | `pre`、`code` タグを除外 |
-| 編集中の入力欄（bio、コメント本文等） | `[contenteditable="true"]`、`<textarea>` の子テキストを除外 |
+| 編集中の入力欄（bio、コメント本文等） | `[contenteditable="true"]` を除外。`<textarea>` の子テキスト（初期値）は、textarea自身を起点にした場合も親要素から走査した場合も書き換えない |
 
 ## 実装上の詳細
 

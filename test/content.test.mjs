@@ -187,6 +187,36 @@ describe('ページごとの翻訳スコープ', () => {
     assert.equal(page.text('#p'), '名前');
   });
 
+  it('Organizationのチーム作成画面では見出し・ラベル・説明文（p）を翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/orgs/acme/new-team',
+      dict: DICT,
+      body: '<h1 id="h">Name</h1><label id="l">Name</label><legend id="g">Name</legend><p id="p">Name</p>'
+    });
+    assert.equal(page.text('#h'), '名前');
+    assert.equal(page.text('#l'), '名前');
+    assert.equal(page.text('#g'), '名前');
+    assert.equal(page.text('#p'), '名前');
+  });
+
+  for (const sub of ['edit', 'edit/review_assignment', 'settings/reminders']) {
+    it(`Organizationのチーム設定（${sub}）では説明文（p・.form-checkbox .note）を翻訳する`, async () => {
+      page = await loadPage({
+        url: `https://github.com/orgs/acme/teams/core/${sub}`,
+        dict: DICT,
+        body: '<p id="p">Name</p><div class="form-checkbox"><label>Name</label><span id="note" class="note">Name</span></div><span id="plain">Name</span>'
+      });
+      assert.equal(page.text('#p'), '名前');
+      assert.equal(page.text('#note'), '名前');
+      assert.equal(page.text('#plain'), 'Name');
+    });
+  }
+
+  it('Organizationのカスタムプロパティ画面では説明文（p）を翻訳する', async () => {
+    page = await loadPage({ url: 'https://github.com/organizations/acme/settings/custom-properties', dict: DICT, body: '<p id="p">Name</p>' });
+    assert.equal(page.text('#p'), '名前');
+  });
+
   it('Issue/PR詳細画面ではPrimer Label（状態バッジ）を翻訳し、ほかの画面では翻訳しない', async () => {
     page = await loadPage({ url: 'https://github.com/octo/repo/pull/2', dict: DICT, body: '<span id="l" data-component="Label">Name</span>' });
     assert.equal(page.text('#l'), '名前');

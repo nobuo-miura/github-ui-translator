@@ -75,7 +75,9 @@ describe('ユーザー作成コンテンツへのリンク', () => {
     ['コミット', '/octo/repo/commit/abc123'],
     ['Wikiページ', '/octo/repo/wiki/Code'],
     ['マイルストーン', '/octo/repo/milestones/Code'],
-    ['リリース', '/octo/repo/releases/tag/v1.0.0']
+    ['リリース', '/octo/repo/releases/tag/v1.0.0'],
+    ['Organizationのチーム', '/orgs/octo/teams/code'],
+    ['比較範囲', '/octo/repo/compare/main...Code']
   ];
 
   for (const [name, href] of cases) {
@@ -93,6 +95,30 @@ describe('ユーザー作成コンテンツへのリンク', () => {
     });
     assert.equal(page.text('#wiki'), 'コード');
     assert.equal(page.text('#ms'), 'コード');
+  });
+
+  it('プルリクエスト作成への比較リンク（?expand=1）は翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo',
+      dict: DICT,
+      body: '<nav><a id="cmp" href="/octo/repo/compare/feature?expand=1">Code</a><a id="range" href="/octo/repo/compare/main...Code">Code</a></nav>'
+    });
+    assert.equal(page.text('#cmp'), 'コード');
+    assert.equal(page.text('#range'), 'Code');
+  });
+
+  it('チーム画面のタブ・ロール絞り込みとチーム作成ボタンは翻訳し、チーム名は翻訳しない', async () => {
+    page = await loadPage({
+      url: 'https://github.com/orgs/octo/teams/core',
+      dict: DICT,
+      body: `<nav><a id="tab" href="/orgs/octo/teams/core/members">Code</a><a id="new" href="/orgs/octo/new-team">Code</a><a id="list" href="/orgs/octo/teams">Code</a>
+        <a id="role" href="/orgs/octo/teams/core?query=role%3Amember">Code</a><a id="name" href="/orgs/octo/teams/code">Code</a></nav>`
+    });
+    assert.equal(page.text('#tab'), 'コード');
+    assert.equal(page.text('#new'), 'コード');
+    assert.equal(page.text('#list'), 'コード');
+    assert.equal(page.text('#role'), 'コード');
+    assert.equal(page.text('#name'), 'Code');
   });
 
   it('新しいPR画面のタブはPRへのリンクでも翻訳する', async () => {
@@ -270,6 +296,243 @@ describe('レビュー送信ポップアップの保留中コメント', () => {
     assert.equal(page.text('#title'), '一般');
     assert.equal(page.text('#file'), 'Code');
     assert.equal(page.text('#tip'), 'Code');
+  });
+});
+
+describe('Organizationのチーム作成画面の親チーム選択', () => {
+  const menu = (checked) => `<dl><dt>General</dt><dd><details>
+    <summary role="button" aria-haspopup="menu"><span id="team-search-button-text" data-menu-button>${checked ? 'Code' : 'General'}</span></summary>
+    <details-menu role="menu">
+      <span id="header">General</span>
+      <div id="team-search-results">
+        <button type="button" role="menuitemradio" aria-checked="${checked}" data-team-name="Code"><div data-menu-button-text><span id="team">Code</span></div></button>
+      </div>
+    </details-menu>
+  </details></dd></dl>`;
+
+  it('候補のチーム名は翻訳せず、未選択時のボタンの固定文言は翻訳する', async () => {
+    page = await loadPage({ url: 'https://github.com/orgs/acme/new-team', dict: DICT, body: menu(false) });
+    assert.equal(page.text('#team'), 'Code');
+    assert.equal(page.text('#team-search-button-text'), '一般');
+  });
+
+  it('チームを選択したあとのボタンのチーム名は翻訳しない', async () => {
+    page = await loadPage({ url: 'https://github.com/orgs/acme/new-team', dict: DICT, body: menu(true) });
+    assert.equal(page.text('#team-search-button-text'), 'Code');
+  });
+});
+
+describe('Organizationのチーム設定（コードレビュー）', () => {
+  it('割り当てから外すメンバーの候補（ユーザー名）は翻訳しない', async () => {
+    page = await loadPage({
+      url: 'https://github.com/orgs/acme/teams/core/edit/review_assignment',
+      dict: DICT,
+      body: `<details><summary role="button"><span id="btn">General</span></summary>
+        <details-menu role="menu"><ul class="select-menu-list"><li>
+          <label class="select-menu-item" role="menuitemcheckbox"><input type="checkbox"><span id="member" class="select-menu-item-text">Code</span></label>
+        </li></ul></details-menu></details>`
+    });
+    assert.equal(page.text('#btn'), '一般');
+    assert.equal(page.text('#member'), 'Code');
+  });
+});
+
+describe('入力欄の内容', () => {
+  it('親要素から走査してもtextareaの初期値（子テキスト）は翻訳せず、placeholderとaria-labelは翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/pull/1/changes',
+      dict: DICT,
+      body: `<fieldset aria-label="General"><div><span>
+        <textarea id="ta" aria-label="General" placeholder="General">Code</textarea>
+      </span></div></fieldset>`
+    });
+    const ta = page.document.querySelector('#ta');
+    assert.equal(ta.defaultValue, 'Code');
+    assert.equal(ta.getAttribute('placeholder'), '一般');
+    assert.equal(ta.getAttribute('aria-label'), '一般');
+  });
+});
+
+describe('Issue/PRのタイトル', () => {
+  it('.markdown-titleと新しい形式のmarkdownTitle__<hash>のタイトルは翻訳しない', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/pull/1',
+      dict: DICT,
+      body: `<div data-component="PageHeader"><h1 data-component="Heading">
+        <span id="new" class="f1 text-normal markdownTitle__jQX53G" data-component="Text" title="Code">Code</span>
+      </h1></div>
+      <h2><span id="old" class="markdown-title">Code</span></h2>
+      <h3 id="heading">General</h3>`
+    });
+    assert.equal(page.text('#new'), 'Code');
+    assert.equal(page.text('#old'), 'Code');
+    assert.equal(page.text('#heading'), '一般');
+  });
+});
+
+describe('Actionsの実行一覧', () => {
+  it('ワークフロー別の一覧では見出しと各行のワークフロー名を翻訳しない', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/actions/workflows/code.yml',
+      dict: DICT,
+      body: `<div data-component="PageHeader"><h1 id="title" data-component="PH_Title">Code</h1></div>
+      <section aria-label="Workflow runs for Code"><h2 id="sr">General</h2><ul role="list"><li>
+        <div><strong id="wf" title="Code">Code</strong><span>#1:</span><span>Manually run</span></div>
+      </li></ul></section>`
+    });
+    assert.equal(page.text('#title'), 'Code');
+    assert.equal(page.text('#wf'), 'Code');
+    assert.equal(page.text('#sr'), '一般');
+  });
+
+  it('全ワークフローの一覧でも各行のワークフロー名を翻訳しない', async () => {
+    page = await loadPage({
+      url: 'https://github.com/octo/repo/actions',
+      dict: DICT,
+      body: `<section aria-label="Workflow runs"><ul role="list"><li><div><strong id="wf">Code</strong><span>#1:</span></div></li></ul></section>`
+    });
+    assert.equal(page.text('#wf'), 'Code');
+  });
+});
+
+describe('Organizationのリポジトリ一覧とチーム画面', () => {
+  it('/orgs/<org>/repositories のリポジトリ名・説明は翻訳せず、可視性ラベルは翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/orgs/acme/repositories',
+      dict: { ...DICT, Private: 'プライベート' },
+      body: `<div class="ReposListContainer__20MJPz"><ul role="list"><li aria-label="Code.">
+        <div class="DefaultItemTitleContainer__Wu0ri7">
+          <h4 class="heading__fzQskI DefaultItemTitle__ITneTl"><a href="/acme/Code"><span id="name">Code</span></a></h4>
+          <span id="label" data-component="Label">Private</span>
+        </div>
+        <div class="FormattedDescription__JqeVHv"><div id="desc">General</div></div>
+      </li></ul></div>`
+    });
+    assert.equal(page.text('#name'), 'Code');
+    assert.equal(page.text('#desc'), 'General');
+    assert.equal(page.text('#label'), 'プライベート');
+  });
+
+  it('チーム画面のサイドバーのチーム名は翻訳せず、Aboutの見出しは翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/orgs/acme/teams/code',
+      dict: DICT,
+      body: `<div class="Layout-sidebar">
+        <div class="d-flex border-bottom"><h2 id="name">Code</h2></div>
+        <div class="d-flex"><h3 id="about">General</h3></div>
+        <div><p id="desc" class="description">General</p></div>
+      </div>`
+    });
+    assert.equal(page.text('#name'), 'Code');
+    assert.equal(page.text('#about'), '一般');
+    assert.equal(page.text('#desc'), 'General');
+  });
+});
+
+describe('Organization Settings > カスタムプロパティ（Set values）', () => {
+  it('リポジトリの行（名前・説明文・値）は翻訳せず、見出しは翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/organizations/acme/settings/custom-properties?tab=set-values',
+      dict: DICT,
+      body: `<h1 id="title">General</h1>
+      <div data-testid="targets-properties-list"><ul role="list">
+        <li aria-label="Code. More information available">
+          <h4><a id="name" href="/acme/Code"><span>Code</span></a></h4>
+          <div id="desc">General</div>
+          <span id="value">Code</span>
+        </li>
+      </ul></div>`
+    });
+    assert.equal(page.text('#title'), '一般');
+    assert.equal(page.text('#name'), 'Code');
+    assert.equal(page.text('#desc'), 'General');
+    assert.equal(page.text('#value'), 'Code');
+  });
+
+  it('Propertiesタブのプロパティ定義（名前・説明）は翻訳せず、新規作成ボタンは翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/organizations/acme/settings/custom-properties?tab=properties',
+      dict: DICT,
+      body: `<a id="new" href="/organizations/acme/settings/custom-property"><span>Code</span></a>
+      <div data-testid="repos-definitions-list"><h2 id="heading">General</h2><ul role="list">
+        <li aria-label="Code. Code."><h4><a id="name" href="/organizations/acme/settings/custom-property/Code"><span>Code</span></a></h4><div id="desc">General</div></li>
+      </ul></div>`
+    });
+    assert.equal(page.text('#new'), 'コード');
+    assert.equal(page.text('#heading'), '一般');
+    assert.equal(page.text('#name'), 'Code');
+    assert.equal(page.text('#desc'), 'General');
+  });
+
+  it('値を設定するフォームのプロパティ行（名前・説明）は翻訳せず、ボタンは翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/organizations/acme/settings/custom-properties?tab=set-values',
+      dict: DICT,
+      body: `<form data-testid="properties-editing-form"><div role="list">
+        <div role="listitem" data-testid="property-row"><div data-component="FormControl">
+          <label id="name" data-testid="property-name" for="v">Code</label><span id="desc">General</span><input id="v">
+        </div></div>
+      </div><button id="save">General</button></form>`
+    });
+    assert.equal(page.text('#name'), 'Code');
+    assert.equal(page.text('#desc'), 'General');
+    assert.equal(page.text('#save'), '一般');
+  });
+
+  for (const path of ['/organizations/acme/settings/custom-property', '/organizations/acme/settings/custom-property/Star']) {
+    it(`作成・編集フォーム（${path}）の選択肢と既定値は翻訳せず、ラベルと説明は翻訳する`, async () => {
+      page = await loadPage({
+        url: `https://github.com${path}`,
+        dict: DICT,
+        body: `<div data-testid="property-definition-form">
+          <label id="label">General</label>
+          <span id="caption" data-component="FormControl.Caption">General</span>
+          <ul><li aria-label="Code"><div id="opt">Code</div></li></ul>
+          <span id="property-default-value-label">General</span>
+          <button id="default" aria-labelledby="property-default-value-label"><span>Code</span></button>
+        </div>
+        <div data-component="Portal"><div role="dialog"><div data-testid="filtered-action-list">
+          <ul role="listbox"><li role="option" id="candidate">Code</li></ul>
+        </div></div></div>`
+      });
+      assert.equal(page.text('#label'), '一般');
+      assert.equal(page.text('#caption'), '一般');
+      assert.equal(page.text('#opt'), 'Code');
+      assert.equal(page.text('#default'), 'Code');
+      assert.equal(page.text('#candidate'), 'Code');
+    });
+  }
+
+  it('値設定画面でPortalに描画される選択肢の候補は翻訳せず、フォームのボタンは翻訳する', async () => {
+    page = await loadPage({
+      url: 'https://github.com/organizations/acme/settings/custom-properties?tab=set-values',
+      dict: DICT,
+      body: `<form data-testid="properties-editing-form"><div role="list">
+        <div role="listitem" data-testid="property-row"><button id="value" aria-haspopup="true">Code</button></div>
+      </div><button id="save">General</button></form>
+      <div data-component="Portal"><div role="dialog"><div data-testid="filtered-action-list">
+        <ul role="listbox"><li role="option" id="candidate">Code</li></ul>
+      </div></div></div>`
+    });
+    assert.equal(page.text('#value'), 'Code');
+    assert.equal(page.text('#candidate'), 'Code');
+    assert.equal(page.text('#save'), '一般');
+  });
+
+  it('プロパティ詳細画面の見出しとパンくず末尾（プロパティ名）は翻訳しない', async () => {
+    page = await loadPage({
+      url: 'https://github.com/organizations/acme/settings/custom-property/Code',
+      dict: DICT,
+      body: `<nav aria-label="Breadcrumbs"><ol>
+        <li><a id="bc1" data-component="Breadcrumbs.Item" href="/organizations/acme/settings/custom-properties">General</a></li>
+        <li><a id="bc2" data-component="Breadcrumbs.Item" aria-current="page">Code</a></li>
+      </ol></nav>
+      <h1 id="title" data-component="PH_Title">Code</h1><button id="edit">General</button>`
+    });
+    assert.equal(page.text('#bc1'), '一般');
+    assert.equal(page.text('#bc2'), 'Code');
+    assert.equal(page.text('#title'), 'Code');
+    assert.equal(page.text('#edit'), '一般');
   });
 });
 

@@ -82,6 +82,12 @@
     // 「ReposListItem-module_<hash>_NwoTitle」に変わったため、どちらの形式にも一致させる
     '[class*="ReposListItem-module"][class*="NwoTitle"]',
     '[class*="ReposListItem-module"][class*="FormattedDescription"]',
+    // Organizationのリポジトリ一覧（/orgs/<org>/repositories）も同じReposListを使うが、
+    // クラス名が「DefaultItemTitle__<hash>」「FormattedDescription__<hash>」の形式で上の
+    // 指定に一致しない。リスト全体（ReposListContainer）の中の名前（h4）と説明文を除外し、
+    // 可視性ラベル（Private等）や言語などの固定UIは翻訳の対象に残す
+    '[class*="ReposListContainer"] li h4',
+    '[class*="ReposListContainer"] [class*="FormattedDescription"]',
     // 「新しいイシュー」ボタンから開くテンプレート選択ダイアログ（CreateIssueDialog）。
     // /issues/new/choose ページと違い各テンプレートは<a href>ではなくReactの
     // ActionList項目としてレンダリングされURLパターンでは保護できない。テンプレート名
@@ -154,6 +160,23 @@
     '.js-issues-label-select-menu-item',
     '#milestones-select-menu [role="menuitemradio"][href*="milestone%3A"]',
     '#project-select-menu virtual-list [role="menuitemcheckbox"]',
+    // Organizationのチーム作成・編集画面の「親チーム」選択メニュー。候補行はユーザーが
+    // 付けたチーム名。選択するとボタン（role="button"のsummary）の表示もチーム名に
+    // 置き換わるため、候補が選択済み（aria-checked="true"）のときだけボタンの表示を除外し、
+    // 未選択時の固定文言「Select parent team」は翻訳する
+    '#team-search-results [role="menuitemradio"]',
+    // Organization Settings > カスタムプロパティの「Set values」タブに並ぶリポジトリの行。
+    // リポジトリ名・説明文・プロパティ値はいずれもユーザーが付けた内容で、リポジトリへの
+    // リンク（/<owner>/<repo>）はリポジトリナビの「Code」タブと同じ形のためURLで判別できない。
+    // 「No properties」等の固定文言も訳されなくなるが、誤訳を防ぐ側を優先して行ごと除外する
+    '[data-testid="targets-properties-list"] li',
+    // 同画面の「Properties」タブのプロパティ定義一覧。プロパティ名・説明はユーザーが付けた内容。
+    // 名前のリンクはisUserContentLinkでも保護されるが、説明は素の<div>のため行ごと除外する
+    '[data-testid="repos-definitions-list"] li',
+    // リポジトリにプロパティの値を設定するフォーム（「Set properties on <repo>」）の各行。
+    // プロパティ名（label）・説明・選択肢はいずれもユーザーが定義した内容
+    '[data-testid="property-row"]',
+    'details:has(#team-search-results [role="menuitemradio"][aria-checked="true"]) #team-search-button-text',
     '#author-select-menu [role="menuitemradio"][href*="author%3A"]',
     '#assignees-select-menu [role="menuitemradio"][href*="assignee%3A"]',
     'form[aria-label="Select milestones"] .select-menu-item:not(.select-menu-new-item-form)',
@@ -230,6 +253,9 @@
     // イシューをリンクする選択メニューなど、タイトルが再利用されるあらゆる箇所に付く。
     // 常にユーザーが入力したタイトルなので、クラス単体を除外専用の目印として使う
     '.markdown-title',
+    // 新しいPR画面のタイトルはCSS Modulesのクラス名「markdownTitle__<hash>」で描画され、
+    // 上の.markdown-titleに一致しない。同じ用途のクラスなので、接頭辞で一致させる
+    '[class*="markdownTitle__"]',
     // カスタムサイドバーがないWikiページで自動生成される目次。現在のページ自身の
     // 見出しをそのままアンカーリンクとして列挙するため、ページ内フラグメントへの
     // リンク（#見出し名）となりisUserContentLinkのURLパターンでは捕捉できない
@@ -280,6 +306,19 @@
   // owner/repoのように可変のパスセグメントを含むため完全一致では表現できない
   // 画面向け。末尾を$で固定し、確認済みのサブページ以外へ意図せず広がらないようにする。
   const PATTERN_EXTRA_SELECTOR = [
+    // Organizationのチーム作成画面（/orgs/<org>/new-team）。各項目の説明文が<p>に入る。
+    // チーム名・説明は入力欄の値で、<p>には固定文言だけが出ることを確認済み
+    { pattern: /^\/orgs\/[^/]+\/new-team$/, selectors: ['p'] },
+    // Organization Settings > カスタムプロパティ。<p>は画面の説明文と、GitHubが用意した
+    // 候補プロパティの説明だけ。ユーザーが定義したプロパティの説明は<div>で、除外リスト側で保護する
+    { pattern: /^\/organizations\/[^/]+\/settings\/custom-properties$/, selectors: ['p'] },
+    // カスタムプロパティの作成・編集フォーム。各項目の説明はPrimerのFormControl.Captionという
+    // 素の<span>。名前・説明・パターン・選択肢はinputの値か除外リスト側で保護される
+    { pattern: /^\/organizations\/[^/]+\/settings\/custom-property(\/[^/]+)?$/, selectors: ['[data-component="FormControl.Caption"]'] },
+    // Organizationのチーム設定（一般・コードレビュー・予定されたリマインダー）。
+    // チーム名・説明は入力欄の値で、<p>とチェックボックス下の説明（.form-checkbox .note）は
+    // 固定文言だけであることを確認済み。コードレビュー画面のメンバー名は除外リスト側で保護する
+    { pattern: /^\/orgs\/[^/]+\/teams\/[^/]+\/(edit|edit\/review_assignment|settings\/reminders)$/, selectors: ['p', '.form-checkbox .note'] },
     // Issue/PR詳細画面のPrimer Label（会話の「Resolved」、コメントの「Owner」等の状態バッジ）。
     // 素の<span>で実装されているため許可リストに入らない。ユーザーが付けるラベルは
     // prc-Token-IssueLabelという別の部品で、こちらは除外リスト側で保護される
@@ -416,6 +455,43 @@
   };
 
   const PATTERN_EXTRA_EXCLUDE_SELECTOR = [
+    // Organizationのチーム画面（メンバー・子チーム・リポジトリ等のタブ）。左サイドバーの
+    // チーム名（h2）と説明はユーザーが付けた内容。「About」の見出しは別要素なので翻訳する
+    {
+      pattern: /^\/orgs\/[^/]+\/teams\/[^/]+(\/[^/]+)?$/,
+      selectors: ['.Layout-sidebar .border-bottom > h2', '.Layout-sidebar p.description']
+    },
+    // Organizationのカスタムプロパティ詳細画面。ページ見出しとパンくずの末尾（リンクなし）は
+    // ユーザーが付けたプロパティ名そのもの
+    {
+      pattern: /^\/organizations\/[^/]+\/settings\/custom-property\/[^/]+$/,
+      selectors: ['h1[data-component="PH_Title"]', '[data-component="Breadcrumbs.Item"]:not([href])']
+    },
+    // カスタムプロパティの作成・編集フォーム。選択式（Single select等）の選択肢一覧（li）、
+    // 既定値の選択ボタン（選んだ選択肢の名前が表示される）と、その候補を出すSelectPanelの
+    // 候補行は、いずれもユーザーが定義した選択肢。ボタンは未選択時の「Choose an option」も
+    // 訳されなくなるが、選択済みかを判別する目印がないため誤訳を防ぐ側を優先する
+    {
+      pattern: /^\/organizations\/[^/]+\/settings\/custom-property(\/[^/]+)?$/,
+      selectors: [
+        '[data-testid="property-definition-form"] li',
+        'button[aria-labelledby="property-default-value-label"]',
+        '[data-testid="filtered-action-list"] [role="option"]'
+      ]
+    },
+    // カスタムプロパティの一覧・値設定画面（/settings/custom-properties、「Set properties on <repo>」）。
+    // 選択式プロパティの値を選ぶSelectPanelの候補はproperty-rowの外（Portal）に描画され、
+    // 行ごとの除外が届かないため、候補行を別途除外する。候補はユーザーが定義した選択肢
+    {
+      pattern: /^\/organizations\/[^/]+\/settings\/custom-properties$/,
+      selectors: ['[data-testid="filtered-action-list"] [role="option"]']
+    },
+    // チーム設定のコードレビュー画面。「Never assign certain team members」のメニューに
+    // 並ぶ候補はチームメンバーのユーザー名
+    {
+      pattern: /^\/orgs\/[^/]+\/teams\/[^/]+\/edit\/review_assignment$/,
+      selectors: ['[role="menuitemcheckbox"] .select-menu-item-text']
+    },
     // Issue typesとIssue fieldsの設定画面（個人・Organization）。一覧の各行の説明文
     // （li直下のspan）、フィールドの選択肢（Token）、タイプに固定表示するフィールド名は
     // いずれもユーザーが定義した内容。名前のリンクはisUserContentLinkで保護する
@@ -485,6 +561,20 @@
     {
       pattern: /^\/[^/]+\/[^/]+\/actions\/runs\/\d+(\/job\/\d+)?$/,
       selectors: ['h1 .markdown-title', '.CheckRun-log-title']
+    },
+    // Actionsのワークフロー別の実行一覧（/actions/workflows/<file>）。ページ見出しは
+    // Workflow YAMLのname:そのもの
+    {
+      pattern: /^\/[^/]+\/[^/]+\/actions\/workflows\/[^/]+$/,
+      selectors: ['h1[data-component="PH_Title"]']
+    },
+    // Actionsの実行一覧（全ワークフロー・ワークフロー別）。各行の「<Workflow名> #1: Manually run by」の
+    // Workflow名はstrongで表示される。title属性にも同じ名前が入るが、描画後に付与されるため
+    // 翻訳時点では一致しない。一覧の行内のstrongはこのWorkflow名だけなので、属性で絞らずに除外する。
+    // 実行タイトルのリンクはURLで保護済み
+    {
+      pattern: /^\/[^/]+\/[^/]+\/actions(\/workflows\/[^/]+)?$/,
+      selectors: ['li strong']
     },
     // GitHub Sponsorsダッシュボードのユーザーコンテンツ領域だけを除外する。
     // featured-work要素には見出し・説明文・「Edit featured work」ボタンといった
@@ -562,7 +652,7 @@
   const getAllowlistSelector = memoizeByPath(() => {
     const isExtendedScopePage =
       /\/settings(\/|$)/.test(location.pathname) ||
-      /^\/orgs\/[^/]+\/(people|teams|security-managers|packages|sponsoring|repositories|actions)(\/|$)/.test(location.pathname) ||
+      /^\/orgs\/[^/]+\/(people|teams|security-managers|packages|sponsoring|repositories|actions|new-team)(\/|$)/.test(location.pathname) ||
       // GitHub Sponsorsのダッシュボード（/sponsors/<user>/dashboard 配下）。見出し・
       // ラベル・説明文が nav/button/[aria-label] の外に多数出るため拡張スコープが必要
       /^\/sponsors\/[^/]+\/dashboard(\/|$)/.test(location.pathname) ||
@@ -633,6 +723,17 @@
     return /^\/[^/]+\/[^/]+\/(issues|pull|discussions)\/\d+(\/|$)/.test(path) ||
       // Issue typesとIssue fieldsの設定画面の一覧に並ぶタイプ名・フィールド名
       /^(\/organizations\/[^/]+)?\/settings\/issue-(types|fields)\/\d+$/.test(path) ||
+      // Organizationのチーム名（チーム一覧の各行、チーム画面のパンくず等）。チームの
+      // 「メンバー」「チーム」等のタブは/teams/<slug>/membersのように後ろに続き、
+      // チーム画面のロール絞り込み（Everyone・Member等）は?query=を伴うため対象外
+      (/^\/orgs\/[^/]+\/teams\/[^/]+$/.test(path) && !url.search) ||
+      // 比較画面（/compare）の「Example comparisons」等に並ぶ比較範囲。表示はブランチ名・
+      // タグ名などユーザーが付けた識別子。リポジトリトップの「Compare & pull request」や
+      // ブランチ一覧の「New pull request」は?expand=1付きで、文言が固定のため対象外
+      (/^\/[^/]+\/[^/]+\/compare\/.+$/.test(path) && !url.searchParams.has('expand')) ||
+      // Organizationのカスタムプロパティ名（プロパティ定義一覧から詳細画面へのリンク）。
+      // 新規作成ボタンや候補カードのリンクは/custom-propertyで終わるため対象外
+      /^\/organizations\/[^/]+\/settings\/custom-property\/[^/]+$/.test(path) ||
       // リポジトリ固有の保存済みIssueビュー一覧（/issues/views）に表示されるビュー名。
       // リンク先のIDはGitHubが付与し（数値のこともbase64風のこともある）、
       // リンクの表示名はユーザーが自由に設定する。「新規作成」への固定リンクは除く
@@ -1088,6 +1189,11 @@
     const textNodes = [];
     let node;
     while ((node = walker.nextNode())) {
+      // <textarea>の子テキストノードは入力欄の初期値（defaultValue）そのもの。親要素を起点に
+      // 走査したときもここで拾われ、書き換えるとフォームのリセット時などに訳文が入力内容として
+      // 戻ってしまう（コメント欄の下書き「Star」が「スター」になる等）。textarea自身を起点に
+      // した場合の早期returnと同じく、内容には一切触れない
+      if (node.parentElement && node.parentElement.closest('textarea')) continue;
       textNodes.push(node);
       if (isBoundedContainer && textNodes.length > 100) return;
     }
