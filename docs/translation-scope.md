@@ -47,13 +47,22 @@ The following content is intentionally excluded even when its text exactly match
 |---|---|
 | README, issue, comment, and code block content | Exclude elements inside `.markdown-body` |
 | Repository name links | Exclude `[data-hovercard-type="repository"]` |
-| Rows in the global repositories list (`/repos`): owner/repo names and descriptions | Exclude `[class*="ReposListItem-module"][class*="NwoTitle"]` and `[class*="ReposListItem-module"][class*="FormattedDescription"]` (matches both the old and new CSS Modules class name formats) |
+| Rows in the global repositories list (`/repos`): owner/repo names and descriptions | Exclude `[class*="ReposListItem-module"][class*="NwoTitle"]` and `[class*="ReposListItem-module"][class*="FormattedDescription"]` (matches both the old and new CSS Modules class name formats). The organization repository list (`/orgs/<org>/repositories`) is excluded with `[class*="ReposListContainer"] li h4` and `[class*="ReposListContainer"] [class*="FormattedDescription"]` |
 | User name links | Exclude `[data-hovercard-type="user"]` |
-| Issue, pull request, and discussion titles | Exclude `<bdi>` (which GitHub uses for bidirectional text isolation) and the `.markdown-title` class (detail-view headings and sticky headers, the "Link an issue" menu under a pull request's Development section, and anywhere else the title is reused) |
+| Issue, pull request, and discussion titles | Exclude `<bdi>` (which GitHub uses for bidirectional text isolation) and the `.markdown-title` class (detail-view headings and sticky headers, the "Link an issue" menu under a pull request's Development section, and anywhere else the title is reused). The new pull request page renders its title with the CSS Modules class `markdownTitle__<hash>`, so `[class*="markdownTitle__"]` is excluded too |
 | Issue template names and descriptions (`name:` / `description:`) | On `/issues/new/choose`, exclude template links by URL pattern; in the picker dialog opened from list views, exclude item titles and descriptions inside `[data-testid="template-list"]` |
 | Issue form content (labels, descriptions, and Markdown defined in YAML) | Exclude `[class*="formElementsContainer__"]` (shared by the `/issues/new` page and the create dialog) |
 | Branch and tag names in the ref selector popup | Exclude `[data-testid="overlay-content"][aria-labelledby^="ref-picker-"] [role="menuitemradio"]` (the dialog's `aria-label` is not used because the extension translates it) |
 | Milestone and project names in the sidebar picker menus | Exclude `#milestone-select-menu .select-menu-item:not(.select-menu-new-item-form)` and `#projects-select-menu [role="menuitemcheckbox"]` |
+| Parent team picker on the organization team create and edit pages (team names in the options, and in the button after one is selected) | Exclude `#team-search-results [role="menuitemradio"]`, and `#team-search-button-text` while an option is selected (`aria-checked="true"`) |
+| Organization team names (rows in the team list, breadcrumbs on team pages) | Exclude links to `/orgs/<org>/teams/<slug>` without a query by URL pattern. Team tabs (`/teams/<slug>/members` etc.) and role filters (`?query=role:…`) are still translated |
+| Compare ranges (branch and tag names) listed on the compare page, such as "Example comparisons" | Exclude links to `/<owner>/<repo>/compare/<range>` by URL pattern. Links with `?expand=1` (such as "Compare & pull request") are still translated |
+| Workflow names in Actions run lists (all workflows and per workflow) | On `/actions` and `/actions/workflows/<file>` only, exclude `li strong` in each row, and the page title (`h1[data-component="PH_Title"]`) on per-workflow pages |
+| Team name and description in the sidebar of organization team pages | On team pages (`/orgs/<org>/teams/<slug>` and below) only, exclude `.Layout-sidebar .border-bottom > h2` and `.Layout-sidebar p.description` |
+| Repository rows on the "Set values" tab of organization custom properties (names, descriptions, and property values) | Exclude `[data-testid="targets-properties-list"] li` (fixed text such as "No properties" stays untranslated too) |
+| Custom property names, descriptions, and options (the "Properties" tab list, the form for setting values, and the property detail page) | Exclude `[data-testid="repos-definitions-list"] li` and `[data-testid="property-row"]`. Exclude links to the detail page (`/settings/custom-property/<name>`) by URL pattern, and on the detail page only, the page title (`h1[data-component="PH_Title"]`) and the last breadcrumb |
+| Options and default values in the custom property create and edit form | On the create and edit pages only, exclude `[data-testid="property-definition-form"] li` (option list), `button[aria-labelledby="property-default-value-label"]` (default value button), and `[data-testid="filtered-action-list"] [role="option"]` (default value candidates). On the page for setting values (`/settings/custom-properties`), the option candidates rendered in a Portal (`[data-testid="filtered-action-list"] [role="option"]`) are excluded too |
+| Member options (user names) for excluding members from auto assignment on the team code review settings page | Exclude `[role="menuitemcheckbox"] .select-menu-item-text` on that page only |
 | Issue type, field, and field value options in the issue sidebar | Exclude `[data-testid="item-picker-root"] [role="option"]` |
 | Field names and values under "Fields" in the issue sidebar | Exclude `[class*="issueFieldLabel__"]` and `[class*="issueFieldValueText__"]` |
 | Issue type names set on issues (below the title and in the sidebar of the issue page, and in issue lists) | Exclude `[class*="issueTypeTokenContainer__"]` |
@@ -68,7 +77,7 @@ The following content is intentionally excluded even when its text exactly match
 | Global navigation header | Translated by default, but only after its `react-partial` finishes hydration (see above). Translation can be turned off from the popup, which excludes `header[role="banner"]` entirely |
 | Global search UI | Exclude the search trigger button, `qbsearch-input`, and `modal-dialog#search-suggestions-dialog` to prevent interference with initialization and protect user, organization, and repository names |
 | Inline code and code blocks | Exclude `pre` and `code` elements |
-| Editable fields such as bios and comment bodies | Exclude `[contenteditable="true"]` and text inside `<textarea>` elements |
+| Editable fields such as bios and comment bodies | Exclude `[contenteditable="true"]`. Text inside `<textarea>` elements (their initial value) is never rewritten, whether the scan starts at the textarea or at an ancestor |
 
 ## Implementation details
 
