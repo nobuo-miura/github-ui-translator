@@ -9,6 +9,9 @@ const showOriginalToggle = document.getElementById('show-original-toggle');
 // 言語選択の「自動」（ブラウザの表示言語に従う）を表す<option>の値
 const AUTO_LANGUAGE = '';
 
+// 「自動」で判定した結果、対応する辞書がない（翻訳しない）かどうか
+let autoLanguageUnsupported = false;
+
 // 設定を変更したあとのGitHubタブの再読み込みは、各タブのcontent.jsが
 // chrome.storage.onChangedを検知して行う。ポップアップ側からタブを探すには
 // "tabs"権限かホスト権限が必要になるため、ここでは再読み込みしない
@@ -20,12 +23,16 @@ async function initialize() {
     const languages = await loadLanguages();
 
     // 先頭に「自動」を置く。値は空文字で、選ぶとstorageのlanguageを削除して
-    // 未設定に戻す。括弧内には、content.jsと同じ判定で決まる言語名を表示する
+    // 未設定に戻す。括弧内には、content.jsと同じ判定で決まる言語名を表示する。
+    // 対応する辞書がなければ「翻訳しない」と表示する
     const defaultLanguage = resolveDefaultLanguage(
       chrome.i18n.getUILanguage(),
       languages.map(({ code }) => code)
     );
-    const defaultName = languages.find(({ code }) => code === defaultLanguage)?.name ?? defaultLanguage;
+    autoLanguageUnsupported = !defaultLanguage;
+    const defaultName = defaultLanguage
+      ? languages.find(({ code }) => code === defaultLanguage)?.name ?? defaultLanguage
+      : getMessage('noTranslationOption');
     const autoOption = document.createElement('option');
     autoOption.value = AUTO_LANGUAGE;
     autoOption.textContent = getMessage('autoLanguageOption', [defaultName]);
@@ -46,8 +53,8 @@ async function initialize() {
     { enabled: true, language: null, translateGlobalHeader: true, showOriginalOnHover: false },
     (items) => {
       toggle.checked = items.enabled;
-      updateStatus(items.enabled);
       languageSelect.value = items.language || AUTO_LANGUAGE;
+      updateStatus(items.enabled);
       globalHeaderToggle.checked = items.translateGlobalHeader;
       showOriginalToggle.checked = items.showOriginalOnHover;
     }
@@ -61,6 +68,7 @@ toggle.addEventListener('change', () => {
 });
 
 languageSelect.addEventListener('change', () => {
+  updateStatus(toggle.checked);
   if (languageSelect.value === AUTO_LANGUAGE) {
     chrome.storage.local.remove('language');
   } else {
@@ -76,10 +84,15 @@ showOriginalToggle.addEventListener('change', () => {
   chrome.storage.local.set({ showOriginalOnHover: showOriginalToggle.checked });
 });
 
+// ONでも「自動」で対応する辞書がなければ翻訳されないので、言語を選ぶよう案内する
 function updateStatus(enabled) {
-  status.textContent = enabled
-    ? getMessage('translationEnabledStatus')
-    : getMessage('translationDisabledStatus');
+  if (!enabled) {
+    status.textContent = getMessage('translationDisabledStatus');
+  } else if (languageSelect.value === AUTO_LANGUAGE && autoLanguageUnsupported) {
+    status.textContent = getMessage('unsupportedBrowserLanguageStatus');
+  } else {
+    status.textContent = getMessage('translationEnabledStatus');
+  }
 }
 
 initialize();

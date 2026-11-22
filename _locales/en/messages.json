@@ -31,6 +31,12 @@
       }
     }
   },
+  "noTranslationOption": {
+    "message": "no translation"
+  },
+  "unsupportedBrowserLanguageStatus": {
+    "message": "Your browser's language has no dictionary, so nothing is translated. Choose a language to translate."
+  },
   "globalHeaderTranslationLabel": {
     "message": "Translate global header"
   },

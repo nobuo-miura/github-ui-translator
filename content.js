@@ -997,7 +997,8 @@
   }
 
   // 言語が未設定（ポップアップで一度も選んでいない）場合は、ブラウザーの表示言語から
-  // 初期言語を決める。storageには書き込まず、ユーザーが選ぶまで毎回判定する
+  // 初期言語を決める。storageには書き込まず、ユーザーが選ぶまで毎回判定する。
+  // 対応する辞書がなければlanguageはnullのままで、翻訳しない
   async function getSettings() {
     const items = await new Promise((resolve) => {
       chrome.storage.local.get(
@@ -1241,7 +1242,7 @@
       translateGlobalHeader: globalHeaderEnabled,
       showOriginalOnHover: originalOnHoverEnabled
     } = await getSettings();
-    if (!enabled) return;
+    if (!enabled || !language) return;
     translateGlobalHeader = globalHeaderEnabled;
     showOriginalOnHover = originalOnHoverEnabled;
 

@@ -31,6 +31,12 @@
       }
     }
   },
+  "noTranslationOption": {
+    "message": "翻訳しない"
+  },
+  "unsupportedBrowserLanguageStatus": {
+    "message": "ブラウザの表示言語に対応する辞書がないため、翻訳していません。翻訳する言語を選んでください。"
+  },
   "globalHeaderTranslationLabel": {
     "message": "グローバルヘッダーを翻訳"
   },

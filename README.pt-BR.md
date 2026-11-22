@@ -81,7 +81,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 ## Uso
 
 - Clique no ícone da extensão na barra de ferramentas para abrir o botão de ativação da tradução e o seletor de idioma. Japonês, chinês simplificado, chinês tradicional, espanhol, alemão, português do Brasil, coreano, francês e russo estão incluídos atualmente; a lista poderá receber novos idiomas quando outros dicionários forem adicionados.
-- Enquanto você não escolher um idioma, a extensão segue o idioma de exibição do navegador. Se não houver dicionário para esse idioma, o japonês é usado. Selecione "Automático" no seletor para voltar a esse comportamento.
+- Enquanto você não escolher um idioma, a extensão segue o idioma de exibição do navegador. Se não houver dicionário para esse idioma, nada é traduzido até você escolher um. Selecione "Automático" no seletor para voltar a esse comportamento.
 - Ao alterar o botão de ativação ou o idioma, as abas abertas do GitHub são recarregadas para aplicar a nova configuração.
 - O pop-up também permite escolher se o cabeçalho global será traduzido e contém um link para este repositório. Alterar essa opção também recarrega as abas do GitHub. A tradução do cabeçalho global fica ativada por padrão e aguarda o término da hidratação do React do GitHub; desative-a se a pesquisa global não abrir.
 - As abas do GitHub que já estavam abertas antes de uma atualização da extensão podem não ser recarregadas automaticamente. Se uma configuração não for aplicada, recarregue a aba manualmente.

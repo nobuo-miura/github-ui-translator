@@ -31,6 +31,12 @@
       }
     }
   },
+  "noTranslationOption": {
+    "message": "keine Übersetzung"
+  },
+  "unsupportedBrowserLanguageStatus": {
+    "message": "Für die Sprache deines Browsers gibt es kein Wörterbuch, daher wird nichts übersetzt. Wähle eine Sprache aus."
+  },
   "globalHeaderTranslationLabel": {
     "message": "Globalen Header übersetzen"
   },
