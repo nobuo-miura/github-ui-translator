@@ -12,14 +12,14 @@
 GitHub UI Translator est une extension pour Chrome, Edge et Firefox qui traduit l’interface anglaise de GitHub en japonais, chinois simplifié, chinois traditionnel, espagnol, allemand, portugais brésilien, coréen, français ou russe à l’aide de dictionnaires locaux.
 Elle ne dépend d’aucune API de traduction ni d’aucun service cloud externe : toute la traduction s’effectue localement dans le navigateur.
 
-![Résultat de la traduction en japonais](docs/images/jp.jpeg)
+![Résultat de la traduction en français](docs/images/screenshot-fr.png)
 
 <details>
-<summary>Captures d’écran en 8 langues</summary>
+<summary>Captures d’écran en 9 langues</summary>
 
 La première ligne montre l’interface anglaise d’origine de GitHub ; chaque ligne suivante présente le résultat dans une langue.
 
-![Résultats de traduction en 8 langues](docs/images/languages.png)
+![Résultats de traduction en 9 langues](docs/images/languages.png)
 
 </details>
 

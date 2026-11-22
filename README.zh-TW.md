@@ -12,14 +12,14 @@
 GitHub UI Translator 是一款適用於 Chrome、Edge 和 Firefox 的瀏覽器擴充功能。它使用本機字典，將 GitHub 的英文介面翻譯成日語、簡體中文、繁體中文、西班牙語、德語、巴西葡萄牙語、韓語、法語或俄語。
 本擴充功能不依賴外部翻譯 API 或雲端服務；所有翻譯均在瀏覽器內完成。
 
-![日語翻譯效果](docs/images/jp.jpeg)
+![繁體中文翻譯效果](docs/images/screenshot-zh-TW.png)
 
 <details>
-<summary>8 種語言的截圖</summary>
+<summary>9 種語言的截圖</summary>
 
 最上方是 GitHub 原始的英文介面，下方依序展示各語言的翻譯效果。
 
-![8 種語言的翻譯效果](docs/images/languages.png)
+![9 種語言的翻譯效果](docs/images/languages.png)
 
 </details>
 

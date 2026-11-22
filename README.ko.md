@@ -12,14 +12,14 @@
 GitHub UI Translator는 로컬 사전을 사용해 GitHub의 영어 UI를 일본어, 중국어 간체, 중국어 번체, 스페인어, 독일어, 브라질 포르투갈어, 한국어, 프랑스어 또는 러시아어로 번역하는 Chrome, Edge 및 Firefox용 브라우저 확장 프로그램입니다.
 외부 번역 API나 클라우드 서비스에 의존하지 않으며 모든 번역은 브라우저 안에서 로컬로 처리됩니다.
 
-![일본어 번역 결과](docs/images/jp.jpeg)
+![한국어 번역 결과](docs/images/screenshot-ko.png)
 
 <details>
-<summary>8개 언어의 스크린샷</summary>
+<summary>9개 언어의 스크린샷</summary>
 
 첫 번째 행은 GitHub의 원본 영어 UI이며, 그 아래 각 행은 언어별 번역 결과입니다.
 
-![8개 언어의 번역 결과](docs/images/languages.png)
+![9개 언어의 번역 결과](docs/images/languages.png)
 
 </details>
 

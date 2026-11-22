@@ -12,14 +12,14 @@
 GitHubの英語UIを、ローカル辞書を使って日本語・簡体字中国語・繁体字中国語・スペイン語・ドイツ語・ブラジルポルトガル語・韓国語・フランス語・ロシア語に翻訳するブラウザ拡張機能です（Chrome / Edge / Firefox対応）。
 外部の翻訳APIやクラウドサービスには一切依存せず、すべてブラウザ内で完結します。
 
-![日本語翻訳結果](docs/images/jp.jpeg)
+![日本語翻訳結果](docs/images/screenshot-ja.png)
 
 <details>
-<summary>スクリーンショット（8言語）</summary>
+<summary>スクリーンショット（9言語）</summary>
 
 先頭は翻訳前のGitHubの英語UI、その下が各言語の翻訳結果です。
 
-![8言語の翻訳結果](docs/images/languages.png)
+![9言語の翻訳結果](docs/images/languages.png)
 
 </details>
 
