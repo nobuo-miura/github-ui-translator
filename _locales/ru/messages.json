@@ -31,6 +31,12 @@
       }
     }
   },
+  "noTranslationOption": {
+    "message": "без перевода"
+  },
+  "unsupportedBrowserLanguageStatus": {
+    "message": "Для языка браузера нет словаря, поэтому перевод не выполняется. Выберите язык."
+  },
   "globalHeaderTranslationLabel": {
     "message": "Переводить глобальный заголовок"
   },

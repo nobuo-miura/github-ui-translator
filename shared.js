@@ -17,15 +17,12 @@
     return data.languages;
   }
 
-  // ブラウザーの表示言語に対応する辞書がないときに使う言語
-  const FALLBACK_LANGUAGE = 'ja';
-
   // ブラウザーの表示言語（"de"、"pt-BR"、"zh_CN"等）から、同梱辞書の言語コードを選ぶ。
   // 完全一致を優先し、中国語は文字体系・地域、それ以外は言語部分（"pt-PT" → "pt-BR"等）で選ぶ。
-  // どれにも当てはまらなければFALLBACK_LANGUAGEを返す
+  // どれにも当てはまらなければnullを返し、翻訳しない（未対応の言語で別の言語に変わるのを防ぐ）
   function resolveDefaultLanguage(uiLanguage, codes) {
     const normalized = String(uiLanguage || '').replace(/_/g, '-').toLowerCase();
-    if (!normalized) return FALLBACK_LANGUAGE;
+    if (!normalized) return null;
 
     const exact = codes.find((code) => code.toLowerCase() === normalized);
     if (exact) return exact;
@@ -42,17 +39,17 @@
     }
 
     const sameBase = codes.find((code) => code.toLowerCase().split('-')[0] === base);
-    return sameBase || FALLBACK_LANGUAGE;
+    return sameBase || null;
   }
 
   // 言語が未設定（インストール直後など）のときの初期言語を返す。
-  // 言語一覧を読み込めなかった場合はFALLBACK_LANGUAGEにする
+  // 対応する辞書がない場合や、言語一覧を読み込めなかった場合はnullを返す
   async function getDefaultLanguage() {
     try {
       const languages = await loadLanguages();
       return resolveDefaultLanguage(chrome.i18n.getUILanguage(), languages.map(({ code }) => code));
     } catch {
-      return FALLBACK_LANGUAGE;
+      return null;
     }
   }
 

@@ -139,6 +139,8 @@ describe('基本の翻訳', () => {
     const raw = readRepoFile('dictionaries/ja.json');
     page = await loadPage({
       url: REPO_URL,
+      // 言語一覧は使わないので、言語を保存済みにして辞書の読み込みだけを確かめる
+      settings: { language: 'ja' },
       fetchImpl: async () => ({ ok: true, text: async () => raw }),
       body: '<nav><a id="a" href="/octo/repo/pulls">Pull requests</a></nav>'
     });
@@ -454,6 +456,7 @@ describe('設定', () => {
   it('辞書の読み込みに失敗しても例外を投げず原文のまま表示する', async () => {
     page = await loadPage({
       url: REPO_URL,
+      settings: { language: 'ja' },
       fetchImpl: async () => { throw new Error('network error'); },
       body: '<button id="b">Code</button>'
     });
@@ -464,6 +467,7 @@ describe('設定', () => {
   it('辞書の取得がHTTPエラーの場合は本文を使わず、原文のまま表示してエラーを記録する', async () => {
     page = await loadPage({
       url: REPO_URL,
+      settings: { language: 'ja' },
       // 本文がJSONとして読めてしまう場合でも、HTTPエラーの応答は辞書として扱わない
       fetchImpl: async () => ({ ok: false, status: 404, text: async () => JSON.stringify({ translations: DICT }) }),
       body: '<button id="b">Code</button>'

@@ -41,11 +41,11 @@ describe('resolveDefaultLanguage', () => {
     ['de-AT', 'de'],
     ['es-419', 'es'],
     ['pt-PT', 'pt-BR'],
-    // 対応していない言語・不明な値はjaにする
-    ['en-US', 'ja'],
-    ['it', 'ja'],
-    ['', 'ja'],
-    [undefined, 'ja']
+    // 対応していない言語・不明な値はnull（翻訳しない）にする
+    ['en-US', null],
+    ['it', null],
+    ['', null],
+    [undefined, null]
   ]) {
     it(`${JSON.stringify(uiLanguage)} → ${expected}`, async () => {
       page = await loadPage({ url: REPO_URL, body: '' });
@@ -65,7 +65,7 @@ describe('resolveDefaultLanguage', () => {
     const { resolveDefaultLanguage } = page.window.GitHubUITranslator;
     assert.equal(resolveDefaultLanguage('zh-Hant', ['ja', 'zh-CN']), 'zh-CN');
     assert.equal(resolveDefaultLanguage('zh-Hans', ['ja', 'zh-TW']), 'zh-TW');
-    assert.equal(resolveDefaultLanguage('zh-Hant', ['ja']), 'ja');
+    assert.equal(resolveDefaultLanguage('zh-Hant', ['ja']), null);
   });
 });
 
@@ -88,9 +88,22 @@ describe('content.jsの初期言語', () => {
     assert.equal(page.text('#a'), 'translated');
   });
 
-  it('対応していない表示言語ならjaの辞書を読み込む', async () => {
+  it('対応していない表示言語なら辞書を読み込まず、翻訳しない', async () => {
     page = await loadPage({ url: REPO_URL, dict: DICT, body: BODY, uiLanguage: 'en-US' });
+    assert.deepEqual(dictionaryUrls(), []);
+    assert.equal(page.text('#a'), 'Code');
+  });
+
+  it('対応していない表示言語でも、保存済みの言語があれば翻訳する', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: DICT,
+      body: BODY,
+      uiLanguage: 'en-US',
+      settings: { language: 'ja' }
+    });
     assert.deepEqual(dictionaryUrls(), ['chrome-extension://test/dictionaries/ja.json']);
+    assert.equal(page.text('#a'), 'translated');
   });
 
   it('保存済みの言語があれば、表示言語より優先する', async () => {
@@ -104,7 +117,7 @@ describe('content.jsの初期言語', () => {
     assert.deepEqual(page.fetchedUrls, ['chrome-extension://test/dictionaries/fr.json']);
   });
 
-  it('言語一覧を読み込めなくてもjaで翻訳を続ける', async () => {
+  it('言語一覧を読み込めなければ、言語を判定できないので翻訳しない', async () => {
     page = await loadPage({
       url: REPO_URL,
       body: BODY,
@@ -114,8 +127,8 @@ describe('content.jsの初期言語', () => {
         return { ok: true, text: async () => JSON.stringify({ translations: DICT }) };
       }
     });
-    assert.deepEqual(dictionaryUrls(), ['chrome-extension://test/dictionaries/ja.json']);
-    assert.equal(page.text('#a'), 'translated');
+    assert.deepEqual(dictionaryUrls(), []);
+    assert.equal(page.text('#a'), 'Code');
   });
 
   it('翻訳がOFFなら言語一覧も辞書も読み込まない', async () => {

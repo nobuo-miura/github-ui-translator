@@ -27,9 +27,21 @@ describe('ポップアップの言語選択', () => {
     assert.equal(second.value, 'ja');
   });
 
-  it('対応していない表示言語では、「自動」に日本語を表示する', async () => {
+  it('対応していない表示言語では、「自動」に「翻訳しない」を表示し、言語を選ぶよう案内する', async () => {
     popup = await loadPopup({ uiLanguage: 'en-US' });
-    assert.equal(languageSelect().options[0].textContent, 'autoLanguageOption(日本語)');
+    assert.equal(languageSelect().options[0].textContent, 'autoLanguageOption(noTranslationOption)');
+    assert.equal(popup.document.querySelector('#status').textContent, 'unsupportedBrowserLanguageStatus');
+  });
+
+  it('対応していない表示言語でも、言語を選ぶと通常のON表示に戻る', async () => {
+    popup = await loadPopup({ uiLanguage: 'en-US' });
+    popup.select('#language', 'ja');
+    assert.equal(popup.document.querySelector('#status').textContent, 'translationEnabledStatus');
+  });
+
+  it('対応している表示言語では、通常のON表示にする', async () => {
+    popup = await loadPopup({ uiLanguage: 'de' });
+    assert.equal(popup.document.querySelector('#status').textContent, 'translationEnabledStatus');
   });
 
   it('言語が未設定なら「自動」を選択状態にする', async () => {

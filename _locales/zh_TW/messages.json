@@ -31,6 +31,12 @@
       }
     }
   },
+  "noTranslationOption": {
+    "message": "不翻譯"
+  },
+  "unsupportedBrowserLanguageStatus": {
+    "message": "沒有與瀏覽器語言對應的字典，因此不會翻譯。請選擇要翻譯的語言。"
+  },
   "globalHeaderTranslationLabel": {
     "message": "翻譯全域頁首"
   },

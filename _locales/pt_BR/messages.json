@@ -31,6 +31,12 @@
       }
     }
   },
+  "noTranslationOption": {
+    "message": "sem tradução"
+  },
+  "unsupportedBrowserLanguageStatus": {
+    "message": "Não há dicionário para o idioma do seu navegador, então nada é traduzido. Escolha um idioma."
+  },
   "globalHeaderTranslationLabel": {
     "message": "Traduzir cabeçalho global"
   },

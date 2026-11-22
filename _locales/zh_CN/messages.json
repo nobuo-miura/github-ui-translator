@@ -31,6 +31,12 @@
       }
     }
   },
+  "noTranslationOption": {
+    "message": "不翻译"
+  },
+  "unsupportedBrowserLanguageStatus": {
+    "message": "没有与浏览器语言对应的词典，因此不会翻译。请选择要翻译的语言。"
+  },
   "globalHeaderTranslationLabel": {
     "message": "翻译全局页眉"
   },
