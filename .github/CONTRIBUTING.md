@@ -1,4 +1,4 @@
-[English](/.github/CONTRIBUTING.md) | [日本語](/.github/CONTRIBUTING.ja.md)
+[English](/.github/CONTRIBUTING.md) | [日本語](/.github/CONTRIBUTING.ja.md) | [简体中文](/.github/CONTRIBUTING.zh-CN.md) | [繁體中文](/.github/CONTRIBUTING.zh-TW.md) | [Español](/.github/CONTRIBUTING.es.md) | [Deutsch](/.github/CONTRIBUTING.de.md) | [Português (Brasil)](/.github/CONTRIBUTING.pt-BR.md) | [한국어](/.github/CONTRIBUTING.ko.md) | [Français](/.github/CONTRIBUTING.fr.md) | [Русский](/.github/CONTRIBUTING.ru.md)
 
 # Contributing to GitHub UI Translator
 
@@ -34,9 +34,9 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - **Chrome**: open `chrome://extensions`, turn on Developer mode, click "Load unpacked", and select the cloned folder (the one containing `manifest.json`).
 - **Firefox**: open `about:debugging#/runtime/this-firefox`, click "Load Temporary Add-on…", and select `manifest.json`. A temporary add-on is removed when Firefox restarts, so reload it each session.
 
-There is no build step and no dependency to install. After editing any file, reload the extension and refresh the GitHub page you are testing against.
+No build step or dependency installation is needed to load and run the extension. After editing a file, reload the extension and refresh the GitHub page you are testing against.
 
-Node.js is needed only to run the validator. CI uses Node 26.
+Dictionary validation and tests use Node.js. Install the test dependencies with pnpm, using the version specified by `packageManager` in `package.json`. CI uses Node 26.
 
 ## Editing the dictionaries
 
@@ -54,7 +54,7 @@ Translations live in `dictionaries/<code>.json` — currently [`ja.json`](/dicti
 }
 ```
 
-Six rules matter. The validator checks the parts it can determine from the files; the remaining parts need care in review.
+There are seven important rules. The validator checks what it can determine from the files; the rest needs review.
 
 **1. Every dictionary must contain exactly the same set of keys.** This is the rule contributors trip over most often. If you add an entry to `ja.json` and not to the other dictionaries, CI fails with `missing keys`. Add the entry to *every* dictionary in the same pull request. If you cannot translate it into a language you do not speak, say so in the pull request rather than leaving the key out.
 
@@ -68,14 +68,17 @@ Six rules matter. The validator checks the parts it can determine from the files
 
 **6. Translation chains must converge.** A translation may intentionally be identical to its source—for example, `"Wiki": "Wiki"` records that the product name should remain untranslated. The validator reports these self-mappings as warnings, not errors. A cycle of two or more different values, such as `A → B → A`, never converges and is rejected. A non-cyclic chain whose output changes again on the next pass is also reported as a warning so that it can be reviewed.
 
+**7. Preserve inline tag types and order.** If a key contains tags such as `<a>`, `<strong>`, or `<code>`, keep the same tag types in the same order in the translation. Do not remove or reorder tags. The extension replaces text without reordering existing DOM elements. The validator also checks that the tag types and order match the source.
+
 Values must be non-empty strings. Duplicate keys within one file are an error.
 
 ## Translation guidelines
 
-- When the same term appears in the official GitHub Docs, use its localized wording and capitalization as the primary reference. See the [Japanese documentation](https://docs.github.com/ja), [Simplified Chinese documentation](https://docs.github.com/zh), [Spanish documentation](https://docs.github.com/es), [German documentation](https://docs.github.com/de), [Portuguese documentation](https://docs.github.com/pt), [Korean documentation](https://docs.github.com/ko), [French documentation](https://docs.github.com/fr), and [Russian documentation](https://docs.github.com/ru).
+- Prefer the terms that native developers of each language actually use. A translation that reads naturally on screen matters more than a literal rendering of GitHub's official localization.
+- Use the wording and capitalization of the official GitHub Docs as a reference. See the [Japanese documentation](https://docs.github.com/ja), [Simplified Chinese documentation](https://docs.github.com/zh), [Spanish documentation](https://docs.github.com/es), [German documentation](https://docs.github.com/de), [Portuguese documentation](https://docs.github.com/pt), [Korean documentation](https://docs.github.com/ko), [French documentation](https://docs.github.com/fr), and [Russian documentation](https://docs.github.com/ru). There is no official Traditional Chinese documentation.
 - Check the term on the current GitHub screen and consider every known place where the same English key appears. Because one dictionary key has one translation, prefer wording that remains clear across those contexts.
 - Keep terminology consistent with related entries in the existing dictionary and preserve official product and feature names where GitHub does.
-- GitHub Docs are a reference, not an absolute rule. If the documented wording is unnatural in the UI or does not fit the current context, prefer a clear, natural translation and explain the reason in the pull request.
+- If you choose wording that differs from the official docs, or change an existing translation, explain why in the pull request. When the maintainers and native contributors disagree, the native speakers' judgment takes precedence.
 
 ## Adding a new language
 
@@ -103,17 +106,19 @@ The new dictionary needs every key that the existing dictionaries have, so this 
 
 ## Validating your changes
 
-Run the validator before opening a pull request:
+Before opening a pull request, install the dependencies and run dictionary validation and tests:
 
 ```bash
-node scripts/validate.mjs
+pnpm install --frozen-lockfile
+pnpm run validate
+pnpm test
 ```
 
-It checks dictionary format and metadata, duplicate keys, empty or whitespace-padded keys, key parity across all dictionaries, key parity across all `_locales`, that every `__MSG_*__` placeholder in `manifest.json` resolves, and that `shared.js` loads before `content.js`. It also warns about self-mappings and translation chains that change again on the next pass, and rejects translation cycles of length two or greater. On success it prints the entry count per language and any informational warnings.
+The dictionary validator (`pnpm run validate`) checks dictionary format and metadata, duplicate keys, empty or whitespace-padded keys, key parity across all dictionaries, key parity across all `_locales`, that every `__MSG_*__` placeholder in `manifest.json` resolves, and that `shared.js` loads before `content.js`. It also warns about self-mappings and translation chains that change again on the next pass, and rejects translation cycles of length two or greater. On success it prints the entry count per language and any informational warnings. It also checks that inline tag types and order match the source.
 
 It does **not** check section placement, key indentation, or whether locale directory names correspond to the codes in `languages.json`. Those three need a human eye.
 
-CI runs the same command on every pull request, along with `node --check` on each JavaScript file. Running it locally saves you a round trip.
+CI runs the dictionary validation and tests above, plus JavaScript syntax checks (`node --check`), on every pull request. Running them locally saves you a round trip.
 
 ## Pull requests
 

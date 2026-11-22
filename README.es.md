@@ -152,7 +152,7 @@ Las mejoras de las traducciones y los informes de errores son bienvenidos. Son e
 - Puedes proponer mejoras o traducciones que falten mediante una [solicitud de traducción](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml). Puedes escribir en inglés o en español
 - Si activas «Mostrar el texto original al pasar el cursor» en la ventana emergente, verás el original en inglés al pasar el cursor sobre un texto traducido (desactivado de forma predeterminada). Así es más fácil indicar el texto original en una solicitud de traducción
 - Puedes informar de errores o solicitar funciones en [Issues](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
-- Antes de abrir una pull request, lee la [guía de contribución (English)](.github/CONTRIBUTING.md) ([日本語](.github/CONTRIBUTING.ja.md))
+- Antes de abrir una pull request, lee la [guía de contribución](.github/CONTRIBUTING.es.md)
 
 ## Licencia
 

@@ -152,7 +152,7 @@ github-ui-translator/
 - 如需改進譯文或補充缺失的翻譯，請提交[翻譯請求](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml)，可以使用英文或中文填寫
 - 在彈出視窗中開啟「滑鼠停留時顯示原文」後，將滑鼠停留在已翻譯的文字上即可看到英文原文（預設關閉），便於在翻譯請求中填寫原文
 - 如需報告問題或提出功能建議，請提交 [Issue](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)
-- 提交 Pull Request 之前，請先閱讀[貢獻指南（English）](.github/CONTRIBUTING.md)（[日本語](.github/CONTRIBUTING.ja.md)）
+- 提交 Pull Request 之前，請先閱讀[貢獻指南](.github/CONTRIBUTING.zh-TW.md)
 
 ## 授權條款
 
