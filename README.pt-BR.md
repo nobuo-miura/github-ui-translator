@@ -1,6 +1,6 @@
 # GitHub UI Translator
 
-[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
+[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
 
 [![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
@@ -9,17 +9,17 @@
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-GitHub UI Translator é uma extensão para Chrome, Edge e Firefox que traduz a interface em inglês do GitHub para japonês, chinês simplificado, espanhol, alemão, português do Brasil, coreano, francês ou russo usando dicionários locais.
+GitHub UI Translator é uma extensão para Chrome, Edge e Firefox que traduz a interface em inglês do GitHub para japonês, chinês simplificado, chinês tradicional, espanhol, alemão, português do Brasil, coreano, francês ou russo usando dicionários locais.
 Ela não depende de APIs externas de tradução nem de serviços em nuvem: toda a tradução é feita localmente no navegador.
 
 ![Resultado da tradução para japonês](docs/images/jp.jpeg)
 
 <details>
-<summary>Capturas de tela dos 8 idiomas compatíveis</summary>
+<summary>Capturas de tela em 8 idiomas</summary>
 
 A primeira linha mostra a interface original do GitHub em inglês; as linhas seguintes mostram o resultado da tradução em cada idioma.
 
-![Resultados da tradução nos 8 idiomas compatíveis](docs/images/languages.png)
+![Resultados da tradução em 8 idiomas](docs/images/languages.png)
 
 </details>
 
@@ -36,7 +36,7 @@ A primeira linha mostra a interface original do GitHub em inglês; as linhas seg
 
 ## Limitações
 
-- Atualmente há suporte para japonês, chinês simplificado, espanhol, alemão, português do Brasil, coreano, francês e russo. Outros idiomas serão adicionados à medida que a cobertura de tradução aumentar.
+- Atualmente há suporte para japonês, chinês simplificado, chinês tradicional, espanhol, alemão, português do Brasil, coreano, francês e russo. Outros idiomas serão adicionados à medida que a cobertura de tradução aumentar.
 - Textos dinâmicos que contêm números ou datas, como “3 commits” ou “opened 2 days ago”, não são traduzidos. Conteúdo criado por usuários, como nomes de usuário, também fica de fora. Consulte o [escopo da tradução](docs/translation-scope.md) para saber mais.
 - Somente `github.com` é compatível. GitHub Enterprise e outros domínios personalizados não são compatíveis.
 - A extensão foi testada no Chrome, Edge e Firefox. Outros navegadores baseados em Chromium também podem funcionar, mas não foram testados explicitamente.
@@ -80,7 +80,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## Uso
 
-- Clique no ícone da extensão na barra de ferramentas para abrir o botão de ativação da tradução e o seletor de idioma. Japonês, chinês simplificado, espanhol, alemão, português do Brasil, coreano, francês e russo estão incluídos atualmente; a lista poderá receber novos idiomas quando outros dicionários forem adicionados.
+- Clique no ícone da extensão na barra de ferramentas para abrir o botão de ativação da tradução e o seletor de idioma. Japonês, chinês simplificado, chinês tradicional, espanhol, alemão, português do Brasil, coreano, francês e russo estão incluídos atualmente; a lista poderá receber novos idiomas quando outros dicionários forem adicionados.
 - Enquanto você não escolher um idioma, a extensão segue o idioma de exibição do navegador. Se não houver dicionário para esse idioma, o japonês é usado. Selecione "Automático" no seletor para voltar a esse comportamento.
 - Ao alterar o botão de ativação ou o idioma, as abas abertas do GitHub são recarregadas para aplicar a nova configuração.
 - O pop-up também permite escolher se o cabeçalho global será traduzido e contém um link para este repositório. Alterar essa opção também recarrega as abas do GitHub. A tradução do cabeçalho global fica ativada por padrão e aguarda o término da hidratação do React do GitHub; desative-a se a pesquisa global não abrir.
@@ -89,7 +89,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## Personalização do dicionário
 
-Você pode adicionar ou alterar traduções editando diretamente o arquivo de dicionário do idioma desejado, por exemplo, `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` ou `dictionaries/ru.json`.
+Você pode adicionar ou alterar traduções editando diretamente o arquivo de dicionário do idioma desejado, por exemplo, `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` ou `dictionaries/ru.json`.
 As entradas são agrupadas por tela do GitHub (navegação do repositório, configurações do repositório, configurações da organização etc.). Cada grupo começa com uma linha de comentário `// ====`, facilitando a identificação da tela correspondente e a percepção de mudanças nos textos da interface do GitHub.
 
 ```jsonc
@@ -130,6 +130,7 @@ github-ui-translator/
 ├─ dictionaries/
 │  ├─ ja.json       # Dicionário japonês
 │  ├─ zh-CN.json    # Dicionário de chinês simplificado
+│  ├─ zh-TW.json    # Dicionário de chinês tradicional
 │  ├─ es.json       # Dicionário espanhol
 │  ├─ de.json       # Dicionário alemão
 │  ├─ pt-BR.json    # Dicionário de português do Brasil

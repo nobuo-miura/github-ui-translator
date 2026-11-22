@@ -40,7 +40,7 @@ Node.js is needed only to run the validator. CI uses Node 26.
 
 ## Editing the dictionaries
 
-Translations live in `dictionaries/<code>.json` — currently [`ja.json`](/dictionaries/ja.json), [`zh-CN.json`](/dictionaries/zh-CN.json), [`es.json`](/dictionaries/es.json), [`de.json`](/dictionaries/de.json), [`pt-BR.json`](/dictionaries/pt-BR.json), [`ko.json`](/dictionaries/ko.json), [`fr.json`](/dictionaries/fr.json), and [`ru.json`](/dictionaries/ru.json).
+Translations live in `dictionaries/<code>.json` — currently [`ja.json`](/dictionaries/ja.json), [`zh-CN.json`](/dictionaries/zh-CN.json), [`zh-TW.json`](/dictionaries/zh-TW.json), [`es.json`](/dictionaries/es.json), [`de.json`](/dictionaries/de.json), [`pt-BR.json`](/dictionaries/pt-BR.json), [`ko.json`](/dictionaries/ko.json), [`fr.json`](/dictionaries/fr.json), and [`ru.json`](/dictionaries/ru.json).
 
 ```jsonc
 {
@@ -89,6 +89,7 @@ Values must be non-empty strings. Duplicate keys within one file are an error.
 | --- | --- | --- |
 | Japanese | `ja` | `_locales/ja` |
 | Simplified Chinese | `zh-CN` | `_locales/zh_CN` |
+| Traditional Chinese | `zh-TW` | `_locales/zh_TW` |
 | Spanish | `es` | `_locales/es` |
 | German | `de` | `_locales/de` |
 | Brazilian Portuguese | `pt-BR` | `_locales/pt_BR` |

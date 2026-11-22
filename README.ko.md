@@ -1,6 +1,6 @@
 # GitHub UI Translator
 
-[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
+[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
 
 [![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
@@ -9,17 +9,17 @@
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-GitHub UI Translator는 로컬 사전을 사용해 GitHub의 영어 UI를 일본어, 중국어 간체, 스페인어, 독일어, 브라질 포르투갈어, 한국어, 프랑스어 또는 러시아어로 번역하는 Chrome, Edge 및 Firefox용 브라우저 확장 프로그램입니다.
+GitHub UI Translator는 로컬 사전을 사용해 GitHub의 영어 UI를 일본어, 중국어 간체, 중국어 번체, 스페인어, 독일어, 브라질 포르투갈어, 한국어, 프랑스어 또는 러시아어로 번역하는 Chrome, Edge 및 Firefox용 브라우저 확장 프로그램입니다.
 외부 번역 API나 클라우드 서비스에 의존하지 않으며 모든 번역은 브라우저 안에서 로컬로 처리됩니다.
 
 ![일본어 번역 결과](docs/images/jp.jpeg)
 
 <details>
-<summary>지원하는 8개 언어의 스크린샷</summary>
+<summary>8개 언어의 스크린샷</summary>
 
 첫 번째 행은 GitHub의 원본 영어 UI이며, 그 아래 각 행은 언어별 번역 결과입니다.
 
-![지원하는 8개 언어의 번역 결과](docs/images/languages.png)
+![8개 언어의 번역 결과](docs/images/languages.png)
 
 </details>
 
@@ -36,7 +36,7 @@ GitHub UI Translator는 로컬 사전을 사용해 GitHub의 영어 UI를 일본
 
 ## 제한 사항
 
-- 현재 일본어, 중국어 간체, 스페인어, 독일어, 브라질 포르투갈어, 한국어, 프랑스어, 러시아어를 지원합니다. 번역 범위가 충분히 갖춰지는 대로 다른 언어도 추가할 예정입니다.
+- 현재 일본어, 중국어 간체, 중국어 번체, 스페인어, 독일어, 브라질 포르투갈어, 한국어, 프랑스어, 러시아어를 지원합니다. 번역 범위가 충분히 갖춰지는 대로 다른 언어도 추가할 예정입니다.
 - “3 commits”나 “opened 2 days ago”처럼 숫자 또는 날짜가 포함된 동적 문구는 번역하지 않습니다. 사용자 이름 등 사용자가 작성한 콘텐츠도 번역 대상에서 제외됩니다. 자세한 내용은 [번역 범위](docs/translation-scope.md)를 참고하세요.
 - `github.com`만 지원합니다. GitHub Enterprise 및 기타 사용자 지정 도메인은 지원하지 않습니다.
 - Chrome, Edge 및 Firefox에서 테스트했습니다. 다른 Chromium 기반 브라우저에서도 작동할 수 있지만 명시적으로 테스트하지는 않았습니다.
@@ -80,7 +80,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## 사용 방법
 
-- 도구 모음에서 확장 프로그램 아이콘을 클릭하면 번역 켜기/끄기 스위치와 언어 선택기가 열립니다. 현재 일본어, 중국어 간체, 스페인어, 독일어, 브라질 포르투갈어, 한국어, 프랑스어, 러시아어가 포함되어 있으며 사전을 추가하면 목록에 새 언어를 더할 수 있습니다.
+- 도구 모음에서 확장 프로그램 아이콘을 클릭하면 번역 켜기/끄기 스위치와 언어 선택기가 열립니다. 현재 일본어, 중국어 간체, 중국어 번체, 스페인어, 독일어, 브라질 포르투갈어, 한국어, 프랑스어, 러시아어가 포함되어 있으며 사전을 추가하면 목록에 새 언어를 더할 수 있습니다.
 - 언어를 선택하기 전에는 브라우저 표시 언어에 맞춰 번역합니다. 해당 언어의 사전이 없으면 일본어를 사용합니다. 언어 선택기에서 "자동"을 선택하면 이 동작으로 돌아갑니다.
 - 번역 스위치나 언어를 변경하면 열려 있는 GitHub 탭이 새로고침되어 새 설정이 적용됩니다.
 - 팝업에서는 전역 헤더 번역 여부를 선택할 수 있으며 이 저장소로 이동하는 링크도 제공합니다. 이 옵션을 변경해도 열려 있는 GitHub 탭이 새로고침됩니다. 전역 헤더 번역은 기본적으로 켜져 있고 GitHub의 React 하이드레이션이 끝날 때까지 기다린 뒤 동작합니다. 전역 검색이 열리지 않는 경우 이 옵션을 끄세요.
@@ -89,7 +89,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## 사전 사용자 지정
 
-원하는 언어의 사전 파일을 직접 편집하여 번역을 추가하거나 변경할 수 있습니다. 예: `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json`, `dictionaries/ru.json`.
+원하는 언어의 사전 파일을 직접 편집하여 번역을 추가하거나 변경할 수 있습니다. 예: `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json`, `dictionaries/ru.json`.
 항목은 저장소 탐색, 저장소 Settings, 조직 Settings 등 GitHub 화면별로 그룹화되어 있으며 각 그룹 앞에는 `// ====` 주석 줄이 있습니다. 이를 통해 항목이 어느 화면에 속하는지 빠르게 파악하고 GitHub UI 문구 변경도 쉽게 발견할 수 있습니다.
 
 ```jsonc
@@ -130,6 +130,7 @@ github-ui-translator/
 ├─ dictionaries/
 │  ├─ ja.json       # 일본어 사전
 │  ├─ zh-CN.json    # 중국어 간체 사전
+│  ├─ zh-TW.json    # 중국어 번체 사전
 │  ├─ es.json       # 스페인어 사전
 │  ├─ de.json       # 독일어 사전
 │  ├─ pt-BR.json    # 브라질 포르투갈어 사전

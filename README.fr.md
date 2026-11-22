@@ -1,6 +1,6 @@
 # GitHub UI Translator
 
-[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
+[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
 
 [![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
@@ -9,17 +9,17 @@
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-GitHub UI Translator est une extension pour Chrome, Edge et Firefox qui traduit l’interface anglaise de GitHub en japonais, chinois simplifié, espagnol, allemand, portugais brésilien, coréen, français ou russe à l’aide de dictionnaires locaux.
+GitHub UI Translator est une extension pour Chrome, Edge et Firefox qui traduit l’interface anglaise de GitHub en japonais, chinois simplifié, chinois traditionnel, espagnol, allemand, portugais brésilien, coréen, français ou russe à l’aide de dictionnaires locaux.
 Elle ne dépend d’aucune API de traduction ni d’aucun service cloud externe : toute la traduction s’effectue localement dans le navigateur.
 
 ![Résultat de la traduction en japonais](docs/images/jp.jpeg)
 
 <details>
-<summary>Captures d’écran des 8 langues prises en charge</summary>
+<summary>Captures d’écran en 8 langues</summary>
 
 La première ligne montre l’interface anglaise d’origine de GitHub ; chaque ligne suivante présente le résultat dans une langue.
 
-![Résultats de traduction dans les 8 langues prises en charge](docs/images/languages.png)
+![Résultats de traduction en 8 langues](docs/images/languages.png)
 
 </details>
 
@@ -36,7 +36,7 @@ La première ligne montre l’interface anglaise d’origine de GitHub ; chaque 
 
 ## Limitations
 
-- Le japonais, le chinois simplifié, l’espagnol, l’allemand, le portugais brésilien, le coréen, le français et le russe sont actuellement pris en charge. D’autres langues seront ajoutées à mesure que leur couverture progressera.
+- Le japonais, le chinois simplifié, le chinois traditionnel, l’espagnol, l’allemand, le portugais brésilien, le coréen, le français et le russe sont actuellement pris en charge. D’autres langues seront ajoutées à mesure que leur couverture progressera.
 - Les textes dynamiques contenant des nombres ou des dates, tels que « 3 commits » ou « opened 2 days ago », ne sont pas traduits. Le contenu créé par les utilisateurs, comme les noms d’utilisateur, est également exclu. Consultez le [périmètre de traduction](docs/translation-scope.md) pour plus de détails.
 - Seul `github.com` est pris en charge. GitHub Enterprise et les autres domaines personnalisés ne le sont pas.
 - L’extension a été testée sur Chrome, Edge et Firefox. D’autres navigateurs basés sur Chromium peuvent également fonctionner, mais n’ont pas été testés explicitement.
@@ -80,7 +80,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## Utilisation
 
-- Cliquez sur l’icône de l’extension dans la barre d’outils pour afficher l’interrupteur de traduction et le sélecteur de langue. Le japonais, le chinois simplifié, l’espagnol, l’allemand, le portugais brésilien, le coréen, le français et le russe sont actuellement inclus ; la liste pourra accueillir d’autres langues lorsque de nouveaux dictionnaires seront ajoutés.
+- Cliquez sur l’icône de l’extension dans la barre d’outils pour afficher l’interrupteur de traduction et le sélecteur de langue. Le japonais, le chinois simplifié, le chinois traditionnel, l’espagnol, l’allemand, le portugais brésilien, le coréen, le français et le russe sont actuellement inclus ; la liste pourra accueillir d’autres langues lorsque de nouveaux dictionnaires seront ajoutés.
 - Tant que vous n’avez pas choisi de langue, l’extension suit la langue d’affichage du navigateur. S’il n’existe pas de dictionnaire pour cette langue, le japonais est utilisé. Sélectionnez « Automatique » dans le sélecteur pour revenir à ce comportement.
 - Toute modification de l’interrupteur ou de la langue recharge les onglets GitHub ouverts afin d’appliquer le nouveau paramètre.
 - La fenêtre contextuelle permet aussi de choisir si l’en-tête global doit être traduit et contient un lien vers ce dépôt. La modification de cette option recharge également les onglets GitHub. La traduction de l’en-tête global est activée par défaut et attend la fin de l’hydratation React de GitHub ; désactivez-la si la recherche globale ne s’ouvre pas.
@@ -89,7 +89,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## Personnalisation du dictionnaire
 
-Vous pouvez ajouter ou modifier des traductions en éditant directement le dictionnaire de la langue concernée, par exemple `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` ou `dictionaries/ru.json`.
+Vous pouvez ajouter ou modifier des traductions en éditant directement le dictionnaire de la langue concernée, par exemple `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` ou `dictionaries/ru.json`.
 Les entrées sont regroupées par écran GitHub (navigation du dépôt, paramètres du dépôt, paramètres de l’organisation, etc.). Chaque groupe commence par une ligne de commentaire `// ====`, ce qui permet d’identifier rapidement l’écran correspondant et de repérer les changements dans les textes de l’interface GitHub.
 
 ```jsonc
@@ -130,6 +130,7 @@ github-ui-translator/
 ├─ dictionaries/
 │  ├─ ja.json       # Dictionnaire japonais
 │  ├─ zh-CN.json    # Dictionnaire chinois simplifié
+│  ├─ zh-TW.json    # Dictionnaire chinois traditionnel
 │  ├─ es.json       # Dictionnaire espagnol
 │  ├─ de.json       # Dictionnaire allemand
 │  ├─ pt-BR.json    # Dictionnaire portugais brésilien
