@@ -21,7 +21,7 @@
   const FALLBACK_LANGUAGE = 'ja';
 
   // ブラウザーの表示言語（"de"、"pt-BR"、"zh_CN"等）から、同梱辞書の言語コードを選ぶ。
-  // 完全一致を優先し、なければ言語部分が同じもの（"pt-PT" → "pt-BR"等）を使う。
+  // 完全一致を優先し、中国語は文字体系・地域、それ以外は言語部分（"pt-PT" → "pt-BR"等）で選ぶ。
   // どれにも当てはまらなければFALLBACK_LANGUAGEを返す
   function resolveDefaultLanguage(uiLanguage, codes) {
     const normalized = String(uiLanguage || '').replace(/_/g, '-').toLowerCase();
@@ -31,6 +31,16 @@
     if (exact) return exact;
 
     const base = normalized.split('-')[0];
+    // 中国語は文字体系を優先する。明示されたHans/Hantがなければ地域で選ぶ。
+    // 香港・マカオには、同梱する台湾向けの繁体字辞書を使う。
+    if (base === 'zh') {
+      const parts = normalized.split('-');
+      const script = parts.find((part) => part === 'hans' || part === 'hant');
+      const traditional = script ? script === 'hant' : parts.some((part) => ['tw', 'hk', 'mo'].includes(part));
+      const preferred = codes.find((code) => code.toLowerCase() === (traditional ? 'zh-tw' : 'zh-cn'));
+      if (preferred) return preferred;
+    }
+
     const sameBase = codes.find((code) => code.toLowerCase().split('-')[0] === base);
     return sameBase || FALLBACK_LANGUAGE;
   }

@@ -1,0 +1,95 @@
+{
+  "extensionName": {
+    "message": "GitHub UI Translator"
+  },
+  "extensionDescription": {
+    "message": "使用內建語言字典，在瀏覽器中翻譯 GitHub 介面。"
+  },
+  "actionTitle": {
+    "message": "GitHub UI Translator"
+  },
+  "translationLabel": {
+    "message": "翻譯"
+  },
+  "translationToggleLabel": {
+    "message": "啟用或停用翻譯"
+  },
+  "translationEnabledStatus": {
+    "message": "已開啟：翻譯 GitHub UI"
+  },
+  "translationDisabledStatus": {
+    "message": "已關閉：顯示原始英文 UI"
+  },
+  "languageLabel": {
+    "message": "語言"
+  },
+  "autoLanguageOption": {
+    "message": "自動（$LANGUAGE$）",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "globalHeaderTranslationLabel": {
+    "message": "翻譯全域頁首"
+  },
+  "globalHeaderTranslationToggleLabel": {
+    "message": "啟用或停用全域頁首翻譯"
+  },
+  "globalHeaderTranslationWarning": {
+    "message": "如果全域搜尋介面無法開啟（例如瀏覽器剛啟動時），請關閉此選項。"
+  },
+  "showOriginalLabel": {
+    "message": "滑鼠停留時顯示原文"
+  },
+  "showOriginalToggleLabel": {
+    "message": "啟用或停用「滑鼠停留時顯示原文」"
+  },
+  "showOriginalHint": {
+    "message": "將滑鼠停留在已翻譯的文字上即可檢視英文原文，方便提出更好的翻譯建議。"
+  },
+  "translationRequestLink": {
+    "message": "提出翻譯建議"
+  },
+  "repositoryLink": {
+    "message": "在 GitHub 上檢視 GitHub UI Translator"
+  },
+  "settingsTitle": {
+    "message": "GitHub UI Translator - 設定"
+  },
+  "dictionaryInfoHeading": {
+    "message": "字典資訊"
+  },
+  "languageColumn": {
+    "message": "語言"
+  },
+  "entryCountColumn": {
+    "message": "詞條數"
+  },
+  "versionInfoHeading": {
+    "message": "版本資訊"
+  },
+  "dictionaryCount": {
+    "message": "$COUNT$ 筆",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "dictionaryLoadError": {
+    "message": "載入錯誤"
+  },
+  "languageListLoadError": {
+    "message": "無法載入語言清單"
+  },
+  "versionLabel": {
+    "message": "版本：$VERSION$",
+    "placeholders": {
+      "version": {
+        "content": "$1"
+      }
+    }
+  }
+}

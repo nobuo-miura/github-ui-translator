@@ -40,7 +40,7 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 
 ## 辞書の編集
 
-翻訳は`dictionaries/<言語コード>.json`にあります。現在は[`ja.json`](/dictionaries/ja.json)、[`zh-CN.json`](/dictionaries/zh-CN.json)、[`es.json`](/dictionaries/es.json)、[`de.json`](/dictionaries/de.json)、[`pt-BR.json`](/dictionaries/pt-BR.json)、[`ko.json`](/dictionaries/ko.json)、[`fr.json`](/dictionaries/fr.json)、[`ru.json`](/dictionaries/ru.json)の8つです。
+翻訳は`dictionaries/<言語コード>.json`にあります。現在は[`ja.json`](/dictionaries/ja.json)、[`zh-CN.json`](/dictionaries/zh-CN.json)、[`zh-TW.json`](/dictionaries/zh-TW.json)、[`es.json`](/dictionaries/es.json)、[`de.json`](/dictionaries/de.json)、[`pt-BR.json`](/dictionaries/pt-BR.json)、[`ko.json`](/dictionaries/ko.json)、[`fr.json`](/dictionaries/fr.json)、[`ru.json`](/dictionaries/ru.json)の9つです。
 
 ```jsonc
 {
@@ -89,6 +89,7 @@ Node.jsが必要なのは検証スクリプトを実行するときだけです�
 | --- | --- | --- |
 | 日本語 | `ja` | `_locales/ja` |
 | 簡体字中国語 | `zh-CN` | `_locales/zh_CN` |
+| 繁体字中国語 | `zh-TW` | `_locales/zh_TW` |
 | スペイン語 | `es` | `_locales/es` |
 | ドイツ語 | `de` | `_locales/de` |
 | ブラジルポルトガル語 | `pt-BR` | `_locales/pt_BR` |

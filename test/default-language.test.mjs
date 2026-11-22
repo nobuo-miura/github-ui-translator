@@ -21,6 +21,19 @@ describe('resolveDefaultLanguage', () => {
     ['de', 'de'],
     ['pt-BR', 'pt-BR'],
     ['zh-CN', 'zh-CN'],
+    ['zh-TW', 'zh-TW'],
+    ['zh_TW', 'zh-TW'],
+    ['ZH-hAnT', 'zh-TW'],
+    ['zh-Hant-TW', 'zh-TW'],
+    ['zh_Hant_HK', 'zh-TW'],
+    ['zh-HK', 'zh-TW'],
+    ['zh-MO', 'zh-TW'],
+    ['zh-Hant-CN', 'zh-TW'],
+    ['zh-Hans', 'zh-CN'],
+    ['zh-Hans-TW', 'zh-CN'],
+    ['zh-Hans-HK', 'zh-CN'],
+    ['zh-SG', 'zh-CN'],
+    ['zh', 'zh-CN'],
     // Chromeの_localesと同じアンダースコア区切り、大文字小文字の違い
     ['pt_BR', 'pt-BR'],
     ['ZH-cn', 'zh-CN'],
@@ -28,7 +41,6 @@ describe('resolveDefaultLanguage', () => {
     ['de-AT', 'de'],
     ['es-419', 'es'],
     ['pt-PT', 'pt-BR'],
-    ['zh-TW', 'zh-CN'],
     // 対応していない言語・不明な値はjaにする
     ['en-US', 'ja'],
     ['it', 'ja'],
@@ -41,9 +53,35 @@ describe('resolveDefaultLanguage', () => {
       assert.equal(resolveDefaultLanguage(uiLanguage, CODES), expected);
     });
   }
+
+  it('中国語の汎用コードは辞書の並び順によらず簡体字にする', async () => {
+    page = await loadPage({ url: REPO_URL, body: '' });
+    const { resolveDefaultLanguage } = page.window.GitHubUITranslator;
+    assert.equal(resolveDefaultLanguage('zh', ['zh-TW', 'zh-CN', 'ja']), 'zh-CN');
+  });
+
+  it('希望する文字体系の辞書がなければ既存の言語フォールバックを使う', async () => {
+    page = await loadPage({ url: REPO_URL, body: '' });
+    const { resolveDefaultLanguage } = page.window.GitHubUITranslator;
+    assert.equal(resolveDefaultLanguage('zh-Hant', ['ja', 'zh-CN']), 'zh-CN');
+    assert.equal(resolveDefaultLanguage('zh-Hans', ['ja', 'zh-TW']), 'zh-TW');
+    assert.equal(resolveDefaultLanguage('zh-Hant', ['ja']), 'ja');
+  });
 });
 
 describe('content.jsの初期言語', () => {
+  it('繁体字の表示言語なら台湾向けの辞書を読み込む', async () => {
+    page = await loadPage({
+      url: REPO_URL,
+      dict: DICT,
+      body: `${BODY}<relative-time id="time" datetime="2026-11-22T00:00:00Z"></relative-time>`,
+      uiLanguage: 'zh-Hant'
+    });
+    assert.deepEqual(dictionaryUrls(), ['chrome-extension://test/dictionaries/zh-TW.json']);
+    assert.equal(page.text('#a'), 'translated');
+    assert.equal(page.document.querySelector('#time').getAttribute('lang'), 'zh-TW');
+  });
+
   it('言語が未設定なら、ブラウザーの表示言語の辞書を読み込む', async () => {
     page = await loadPage({ url: REPO_URL, dict: DICT, body: BODY, uiLanguage: 'de' });
     assert.deepEqual(dictionaryUrls(), ['chrome-extension://test/dictionaries/de.json']);

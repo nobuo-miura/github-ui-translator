@@ -1,6 +1,6 @@
 # GitHub UI Translator
 
-[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
+[English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Español](README.es.md) | [Deutsch](README.de.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko.md) | [Français](README.fr.md) | [Русский](README.ru.md)
 
 [![Latest Release](https://img.shields.io/github/v/release/nobuo-miura/github-ui-translator?label=Latest%20Release)](https://github.com/nobuo-miura/github-ui-translator/releases/latest)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/v/igdplojdbbpfbedgoaokfcagpkofmngk?label=Chrome%20Web%20Store&logo=googlechrome)](https://chromewebstore.google.com/detail/github-ui-translator/igdplojdbbpfbedgoaokfcagpkofmngk)
@@ -9,17 +9,17 @@
 [![Validation](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml/badge.svg)](https://github.com/nobuo-miura/github-ui-translator/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-GitHub UI Translator 是一款适用于 Chrome、Edge 和 Firefox 的浏览器扩展。它使用本地词典，将 GitHub 的英文界面翻译成日语、简体中文、西班牙语、德语、巴西葡萄牙语、韩语、法语或俄语。
+GitHub UI Translator 是一款适用于 Chrome、Edge 和 Firefox 的浏览器扩展。它使用本地词典，将 GitHub 的英文界面翻译成日语、简体中文、繁体中文、西班牙语、德语、巴西葡萄牙语、韩语、法语或俄语。
 本扩展不依赖外部翻译 API 或云服务；所有翻译均在浏览器本地完成。
 
-![日语翻译效果](docs/images/jp.jpeg)
+![简体中文翻译效果](docs/images/screenshot-zh-CN.png)
 
 <details>
-<summary>全部 8 种支持语言的截图</summary>
+<summary>9 种语言的截图</summary>
 
 第一行是 GitHub 原始的英文界面，下面每一行分别展示一种语言的翻译效果。
 
-![全部 8 种支持语言的翻译效果](docs/images/languages.png)
+![9 种语言的翻译效果](docs/images/languages.png)
 
 </details>
 
@@ -36,7 +36,7 @@ GitHub UI Translator 是一款适用于 Chrome、Edge 和 Firefox 的浏览器�
 
 ## 限制
 
-- 目前支持日语、简体中文、西班牙语、德语、巴西葡萄牙语、韩语、法语和俄语。随着翻译覆盖范围逐步完善，今后还会增加其他语言。
+- 目前支持日语、简体中文、繁体中文、西班牙语、德语、巴西葡萄牙语、韩语、法语和俄语。随着翻译覆盖范围逐步完善，今后还会增加其他语言。
 - 不翻译包含数字或日期的动态文本，例如“3 commits”或“opened 2 days ago”。用户名等用户创建的内容也不在翻译范围内。详情请参阅[翻译范围](docs/translation-scope.md)。
 - 仅支持 `github.com`，不支持 GitHub Enterprise 或其他自定义域名。
 - 已在 Chrome、Edge 和 Firefox 上完成测试。其他基于 Chromium 的浏览器可能也能正常使用，但尚未进行明确测试。
@@ -80,7 +80,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## 使用方法
 
-- 点击工具栏中的扩展图标，可以打开翻译开关和语言选择器。目前内置日语、简体中文、西班牙语、德语、巴西葡萄牙语、韩语、法语和俄语；添加新词典后，下拉列表也可继续扩展。
+- 点击工具栏中的扩展图标，可以打开翻译开关和语言选择器。目前内置日语、简体中文、繁体中文、西班牙语、德语、巴西葡萄牙语、韩语、法语和俄语；添加新词典后，下拉列表也可继续扩展。
 - 在选择语言之前，扩展会按浏览器的显示语言进行翻译；如果没有对应的词典，则使用日语。在语言选择器中选择“自动”即可恢复此行为。
 - 更改翻译开关或语言后，已打开的 GitHub 标签页会重新加载，以应用新设置。
 - 弹出窗口还可设置是否翻译全局页眉，并提供本仓库的链接。修改此选项也会重新加载已打开的 GitHub 标签页。全局页眉翻译默认开启，并会等待 GitHub 的 React 水合完成；如果全局搜索无法打开，可关闭此选项。
@@ -89,7 +89,7 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 
 ## 自定义词典
 
-直接编辑目标语言的词典文件即可添加或修改翻译，例如 `dictionaries/ja.json`、`dictionaries/zh-CN.json`、`dictionaries/es.json`、`dictionaries/de.json`、`dictionaries/pt-BR.json`、`dictionaries/ko.json`、`dictionaries/fr.json` 或 `dictionaries/ru.json`。
+直接编辑目标语言的词典文件即可添加或修改翻译，例如 `dictionaries/ja.json`、`dictionaries/zh-CN.json`、`dictionaries/zh-TW.json`、`dictionaries/es.json`、`dictionaries/de.json`、`dictionaries/pt-BR.json`、`dictionaries/ko.json`、`dictionaries/fr.json` 或 `dictionaries/ru.json`。
 词条按 GitHub 页面分组（如仓库导航、仓库设置和组织设置），每个分组前都有一行 `// ====` 注释，方便快速确认词条所属页面，并及时发现 GitHub 界面文本的变化。
 
 ```jsonc
@@ -130,6 +130,7 @@ github-ui-translator/
 ├─ dictionaries/
 │  ├─ ja.json       # 日语词典
 │  ├─ zh-CN.json    # 简体中文词典
+│  ├─ zh-TW.json    # 繁体中文词典
 │  ├─ es.json       # 西班牙语词典
 │  ├─ de.json       # 德语词典
 │  ├─ pt-BR.json    # 巴西葡萄牙语词典

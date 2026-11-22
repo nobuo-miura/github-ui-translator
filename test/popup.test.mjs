@@ -11,6 +11,14 @@ function languageSelect() {
 }
 
 describe('ポップアップの言語選択', () => {
+  it('繁体字を自動判定し、台湾向けの辞書を手動選択できる', async () => {
+    popup = await loadPopup({ uiLanguage: 'zh-Hant' });
+    assert.equal(languageSelect().options[0].textContent, 'autoLanguageOption(繁體中文)');
+    assert.equal([...languageSelect().options].find((option) => option.value === 'zh-TW').textContent, '繁體中文');
+    popup.select('#language', 'zh-TW');
+    assert.deepEqual(popup.storageCalls, [{ method: 'set', items: { language: 'zh-TW' } }]);
+  });
+
   it('先頭に「自動」があり、判定された言語名を表示する', async () => {
     popup = await loadPopup({ uiLanguage: 'de' });
     const [first, second] = languageSelect().options;
