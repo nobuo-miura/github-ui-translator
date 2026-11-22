@@ -152,7 +152,7 @@ github-ui-translator/
 - 번역 개선이나 아직 번역되지 않은 문구는 [번역 요청](https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml)으로 제안해 주세요. 영어나 한국어로 작성할 수 있습니다
 - 팝업에서 "마우스를 올리면 원문 표시"를 켜면 번역된 텍스트에 마우스를 올렸을 때 영어 원문이 표시됩니다(기본값은 꺼짐). 번역 요청에 원문을 적을 때 유용합니다
 - 버그 신고나 기능 요청은 [이슈](https://github.com/nobuo-miura/github-ui-translator/issues/new/choose)에 남겨 주세요
-- 풀 리퀘스트를 보내기 전에 [기여 가이드(English)](.github/CONTRIBUTING.md)([日本語](.github/CONTRIBUTING.ja.md))를 읽어 주세요
+- 풀 리퀘스트를 보내기 전에 [기여 가이드](.github/CONTRIBUTING.ko.md)를 읽어 주세요
 
 ## 라이선스
 
