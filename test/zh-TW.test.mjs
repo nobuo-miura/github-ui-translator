@@ -41,12 +41,16 @@ describe('台湾向けの繁体字辞書', () => {
     page = await loadTraditionalPage(`
       <p id="branch"><a id="link" href="https://docs.github.com/example">Changing your default branch</a> can have unintended consequences that can affect new pull requests and clones.</p>
       <p id="funding">You can add a <code id="path">.github/FUNDING.yml</code> file to this repository to override the <a href="https://docs.github.com/funding">organization funding file</a> </p>
+      <p id="sponsors">Before you can delete your account, you must unpublish your Sponsors profile. This can be done from the <a id="sponsors-link" href="/sponsors/accounts">Sponsors Dashboard settings page</a></p>
     `);
-    assert.equal(page.text('#branch'), '變更預設分支可能會產生意外後果，影響新的 Pull Request 和複製。');
+    assert.equal(page.text('#branch'), '變更預設分支可能會產生意外後果，影響新的 Pull Request 和 Clone。');
     assert.equal(page.text('#link'), '變更預設分支');
     assert.equal(page.document.querySelector('#link').getAttribute('href'), 'https://docs.github.com/example');
     assert.equal(page.text('#funding'), '你可以向此儲存庫新增 .github/FUNDING.yml 檔案，以覆蓋組織資助檔案');
     assert.equal(page.text('#path'), '.github/FUNDING.yml');
+    assert.equal(page.text('#sponsors'), '刪除帳號前，你必須先取消公開 Sponsors 個人資料。操作位置：Sponsors 儀表板設定頁面');
+    assert.equal(page.text('#sponsors-link'), 'Sponsors 儀表板設定頁面');
+    assert.equal(page.document.querySelector('#sponsors-link').getAttribute('href'), '/sponsors/accounts');
 
     page.document.querySelector('#branch').insertAdjacentHTML('afterend', '<button id="later">Default branch</button>');
     await page.settle();
