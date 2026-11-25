@@ -88,6 +88,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - Popup下部にはこのリポジトリへのリンクがある
 - 拡張機能のオプション画面（Chromeは`chrome://extensions`、Edgeは`edge://extensions`の詳細から、Firefoxは`about:addons`から開く）で、同梱している辞書の情報とバージョンを確認できる
 
+### 自分の訳（ユーザー辞書）
+
+![オプション画面の自分の訳](docs/images/user-dictionary-ja.png)
+
+- GitHub上の翻訳された文字をAlt+クリック（MacではOption+クリック）すると編集ダイアログが開き、訳の変更、「英語のまま表示する（訳さない）」、同梱の訳に戻す、を選べる。保存するとそのタブが再読み込みされ、ほかに開いているGitHubのタブには再読み込みしたときに反映される。Popupでこの機能をOFFにできる
+- オプション画面（Popupの「自分の訳を管理」からも開ける）では、選択した言語の同梱辞書の全項目を一覧でき、検索・編集・「編集済みのみ」の表示・リセットができる
+- 上書きできるのは同梱辞書の既存の項目だけで、新しい項目は追加できない。自分の訳はこの端末（`storage.local`）にのみ保存される。バックアップや別のブラウザへの移行には、オプション画面のエクスポート／インポートを使う
+- 「GitHubで改善を提案」を選ぶと、提案内容を入力済みにした翻訳リクエストのフォームを開く（1件ずつ、または選んだ最大20件をまとめて）。提案内容はページのURLに含まれるため、フォームを開いた時点でGitHubへ送られる。Issueが作成・公開されるのは、内容を確認して自分で送信したときだけ。トークンは不要で、閲覧中のページのURLは含めない
+
 ## 辞書のカスタマイズ
 
 変更したい言語の辞書ファイル（例: `dictionaries/ja.json`、`dictionaries/zh-CN.json`、`dictionaries/zh-TW.json`、`dictionaries/es.json`、`dictionaries/de.json`、`dictionaries/pt-BR.json`、`dictionaries/ko.json`、`dictionaries/fr.json`、`dictionaries/ru.json`）を直接編集することで、翻訳される文言を追加・変更できます。

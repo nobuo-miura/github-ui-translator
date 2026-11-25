@@ -2,170 +2,282 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light dark">
 <title>GitHub UI Translator</title>
 <style>
+  /* 色はGitHub（Primer）の配色に合わせ、OSのダークモードに追従する */
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --fg: #1f2328;
+    --muted: #59636e;
+    --border: #d1d9e0;
+    --border-muted: #d1d9e0b3;
+    --accent: #0969da;
+    --success: #1a7f37;
+    --success-emphasis: #1f883d;
+    --attention: #9a6700;
+    --attention-bg: #fff8c5;
+    --neutral-dot: #818b98;
+    --switch-off: #d1d9e0;
+    --focus: #0969da;
+    --shadow: 0 1px 0 #1f23280a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117;
+      --surface: #151b23;
+      --fg: #f0f6fc;
+      --muted: #9198a1;
+      --border: #3d444d;
+      --border-muted: #3d444db3;
+      --accent: #4493f8;
+      --success: #3fb950;
+      --success-emphasis: #238636;
+      --attention: #d29922;
+      --attention-bg: #bb800926;
+      --neutral-dot: #656c76;
+      --switch-off: #3d444d;
+      --focus: #1f6feb;
+      --shadow: none;
+    }
+  }
+
+  * { box-sizing: border-box; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    width: 220px;
-    padding: 12px;
+    width: 300px;
     margin: 0;
-    color: #1f2328;
-    background-color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--fg);
+    background-color: var(--bg);
   }
-  h1 {
-    font-size: 14px;
-    margin: 0 0 12px;
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* ヘッダー: タイトル・状態・全体のON/OFF */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
   }
+  .header img { width: 28px; height: 28px; flex-shrink: 0; }
+  .header .titles { flex: 1; min-width: 0; }
+  h1 { margin: 0; font-size: 14px; font-weight: 600; }
+  .status {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  /* 状態を色付きの点で示す（popup.jsがdata-stateを設定する） */
+  .status::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background-color: var(--neutral-dot);
+  }
+  .status[data-state="on"]::before { background-color: var(--success); }
+  .status[data-state="warning"] { color: var(--attention); }
+  .status[data-state="warning"]::before { background-color: var(--attention); }
+  .status:empty { display: none; }
+
+  main { padding: 12px 16px 4px; }
+
+  .field label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  select#language {
+    width: 100%;
+    height: 32px;
+    padding: 0 8px;
+    font: inherit;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--surface);
+    color: var(--fg);
+  }
+
+  /* 詳細設定をまとめたカード */
+  .card {
+    margin-top: 12px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+  .option {
+    padding: 10px 12px;
+  }
+  .option + .option { border-top: 1px solid var(--border-muted); }
   .row {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
   }
-  .status {
+  .option-label { font-weight: 500; line-height: 1.4; cursor: pointer; }
+  .hint, .warning {
+    margin: 4px 0 0;
     font-size: 12px;
-    color: #57606a;
-    margin: 8px 0 0;
+    line-height: 1.45;
+    color: var(--muted);
   }
+  .warning {
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: var(--attention);
+    background-color: var(--attention-bg);
+  }
+
+  /* トグルスイッチ */
   .switch {
     position: relative;
     display: inline-block;
-    width: 40px;
-    height: 22px;
+    width: 36px;
+    height: 20px;
     flex-shrink: 0;
   }
   .switch input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
     opacity: 0;
-    width: 0;
-    height: 0;
+    cursor: pointer;
+    z-index: 1;
   }
   .slider {
     position: absolute;
-    cursor: pointer;
     inset: 0;
-    background-color: #d0d7de;
-    transition: 0.2s;
-    border-radius: 22px;
+    border-radius: 999px;
+    background-color: var(--switch-off);
+    transition: background-color 0.15s;
+    pointer-events: none;
   }
   .slider::before {
-    position: absolute;
     content: "";
-    height: 16px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
     width: 16px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.2s;
+    height: 16px;
     border-radius: 50%;
-  }
-  input:checked + .slider {
-    background-color: #1f883d;
-  }
-  input:checked + .slider::before {
-    transform: translateX(18px);
-  }
-  .lang-row {
-    margin-top: 12px;
-  }
-  .lang-row label {
-    display: block;
-    font-size: 12px;
-    color: #57606a;
-    margin-bottom: 4px;
-  }
-  select#language {
-    width: 100%;
-    padding: 4px 6px;
-    font-size: 13px;
-    border: 1px solid #d0d7de;
-    border-radius: 6px;
     background-color: #ffffff;
-    color: #1f2328;
+    box-shadow: 0 1px 2px #1f232833;
+    transition: transform 0.15s;
   }
-  .option-section {
+  input:checked + .slider { background-color: var(--success-emphasis); }
+  input:checked + .slider::before { transform: translateX(16px); }
+  input:focus-visible + .slider { outline: 2px solid var(--focus); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    .slider, .slider::before { transition: none; }
+  }
+
+  /* 自分の訳・提案へのリンク */
+  .links {
+    display: flex;
+    flex-direction: column;
     margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid #d0d7de;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
   }
-  .option-label {
-    font-size: 12px;
-    line-height: 1.4;
-    margin-right: 8px;
+  .links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    color: var(--fg);
   }
-  .warning {
-    margin: 6px 0 0;
-    color: #9a6700;
-    font-size: 11px;
-    line-height: 1.4;
-  }
-  .hint {
-    margin: 6px 0 0;
-    color: #57606a;
-    font-size: 11px;
-    line-height: 1.4;
-  }
-  .hint-link {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 12px;
-    color: #0969da;
-    text-decoration: none;
-  }
-  .hint-link:hover {
-    text-decoration: underline;
-  }
+  .links a + a { border-top: 1px solid var(--border-muted); }
+  .links a::after { content: "›"; color: var(--muted); font-size: 16px; line-height: 1; }
+  .links a:hover { text-decoration: none; background-color: var(--bg); }
+
   .footer {
-    margin-top: 12px;
-    padding-top: 8px;
-    border-top: 1px solid #d0d7de;
+    padding: 10px 16px 14px;
     font-size: 12px;
+    text-align: center;
   }
-  .footer a {
-    color: #57606a;
-    text-decoration: none;
-  }
-  .footer a:hover {
-    text-decoration: underline;
-  }
+  .footer a { color: var(--muted); }
 </style>
 </head>
 <body>
-  <h1>GitHub UI Translator</h1>
-  <div class="row">
-    <span data-i18n="translationLabel">Translation</span>
+  <header class="header">
+    <img src="icons/icon48.png" alt="">
+    <div class="titles">
+      <h1>GitHub UI Translator</h1>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </div>
     <label class="switch">
       <input type="checkbox" id="toggle" data-i18n-aria-label="translationToggleLabel">
       <span class="slider"></span>
     </label>
-  </div>
-  <p class="status" id="status"></p>
-  <div class="lang-row">
-    <label for="language" data-i18n="languageLabel">Language</label>
-    <select id="language"></select>
-  </div>
-  <div class="option-section">
-    <div class="row">
-      <label class="option-label" for="global-header-toggle" data-i18n="globalHeaderTranslationLabel">Translate global header</label>
-      <label class="switch">
-        <input type="checkbox" id="global-header-toggle" data-i18n-aria-label="globalHeaderTranslationToggleLabel">
-        <span class="slider"></span>
-      </label>
+  </header>
+
+  <main>
+    <div class="field">
+      <label for="language" data-i18n="languageLabel">Language</label>
+      <select id="language"></select>
     </div>
-    <p class="warning" data-i18n="globalHeaderTranslationWarning">If the global search stops opening (e.g. right after the browser starts), turn this off.</p>
-  </div>
-  <div class="option-section">
-    <div class="row">
-      <label class="option-label" for="show-original-toggle" data-i18n="showOriginalLabel">Show original text on hover</label>
-      <label class="switch">
-        <input type="checkbox" id="show-original-toggle" data-i18n-aria-label="showOriginalToggleLabel">
-        <span class="slider"></span>
-      </label>
+
+    <div class="card">
+      <div class="option">
+        <div class="row">
+          <label class="option-label" for="global-header-toggle" data-i18n="globalHeaderTranslationLabel">Translate global header</label>
+          <label class="switch">
+            <input type="checkbox" id="global-header-toggle" data-i18n-aria-label="globalHeaderTranslationToggleLabel">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <p class="warning" data-i18n="globalHeaderTranslationWarning">If the global search stops opening (e.g. right after the browser starts), turn this off.</p>
+      </div>
+      <div class="option">
+        <div class="row">
+          <label class="option-label" for="show-original-toggle" data-i18n="showOriginalLabel">Show original text on hover</label>
+          <label class="switch">
+            <input type="checkbox" id="show-original-toggle" data-i18n-aria-label="showOriginalToggleLabel">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <p class="hint" data-i18n="showOriginalHint">Hover over translated text to see the original English. Useful when suggesting a better translation.</p>
+      </div>
+      <div class="option">
+        <div class="row">
+          <label class="option-label" for="alt-click-edit-toggle" data-i18n="altClickEditLabel">Edit translations with Alt+click</label>
+          <label class="switch">
+            <input type="checkbox" id="alt-click-edit-toggle" data-i18n-aria-label="altClickEditToggleLabel">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <p class="hint" data-i18n="altClickEditHint">Alt+click (Option+click on Mac) translated text to change its translation or suggest an improvement.</p>
+      </div>
     </div>
-    <p class="hint" data-i18n="showOriginalHint">Hover over translated text to see the original English. Useful when suggesting a better translation.</p>
-    <a class="hint-link" id="translation-request-link" href="https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml" target="_blank" rel="noopener noreferrer" data-i18n="translationRequestLink">Suggest a translation</a>
-  </div>
-  <div class="footer">
+
+    <nav class="links">
+      <a id="user-dictionary-link" href="options.html" target="_blank" data-i18n="userDictionaryLink">Manage your translations</a>
+      <a id="translation-request-link" href="https://github.com/nobuo-miura/github-ui-translator/issues/new?template=translation_request.yml" target="_blank" rel="noopener noreferrer" data-i18n="translationRequestLink">Suggest a translation</a>
+    </nav>
+  </main>
+
+  <footer class="footer">
     <a id="repo-link" href="https://github.com/nobuo-miura/github-ui-translator" target="_blank" rel="noopener noreferrer" data-i18n="repositoryLink">GitHub UI Translator on GitHub</a>
-  </div>
+  </footer>
   <script src="shared.js"></script>
   <script src="popup.js"></script>
 </body>

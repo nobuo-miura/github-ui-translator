@@ -87,6 +87,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - 扩展更新前已打开的 GitHub 标签页可能不会自动重新加载。如果设置没有生效，请手动重新加载标签页。
 - 在扩展选项页面中，可以查看内置词典信息和扩展版本。Chrome 使用 `chrome://extensions`，Edge 使用 `edge://extensions`，Firefox 使用 `about:addons`。
 
+### 我的译文（用户词典）
+
+![选项页面中的我的译文](docs/images/user-dictionary-zh-CN.png)
+
+- 在 GitHub 上按住 Alt（Mac 上为 Option）并单击已翻译的文字，即可打开编辑器。可以修改译文、选择“以英文显示（不翻译）”或恢复为内置译文。保存后，当前标签页会重新加载；其他已打开的 GitHub 标签页在重新加载后应用更改。可以在弹出窗口中关闭此功能。
+- 选项页面（也可通过弹出窗口中的“管理我的译文”打开）会列出所选语言的全部内置条目，可以搜索、编辑、仅显示已编辑条目以及重置。
+- 我的译文只能覆盖内置词典中已有的条目，不能添加新条目。译文仅保存在此设备上（`storage.local`）。如需备份或迁移到其他浏览器，请使用选项页面的导出/导入功能。
+- 选择“在 GitHub 上提出建议”会打开本仓库的翻译请求表单，并预先填好你的建议（可逐条提交，或一次提交最多 20 条所选条目）。建议内容包含在页面 URL 中，因此打开表单时会发送到 GitHub。只有在你检查并亲自提交表单后，才会创建并公开 Issue。无需令牌，也不会包含你正在浏览的页面 URL。
+
 ## 自定义词典
 
 直接编辑目标语言的词典文件即可添加或修改翻译，例如 `dictionaries/ja.json`、`dictionaries/zh-CN.json`、`dictionaries/zh-TW.json`、`dictionaries/es.json`、`dictionaries/de.json`、`dictionaries/pt-BR.json`、`dictionaries/ko.json`、`dictionaries/fr.json` 或 `dictionaries/ru.json`。

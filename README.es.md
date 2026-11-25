@@ -87,6 +87,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - Es posible que las pestañas de GitHub que ya estaban abiertas antes de actualizar la extensión no se vuelvan a cargar automáticamente. Si un ajuste no se aplica, vuelve a cargar la pestaña manualmente.
 - Abre la página de opciones de la extensión (`chrome://extensions` en Chrome, `edge://extensions` en Edge o `about:addons` en Firefox) para consultar la información de los diccionarios incluidos y la versión de la extensión.
 
+### Tus propias traducciones (diccionario de usuario)
+
+![Tus traducciones en la página de opciones](docs/images/user-dictionary-es.png)
+
+- Haz Alt+clic (Opción+clic en Mac) en un texto traducido de GitHub para abrir un editor. Puedes cambiar la traducción, elegir «Mostrar en inglés (no traducir)» o volver a la traducción incluida. Al guardar se recarga la pestaña actual; en las demás pestañas de GitHub abiertas, el cambio se aplica al recargarlas. Puedes desactivarlo en la ventana emergente.
+- La página de opciones (también accesible desde «Gestionar tus traducciones» en la ventana emergente) muestra todos los textos incluidos del idioma seleccionado. Puedes buscar, editar, mostrar solo los editados y restablecerlos.
+- Tus traducciones solo sustituyen textos incluidos existentes; no pueden añadir textos nuevos. Se guardan solo en este dispositivo (`storage.local`). Usa Exportar / Importar en la página de opciones para hacer una copia de seguridad o llevarlas a otro navegador.
+- «Sugerir en GitHub» abre el formulario de solicitud de traducción de este repositorio con tu sugerencia ya completada, uno por uno o hasta 20 textos seleccionados a la vez. Tu sugerencia va incluida en la URL de la página, por lo que se envía a GitHub al abrir el formulario. No se crea ni se publica ninguna issue hasta que revises el formulario y lo envíes tú. No se necesita ningún token y no se incluye la URL de la página que estabas viendo.
+
 ## Personalización del diccionario
 
 Puedes añadir o modificar traducciones editando directamente el diccionario del idioma correspondiente, por ejemplo, `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` o `dictionaries/ru.json`.

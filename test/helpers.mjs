@@ -77,6 +77,16 @@ function patchLongSelectors(window) {
 
 // マクロタスク1回分待つ。初回翻訳（設定取得→辞書fetch→translateAll）の
 // Promiseチェーンはこれで完了する
+// chrome.storageの書き込み失敗と同じく、コールバックの実行中だけchrome.runtime.lastErrorを設定する
+function failWithLastError(window, message, callback) {
+  window.chrome.runtime.lastError = { message };
+  try {
+    callback?.();
+  } finally {
+    delete window.chrome.runtime.lastError;
+  }
+}
+
 function tick(window) {
   return new Promise((resolve) => window.setTimeout(resolve, 0));
 }
@@ -99,7 +109,7 @@ export async function loadPopup({ settings = {}, uiLanguage = 'ja' } = {}) {
   const languages = readRepoFile('languages.json');
 
   window.chrome = {
-    runtime: { getURL: (p) => `chrome-extension://test/${p}` },
+    runtime: { getURL: (p) => `chrome-extension://test/${p}`, openOptionsPage: () => storageCalls.push({ method: 'openOptionsPage' }) },
     i18n: {
       // 置換文字列がどう渡されたか分かるよう、"キー(置換文字列)"の形で返す
       getMessage: (key, substitutions) =>
@@ -158,8 +168,11 @@ export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl,
   const exceptions = [];
   const virtualConsole = new VirtualConsole();
   virtualConsole.on('error', (...args) => consoleErrors.push(args));
+  // location.reload()の回数。jsdomは画面遷移を実装しておらず'not-implemented'として通知する
+  let reloads = 0;
   virtualConsole.on('jsdomError', (error) => {
     if (error.type === 'unhandled-exception') exceptions.push(error.cause ?? error);
+    else if (error.type === 'not-implemented' && /navigation/.test(error.message)) reloads++;
   });
 
   const dom = new JSDOM(`<!doctype html><html><head></head><body>${body}</body></html>`, {
@@ -171,13 +184,40 @@ export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl,
   const { window } = dom;
   patchLongSelectors(window);
 
+  // chrome.storage.localへの書き込みと、window.openで開いたURL
+  const storageCalls = [];
+  const openedUrls = [];
+  // 書き込みはstoreにも反映し、あとの読み込みで返す
+  const store = JSON.parse(JSON.stringify(settings));
+  const changeListeners = [];
+  // failStorageWrites()で設定する、書き込み失敗時のエラーメッセージ
+  let writeError = null;
   window.chrome = {
-    runtime: { getURL: (p) => `chrome-extension://test/${p}` },
+    runtime: { getURL: (p) => `chrome-extension://test/${p}`, getManifest: () => ({ version: '9.9.9' }) },
     i18n: { getMessage: () => '', getUILanguage: () => uiLanguage },
     storage: {
-      local: { get: (defaults, callback) => callback({ ...defaults, ...settings }) },
-      onChanged: { addListener: () => {} }
+      local: {
+        get: (defaults, callback) => callback({ ...defaults, ...JSON.parse(JSON.stringify(store)) }),
+        // jsdom側で作られたオブジェクトはプロトタイプが別物でdeepEqualが通らないため詰め替える
+        set: (items, callback) => {
+          if (writeError) return failWithLastError(window, writeError, callback);
+          storageCalls.push({ method: 'set', items: JSON.parse(JSON.stringify(items)) });
+          Object.assign(store, JSON.parse(JSON.stringify(items)));
+          callback?.();
+        },
+        remove: (keys, callback) => {
+          if (writeError) return failWithLastError(window, writeError, callback);
+          storageCalls.push({ method: 'remove', keys });
+          [].concat(keys).forEach((key) => delete store[key]);
+          callback?.();
+        }
+      },
+      onChanged: { addListener: (listener) => changeListeners.push(listener) }
     }
+  };
+  window.open = (openUrl) => {
+    openedUrls.push(String(openUrl));
+    return null;
   };
   // languages.jsonだけは実ファイルを返し、それ以外（辞書）はdictを返す
   const defaultFetch = async (requestUrl) => {
@@ -209,6 +249,20 @@ export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl,
     consoleErrors,
     exceptions,
     fetchedUrls,
+    storageCalls,
+    openedUrls,
+    store,
+    get reloads() {
+      return reloads;
+    },
+    // 以降のchrome.storage.localへの書き込みを失敗させる（容量超過など）
+    failStorageWrites(message = 'QUOTA_BYTES quota exceeded') {
+      writeError = message;
+    },
+    // ほかのタブ等でchrome.storage.localが変わったことを通知する（storeは呼び出し側で更新する）
+    fireStorageChange(changes) {
+      changeListeners.forEach((listener) => listener(changes, 'local'));
+    },
     // DOM変更後、MutationObserver→requestAnimationFrame→再翻訳が終わるまで待つ
     async settle() {
       await tick(window);
@@ -223,6 +277,112 @@ export async function loadPage({ url, body, dict = {}, settings = {}, fetchImpl,
     close() {
       window.close();
       throwIfExceptions();
+    }
+  };
+}
+
+/**
+ * options.htmlをjsdom上で開き、shared.jsとoptions.jsを実行する。
+ * chrome.storage.localは読み書きできるメモリ上のストアで、書き込みはstorageCallsにも記録する。
+ *
+ * @param {object} [options]
+ * @param {Record<string, Record<string, string>>} [options.dicts] 言語コードごとの辞書（translationsの中身）
+ * @param {object} [options.settings] chrome.storage.localに保存済みの値
+ * @param {string} [options.uiLanguage] chrome.i18n.getUILanguage()の戻り値
+ * @param {boolean} [options.confirmResult] window.confirm()の戻り値
+ */
+export async function loadOptions({ dicts = {}, settings = {}, uiLanguage = 'ja', confirmResult = true } = {}) {
+  const dom = new JSDOM(readRepoFile('options.html'), {
+    url: 'chrome-extension://test/options.html',
+    runScripts: 'outside-only'
+  });
+  const { window } = dom;
+  const store = JSON.parse(JSON.stringify(settings));
+  const storageCalls = [];
+  const openedUrls = [];
+  const languages = readRepoFile('languages.json');
+  const copy = (value) => JSON.parse(JSON.stringify(value));
+  const changeListeners = [];
+  // failStorageWrites()で設定する、書き込み失敗時のエラーメッセージ
+  let writeError = null;
+
+  window.chrome = {
+    runtime: { getURL: (p) => `chrome-extension://test/${p}`, getManifest: () => ({ version: '9.9.9' }) },
+    i18n: {
+      getMessage: (key, substitutions) =>
+        substitutions ? `${key}(${[].concat(substitutions).join(',')})` : key,
+      getUILanguage: () => uiLanguage
+    },
+    storage: {
+      local: {
+        // nullを渡すと、chrome.storageと同じくすべての値を返す
+        get: (defaults, callback) => {
+          if (defaults === null) return callback(copy(store));
+          const result = { ...defaults };
+          for (const key of Object.keys(defaults)) if (key in store) result[key] = copy(store[key]);
+          callback(result);
+        },
+        set: (items, callback) => {
+          if (writeError) return failWithLastError(window, writeError, callback);
+          storageCalls.push({ method: 'set', items: copy(items) });
+          Object.assign(store, copy(items));
+          callback?.();
+        },
+        remove: (keys, callback) => {
+          if (writeError) return failWithLastError(window, writeError, callback);
+          storageCalls.push({ method: 'remove', keys });
+          [].concat(keys).forEach((key) => delete store[key]);
+          callback?.();
+        }
+      },
+      onChanged: { addListener: (listener) => changeListeners.push(listener) }
+    }
+  };
+  window.fetch = async (requestUrl) => {
+    const url = String(requestUrl);
+    if (url.endsWith('/languages.json')) {
+      return { ok: true, text: async () => languages, json: async () => JSON.parse(languages) };
+    }
+    const code = url.match(/dictionaries\/(.+)\.json$/)?.[1];
+    const name = JSON.parse(languages).languages.find((language) => language.code === code)?.name;
+    return { ok: true, text: async () => JSON.stringify({ language: code, name, translations: dicts[code] || {} }) };
+  };
+  window.open = (openUrl) => {
+    openedUrls.push(String(openUrl));
+    return null;
+  };
+  window.chrome.tabs = {
+    create: async ({ url }) => {
+      openedUrls.push(String(url));
+    }
+  };
+  window.confirm = () => confirmResult;
+
+  window.eval(sharedSource);
+  window.eval(readRepoFile('options.js'));
+  // 言語一覧→保存済み設定→辞書→ユーザー辞書の順に非同期で読み込むため、数回待つ
+  for (let i = 0; i < 5; i++) await tick(window);
+
+  return {
+    window,
+    document: window.document,
+    store,
+    storageCalls,
+    openedUrls,
+    // ほかのタブ等でchrome.storage.localが変わったことを通知する（storeは呼び出し側で更新する）
+    fireStorageChange(changes) {
+      changeListeners.forEach((listener) => listener(changes, 'local'));
+    },
+    // 以降のchrome.storage.localへの書き込みを失敗させる（容量超過など）
+    failStorageWrites(message = 'QUOTA_BYTES quota exceeded') {
+      writeError = message;
+    },
+    tick: () => tick(window),
+    async flush() {
+      for (let i = 0; i < 5; i++) await tick(window);
+    },
+    close() {
+      window.close();
     }
   };
 }

@@ -11,6 +11,9 @@ const errors = [];
 const warnings = [];
 // content.jsのINLINE_TAGS / INLINE_TAG_PATTERNと揃える
 const INLINE_TAGS = new Set(['a', 'b', 'code', 'em', 'i', 'kbd', 'strong']);
+// 訳文でも中身を変えられないインラインタグ（shared.jsのPROTECTED_INLINE_TAGSと揃える）。
+// content.jsの除外セレクターにタグ名で入っており、中身が原文と違うと文全体が訳されない
+const PROTECTED_INLINE_TAGS = new Set(['code']);
 const INLINE_TAG_PATTERN = /<([a-z]+)>([^<]*)<\/\1>/g;
 
 function readText(relativePath) {
@@ -115,6 +118,12 @@ for (const language of Array.isArray(languages) ? languages : []) {
         errors.push(`${dictionaryPath}: translation source "${source}" uses unsupported inline tag(s): ${unknownTags.join(', ')}`);
       } else if (tagsOf(translation) !== sourceTags) {
         errors.push(`${dictionaryPath}: translation for "${source}" must keep the same inline tags in the same order (${sourceTags})`);
+      } else {
+        const protectedTexts = (text) => [...text.matchAll(INLINE_TAG_PATTERN)]
+          .filter((match) => PROTECTED_INLINE_TAGS.has(match[1])).map((match) => match[2]).join('\u0000');
+        if (protectedTexts(translation) !== protectedTexts(source)) {
+          errors.push(`${dictionaryPath}: translation for "${source}" must keep the text inside <code> unchanged (the page does not translate it)`);
+        }
       }
     }
   }

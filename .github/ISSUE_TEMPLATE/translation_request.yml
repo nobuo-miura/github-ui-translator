@@ -21,6 +21,7 @@ body:
       label: Request type
       options:
         - A single string
+        - Multiple strings
         - Terminology across the UI
     validations:
       required: true

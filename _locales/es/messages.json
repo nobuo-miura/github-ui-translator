@@ -8,9 +8,6 @@
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
-  "translationLabel": {
-    "message": "Traducción"
-  },
   "translationToggleLabel": {
     "message": "Activar o desactivar la traducción"
   },
@@ -73,9 +70,6 @@
   "entryCountColumn": {
     "message": "Entradas"
   },
-  "versionInfoHeading": {
-    "message": "Información de la versión"
-  },
   "dictionaryCount": {
     "message": "$COUNT$ entradas",
     "placeholders": {
@@ -97,5 +91,196 @@
         "content": "$1"
       }
     }
+  },
+  "altClickEditLabel": {
+    "message": "Editar traducciones con Alt+clic"
+  },
+  "altClickEditToggleLabel": {
+    "message": "Activar o desactivar la edición de traducciones con Alt+clic"
+  },
+  "altClickEditHint": {
+    "message": "Haz Alt+clic (Opción+clic en Mac) en un texto traducido para cambiar su traducción o sugerir una mejora."
+  },
+  "userDictionaryLink": {
+    "message": "Gestionar tus traducciones"
+  },
+  "editorTitle": {
+    "message": "Editar traducción"
+  },
+  "originalTextLabel": {
+    "message": "Texto original en inglés"
+  },
+  "bundledTranslationLabel": {
+    "message": "Traducción incluida"
+  },
+  "yourTranslationLabel": {
+    "message": "Tu traducción"
+  },
+  "keepEnglishLabel": {
+    "message": "Mostrar en inglés (no traducir)"
+  },
+  "editorHint": {
+    "message": "Al guardar se recarga esta pestaña. En las demás pestañas de GitHub abiertas, el cambio se aplica al recargarlas. Tu traducción solo se guarda en este dispositivo. Para gestionar todas tus traducciones, abre la página de opciones de la extensión."
+  },
+  "suggestImprovementButton": {
+    "message": "Sugerir en GitHub"
+  },
+  "resetToBundledButton": {
+    "message": "Restablecer la incluida"
+  },
+  "cancelButton": {
+    "message": "Cancelar"
+  },
+  "saveButton": {
+    "message": "Guardar"
+  },
+  "issueTooLongError": {
+    "message": "La sugerencia es demasiado larga para abrirla en GitHub. Selecciona menos textos."
+  },
+  "issueTooManyError": {
+    "message": "Puedes sugerir hasta $MAX$ textos a la vez.",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorEmpty": {
+    "message": "Escribe una traducción."
+  },
+  "userDictErrorTooLong": {
+    "message": "La traducción es demasiado larga."
+  },
+  "userDictErrorCodeText": {
+    "message": "Deja el texto dentro de <code>…</code> igual que en el original. La página no traduce el código."
+  },
+  "userDictErrorCycle": {
+    "message": "Esta traducción formaría un ciclo con otra de tus traducciones (A → B → A), y ninguna de las dos se usaría. Elige otra traducción."
+  },
+  "userDictErrorCycleOnReset": {
+    "message": "Si restableces este elemento, formará un ciclo con otra de tus traducciones y esa traducción dejará de usarse. Cambia primero esa traducción."
+  },
+  "unsavedEditHidden": {
+    "message": "Tu traducción de «$SOURCE$» no se ha guardado. Muestra ese elemento, corrígelo o restablécelo y vuelve a intentarlo.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorTags": {
+    "message": "Mantén las mismas etiquetas (como <a>…</a>) en el mismo orden que el texto original."
+  },
+  "userDictErrorTagPosition": {
+    "message": "No se puede poner texto donde el original no tiene (al principio, al final o entre etiquetas). Reformula la traducción para dejar esas posiciones vacías."
+  },
+  "userDictSaveError": {
+    "message": "No se pudo guardar tu traducción. Es posible que el almacenamiento del navegador esté lleno. Tu texto se ha conservado."
+  },
+  "userDictionaryHeading": {
+    "message": "Tus traducciones"
+  },
+  "userDictionaryDescription": {
+    "message": "Cambia las traducciones incluidas solo en tu navegador. Tus traducciones se guardan en este dispositivo y tienen prioridad sobre el diccionario incluido. Deja un campo vacío para usar la traducción incluida."
+  },
+  "searchPlaceholder": {
+    "message": "Buscar en el texto original o las traducciones"
+  },
+  "editedOnlyLabel": {
+    "message": "Solo editadas"
+  },
+  "selectAllLabel": {
+    "message": "Seleccionar todas las editadas que se muestran"
+  },
+  "selectRowLabel": {
+    "message": "Seleccionar «$TEXT$»",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "suggestSelectedButton": {
+    "message": "Sugerir las seleccionadas en GitHub ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "originalColumn": {
+    "message": "Original (inglés)"
+  },
+  "bundledColumn": {
+    "message": "Traducción incluida"
+  },
+  "yourTranslationColumn": {
+    "message": "Tu traducción"
+  },
+  "keepEnglishColumn": {
+    "message": "Mantener en inglés"
+  },
+  "suggestButton": {
+    "message": "Sugerir"
+  },
+  "resetButton": {
+    "message": "Restablecer"
+  },
+  "bundledChangedNote": {
+    "message": "La traducción incluida ha cambiado desde que la editaste."
+  },
+  "showingFirstRows": {
+    "message": "Se muestran los primeros $SHOWN$ de $TOTAL$ textos. Busca para acotar la lista.",
+    "placeholders": {
+      "shown": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "noMatchingRows": {
+    "message": "No hay textos que coincidan."
+  },
+  "savedStatus": {
+    "message": "Guardado. Recarga las pestañas de GitHub abiertas para aplicar el cambio."
+  },
+  "backupHeading": {
+    "message": "Copia de seguridad y restauración"
+  },
+  "exportButton": {
+    "message": "Exportar"
+  },
+  "importButton": {
+    "message": "Importar"
+  },
+  "resetAllButton": {
+    "message": "Restablecer todo para este idioma"
+  },
+  "resetAllConfirm": {
+    "message": "¿Restablecer todas tus traducciones de $LANGUAGE$? No se puede deshacer.",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "backupNote": {
+    "message": "Exportar guarda tus traducciones de todos los idiomas en un archivo JSON. Importar combina el archivo con tus traducciones actuales."
+  },
+  "importResult": {
+    "message": "Se importaron $IMPORTED$ textos ($SKIPPED$ omitidos).",
+    "placeholders": {
+      "imported": {
+        "content": "$1"
+      },
+      "skipped": {
+        "content": "$2"
+      }
+    }
+  },
+  "importError": {
+    "message": "No se pudo importar este archivo."
   }
 }

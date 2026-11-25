@@ -8,9 +8,6 @@
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
-  "translationLabel": {
-    "message": "翻譯"
-  },
   "translationToggleLabel": {
     "message": "啟用或停用翻譯"
   },
@@ -73,9 +70,6 @@
   "entryCountColumn": {
     "message": "詞條數"
   },
-  "versionInfoHeading": {
-    "message": "版本資訊"
-  },
   "dictionaryCount": {
     "message": "$COUNT$ 筆",
     "placeholders": {
@@ -97,5 +91,196 @@
         "content": "$1"
       }
     }
+  },
+  "altClickEditLabel": {
+    "message": "按 Alt 並點擊以編輯譯文"
+  },
+  "altClickEditToggleLabel": {
+    "message": "啟用或停用按 Alt 並點擊編輯譯文"
+  },
+  "altClickEditHint": {
+    "message": "按住 Alt（Mac 上為 Option）並點擊已翻譯的文字，即可修改譯文或提出改進建議。"
+  },
+  "userDictionaryLink": {
+    "message": "管理我的譯文"
+  },
+  "editorTitle": {
+    "message": "編輯譯文"
+  },
+  "originalTextLabel": {
+    "message": "英文原文"
+  },
+  "bundledTranslationLabel": {
+    "message": "內建譯文"
+  },
+  "yourTranslationLabel": {
+    "message": "我的譯文"
+  },
+  "keepEnglishLabel": {
+    "message": "以英文顯示（不翻譯）"
+  },
+  "editorHint": {
+    "message": "儲存後，此分頁會重新載入。其他已開啟的 GitHub 分頁在重新載入後套用變更。譯文僅儲存在此裝置上。如需統一管理，請開啟擴充功能的選項頁面。"
+  },
+  "suggestImprovementButton": {
+    "message": "在 GitHub 上提出建議"
+  },
+  "resetToBundledButton": {
+    "message": "還原為內建譯文"
+  },
+  "cancelButton": {
+    "message": "取消"
+  },
+  "saveButton": {
+    "message": "儲存"
+  },
+  "issueTooLongError": {
+    "message": "內容過長，無法在 GitHub 上開啟。請減少項目數量。"
+  },
+  "issueTooManyError": {
+    "message": "一次最多可以提交 $MAX$ 筆建議。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorEmpty": {
+    "message": "請輸入譯文。"
+  },
+  "userDictErrorTooLong": {
+    "message": "譯文過長。"
+  },
+  "userDictErrorCodeText": {
+    "message": "請讓 <code>…</code> 中的文字與原文相同。頁面不會翻譯程式碼。"
+  },
+  "userDictErrorCycle": {
+    "message": "此譯文會與你的另一筆譯文形成循環（A → B → A），兩者都不會生效。請改用其他譯文。"
+  },
+  "userDictErrorCycleOnReset": {
+    "message": "將此項目還原為內建譯文後，會與你的另一筆譯文形成循環，導致那筆譯文不再生效。請先修改那筆譯文。"
+  },
+  "unsavedEditHidden": {
+    "message": "「$SOURCE$」的譯文尚未儲存。請顯示該項目，修改或重設後再試一次。",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorTags": {
+    "message": "請依原文相同的順序保留相同的標籤（如 <a>…</a>）。"
+  },
+  "userDictErrorTagPosition": {
+    "message": "原文中沒有文字的位置（句首、句尾或標籤之間），譯文中也不能放置文字。請調整語序，讓這些位置保持空白。"
+  },
+  "userDictSaveError": {
+    "message": "無法儲存譯文。瀏覽器儲存空間可能已滿。你輸入的內容已保留。"
+  },
+  "userDictionaryHeading": {
+    "message": "我的譯文"
+  },
+  "userDictionaryDescription": {
+    "message": "僅在此瀏覽器中修改內建譯文。你的譯文儲存在此裝置上，並優先於內建字典。留空即可使用內建譯文。"
+  },
+  "searchPlaceholder": {
+    "message": "搜尋原文或譯文"
+  },
+  "editedOnlyLabel": {
+    "message": "僅顯示已編輯"
+  },
+  "selectAllLabel": {
+    "message": "選取目前顯示的所有已編輯項目"
+  },
+  "selectRowLabel": {
+    "message": "選取「$TEXT$」",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "suggestSelectedButton": {
+    "message": "在 GitHub 上提交所選建議（$COUNT$）",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "originalColumn": {
+    "message": "原文（英文）"
+  },
+  "bundledColumn": {
+    "message": "內建譯文"
+  },
+  "yourTranslationColumn": {
+    "message": "我的譯文"
+  },
+  "keepEnglishColumn": {
+    "message": "保留英文"
+  },
+  "suggestButton": {
+    "message": "建議"
+  },
+  "resetButton": {
+    "message": "重設"
+  },
+  "bundledChangedNote": {
+    "message": "你編輯後，內建譯文已更新。"
+  },
+  "showingFirstRows": {
+    "message": "顯示全部 $TOTAL$ 筆中的前 $SHOWN$ 筆。請透過搜尋縮小範圍。",
+    "placeholders": {
+      "shown": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "noMatchingRows": {
+    "message": "沒有符合的項目。"
+  },
+  "savedStatus": {
+    "message": "已儲存。重新載入已開啟的 GitHub 分頁即可套用變更。"
+  },
+  "backupHeading": {
+    "message": "備份與還原"
+  },
+  "exportButton": {
+    "message": "匯出"
+  },
+  "importButton": {
+    "message": "匯入"
+  },
+  "resetAllButton": {
+    "message": "重設此語言的所有譯文"
+  },
+  "resetAllConfirm": {
+    "message": "要重設 $LANGUAGE$ 的所有譯文嗎？此操作無法復原。",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "backupNote": {
+    "message": "匯出會將所有語言的譯文儲存為 JSON 檔案。匯入會將檔案內容合併到目前的譯文中。"
+  },
+  "importResult": {
+    "message": "已匯入 $IMPORTED$ 筆（略過 $SKIPPED$ 筆）。",
+    "placeholders": {
+      "imported": {
+        "content": "$1"
+      },
+      "skipped": {
+        "content": "$2"
+      }
+    }
+  },
+  "importError": {
+    "message": "無法匯入此檔案。"
   }
 }

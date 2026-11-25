@@ -8,9 +8,6 @@
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
-  "translationLabel": {
-    "message": "Translation"
-  },
   "translationToggleLabel": {
     "message": "Enable or disable translation"
   },
@@ -73,9 +70,6 @@
   "entryCountColumn": {
     "message": "Entries"
   },
-  "versionInfoHeading": {
-    "message": "Version information"
-  },
   "dictionaryCount": {
     "message": "$COUNT$ entries",
     "placeholders": {
@@ -97,5 +91,196 @@
         "content": "$1"
       }
     }
+  },
+  "altClickEditLabel": {
+    "message": "Edit translations with Alt+click"
+  },
+  "altClickEditToggleLabel": {
+    "message": "Enable or disable editing translations with Alt+click"
+  },
+  "altClickEditHint": {
+    "message": "Alt+click (Option+click on Mac) translated text to change its translation or suggest an improvement."
+  },
+  "userDictionaryLink": {
+    "message": "Manage your translations"
+  },
+  "editorTitle": {
+    "message": "Edit translation"
+  },
+  "originalTextLabel": {
+    "message": "Original English text"
+  },
+  "bundledTranslationLabel": {
+    "message": "Bundled translation"
+  },
+  "yourTranslationLabel": {
+    "message": "Your translation"
+  },
+  "keepEnglishLabel": {
+    "message": "Show in English (do not translate)"
+  },
+  "editorHint": {
+    "message": "Saving reloads this tab. Other open GitHub tabs show the change after you reload them. Your translation is saved only on this device. To manage all of your translations, open the extension options page."
+  },
+  "suggestImprovementButton": {
+    "message": "Suggest on GitHub"
+  },
+  "resetToBundledButton": {
+    "message": "Reset to bundled"
+  },
+  "cancelButton": {
+    "message": "Cancel"
+  },
+  "saveButton": {
+    "message": "Save"
+  },
+  "issueTooLongError": {
+    "message": "The suggestion is too long to open on GitHub. Select fewer strings."
+  },
+  "issueTooManyError": {
+    "message": "You can suggest up to $MAX$ strings at once.",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorEmpty": {
+    "message": "Enter a translation."
+  },
+  "userDictErrorTooLong": {
+    "message": "The translation is too long."
+  },
+  "userDictErrorCodeText": {
+    "message": "Keep the text inside <code>…</code> the same as the original. The page does not translate code."
+  },
+  "userDictErrorCycle": {
+    "message": "This translation would loop with another of your translations (A → B → A), so neither would be used. Choose a different translation."
+  },
+  "userDictErrorCycleOnReset": {
+    "message": "Resetting this item would make it loop with another of your translations, so that translation would no longer be used. Change that translation first."
+  },
+  "unsavedEditHidden": {
+    "message": "Your translation for “$SOURCE$” has not been saved. Show that item, fix or reset it, and try again.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorTags": {
+    "message": "Keep the same tags (such as <a>…</a>) in the same order as the original text."
+  },
+  "userDictErrorTagPosition": {
+    "message": "Text can’t go where the original has none (at the start, at the end, or between tags). Reword the translation so those positions stay empty."
+  },
+  "userDictSaveError": {
+    "message": "Could not save your translation. The browser storage may be full. Your input has been kept."
+  },
+  "userDictionaryHeading": {
+    "message": "Your translations"
+  },
+  "userDictionaryDescription": {
+    "message": "Change the bundled translations for your browser only. Your translations are saved on this device and take precedence over the bundled dictionary. Leave a field empty to use the bundled translation."
+  },
+  "searchPlaceholder": {
+    "message": "Search original text or translations"
+  },
+  "editedOnlyLabel": {
+    "message": "Edited only"
+  },
+  "selectAllLabel": {
+    "message": "Select all edited strings shown"
+  },
+  "selectRowLabel": {
+    "message": "Select \"$TEXT$\"",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "suggestSelectedButton": {
+    "message": "Suggest selected on GitHub ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "originalColumn": {
+    "message": "Original (English)"
+  },
+  "bundledColumn": {
+    "message": "Bundled translation"
+  },
+  "yourTranslationColumn": {
+    "message": "Your translation"
+  },
+  "keepEnglishColumn": {
+    "message": "Keep English"
+  },
+  "suggestButton": {
+    "message": "Suggest"
+  },
+  "resetButton": {
+    "message": "Reset"
+  },
+  "bundledChangedNote": {
+    "message": "The bundled translation has changed since you edited it."
+  },
+  "showingFirstRows": {
+    "message": "Showing the first $SHOWN$ of $TOTAL$ strings. Search to narrow the list.",
+    "placeholders": {
+      "shown": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "noMatchingRows": {
+    "message": "No matching strings."
+  },
+  "savedStatus": {
+    "message": "Saved. Reload open GitHub tabs to apply the change."
+  },
+  "backupHeading": {
+    "message": "Back up and restore"
+  },
+  "exportButton": {
+    "message": "Export"
+  },
+  "importButton": {
+    "message": "Import"
+  },
+  "resetAllButton": {
+    "message": "Reset all for this language"
+  },
+  "resetAllConfirm": {
+    "message": "Reset all of your translations for $LANGUAGE$? This cannot be undone.",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "backupNote": {
+    "message": "Export saves your translations for all languages as a JSON file. Importing merges the file into your current translations."
+  },
+  "importResult": {
+    "message": "Imported $IMPORTED$ strings ($SKIPPED$ skipped).",
+    "placeholders": {
+      "imported": {
+        "content": "$1"
+      },
+      "skipped": {
+        "content": "$2"
+      }
+    }
+  },
+  "importError": {
+    "message": "This file could not be imported."
   }
 }
