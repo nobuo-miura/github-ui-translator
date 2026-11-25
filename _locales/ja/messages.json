@@ -8,9 +8,6 @@
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
-  "translationLabel": {
-    "message": "翻訳"
-  },
   "translationToggleLabel": {
     "message": "翻訳の有効・無効を切り替える"
   },
@@ -73,9 +70,6 @@
   "entryCountColumn": {
     "message": "収録件数"
   },
-  "versionInfoHeading": {
-    "message": "バージョン情報"
-  },
   "dictionaryCount": {
     "message": "$COUNT$ 件",
     "placeholders": {
@@ -97,5 +91,196 @@
         "content": "$1"
       }
     }
+  },
+  "altClickEditLabel": {
+    "message": "Alt+クリックで訳を編集"
+  },
+  "altClickEditToggleLabel": {
+    "message": "Alt+クリックでの訳の編集を有効または無効にする"
+  },
+  "altClickEditHint": {
+    "message": "翻訳された文字をAlt+クリック（MacではOption+クリック）すると、訳を変更したり改善を提案したりできます。"
+  },
+  "userDictionaryLink": {
+    "message": "自分の訳を管理"
+  },
+  "editorTitle": {
+    "message": "訳を編集"
+  },
+  "originalTextLabel": {
+    "message": "英語の原文"
+  },
+  "bundledTranslationLabel": {
+    "message": "同梱の訳"
+  },
+  "yourTranslationLabel": {
+    "message": "自分の訳"
+  },
+  "keepEnglishLabel": {
+    "message": "英語のまま表示する（訳さない）"
+  },
+  "editorHint": {
+    "message": "保存すると、このタブが再読み込みされます。ほかに開いているGitHubのタブには、再読み込みすると反映されます。自分の訳はこの端末にだけ保存されます。まとめて管理するには拡張機能のオプションページを開いてください。"
+  },
+  "suggestImprovementButton": {
+    "message": "GitHubで改善を提案"
+  },
+  "resetToBundledButton": {
+    "message": "同梱の訳に戻す"
+  },
+  "cancelButton": {
+    "message": "キャンセル"
+  },
+  "saveButton": {
+    "message": "保存"
+  },
+  "issueTooLongError": {
+    "message": "GitHubで開くには内容が長すぎます。件数を減らしてください。"
+  },
+  "issueTooManyError": {
+    "message": "一度に提案できるのは$MAX$件までです。",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorEmpty": {
+    "message": "訳を入力してください。"
+  },
+  "userDictErrorTooLong": {
+    "message": "訳が長すぎます。"
+  },
+  "userDictErrorCodeText": {
+    "message": "<code>…</code>の中の文字は、原文のまま残してください。ページ側ではコードを翻訳しません。"
+  },
+  "userDictErrorCycle": {
+    "message": "この訳にすると、ほかの自分の訳と循環して（A → B → A）、どちらも反映されなくなります。別の訳にしてください。"
+  },
+  "userDictErrorCycleOnReset": {
+    "message": "この項目を同梱の訳に戻すと、ほかの自分の訳と循環して、そちらが反映されなくなります。先にそちらの訳を変更してください。"
+  },
+  "unsavedEditHidden": {
+    "message": "「$SOURCE$」の自分の訳を保存できていません。その項目を表示して、直すかリセットしてから、もう一度実行してください。",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorTags": {
+    "message": "原文と同じタグ（<a>…</a>など）を、同じ順序で残してください。"
+  },
+  "userDictErrorTagPosition": {
+    "message": "原文で文字がない位置（文の先頭・末尾、タグとタグの間）には、訳文でも文字を置けません。語順を変えて、その位置を空けてください。"
+  },
+  "userDictSaveError": {
+    "message": "訳を保存できませんでした。ブラウザーの保存領域がいっぱいになっている可能性があります。入力した内容はそのまま残しています。"
+  },
+  "userDictionaryHeading": {
+    "message": "自分の訳"
+  },
+  "userDictionaryDescription": {
+    "message": "同梱の訳を、このブラウザーでだけ変更できます。自分の訳はこの端末に保存され、同梱の辞書より優先されます。空欄にすると同梱の訳に戻ります。"
+  },
+  "searchPlaceholder": {
+    "message": "原文や訳を検索"
+  },
+  "editedOnlyLabel": {
+    "message": "編集済みのみ"
+  },
+  "selectAllLabel": {
+    "message": "表示中の編集済みをすべて選択"
+  },
+  "selectRowLabel": {
+    "message": "「$TEXT$」を選択",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "suggestSelectedButton": {
+    "message": "選択した訳をまとめてGitHubで提案（$COUNT$件）",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "originalColumn": {
+    "message": "原文（英語）"
+  },
+  "bundledColumn": {
+    "message": "同梱の訳"
+  },
+  "yourTranslationColumn": {
+    "message": "自分の訳"
+  },
+  "keepEnglishColumn": {
+    "message": "英語のまま"
+  },
+  "suggestButton": {
+    "message": "提案"
+  },
+  "resetButton": {
+    "message": "リセット"
+  },
+  "bundledChangedNote": {
+    "message": "編集した後に同梱の訳が更新されています。"
+  },
+  "showingFirstRows": {
+    "message": "全$TOTAL$件のうち先頭の$SHOWN$件を表示しています。検索で絞り込んでください。",
+    "placeholders": {
+      "shown": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "noMatchingRows": {
+    "message": "一致する項目はありません。"
+  },
+  "savedStatus": {
+    "message": "保存しました。開いているGitHubのタブは、再読み込みすると反映されます。"
+  },
+  "backupHeading": {
+    "message": "バックアップと復元"
+  },
+  "exportButton": {
+    "message": "エクスポート"
+  },
+  "importButton": {
+    "message": "インポート"
+  },
+  "resetAllButton": {
+    "message": "この言語の訳をすべてリセット"
+  },
+  "resetAllConfirm": {
+    "message": "$LANGUAGE$の自分の訳をすべてリセットしますか？　元に戻せません。",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "backupNote": {
+    "message": "エクスポートすると、全言語の自分の訳をJSONファイルに保存します。インポートすると、ファイルの内容を現在の訳に統合します。"
+  },
+  "importResult": {
+    "message": "$IMPORTED$件をインポートしました（スキップ: $SKIPPED$件）。",
+    "placeholders": {
+      "imported": {
+        "content": "$1"
+      },
+      "skipped": {
+        "content": "$2"
+      }
+    }
+  },
+  "importError": {
+    "message": "このファイルはインポートできませんでした。"
   }
 }

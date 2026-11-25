@@ -87,6 +87,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - As abas do GitHub que já estavam abertas antes de uma atualização da extensão podem não ser recarregadas automaticamente. Se uma configuração não for aplicada, recarregue a aba manualmente.
 - Abra a página de opções da extensão (`chrome://extensions` no Chrome, `edge://extensions` no Edge ou `about:addons` no Firefox) para consultar as informações dos dicionários incluídos e a versão da extensão.
 
+### Suas próprias traduções (dicionário do usuário)
+
+![Suas traduções na página de opções](docs/images/user-dictionary-pt-BR.png)
+
+- Use Alt+clique (Option+clique no Mac) em um texto traduzido no GitHub para abrir um editor. Você pode alterar a tradução, escolher "Mostrar em inglês (não traduzir)" ou restaurar a tradução incluída. Ao salvar, a aba atual é recarregada; nas outras abas abertas do GitHub, a alteração é aplicada ao recarregá-las. Isso pode ser desativado no pop-up.
+- A página de opções (também aberta por "Gerenciar suas traduções" no pop-up) lista todos os textos incluídos do idioma selecionado. Você pode pesquisar, editar, mostrar somente os editados e redefini-los.
+- Suas traduções substituem apenas textos incluídos existentes; não é possível adicionar textos novos. Elas são salvas somente neste dispositivo (`storage.local`). Use Exportar / Importar na página de opções para fazer backup ou levá-las para outro navegador.
+- "Sugerir no GitHub" abre o formulário de solicitação de tradução deste repositório com sua sugestão preenchida, um texto por vez ou até 20 textos selecionados de uma vez. Sua sugestão vai na URL da página, então ela é enviada ao GitHub quando o formulário é aberto. Nenhuma issue é criada nem publicada até que você revise o formulário e o envie por conta própria. Nenhum token é necessário, e a URL da página que você estava vendo não é incluída.
+
 ## Personalização do dicionário
 
 Você pode adicionar ou alterar traduções editando diretamente o arquivo de dicionário do idioma desejado, por exemplo, `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` ou `dictionaries/ru.json`.

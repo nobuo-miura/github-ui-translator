@@ -5,6 +5,8 @@ const status = document.getElementById('status');
 const languageSelect = document.getElementById('language');
 const globalHeaderToggle = document.getElementById('global-header-toggle');
 const showOriginalToggle = document.getElementById('show-original-toggle');
+const altClickEditToggle = document.getElementById('alt-click-edit-toggle');
+const userDictionaryLink = document.getElementById('user-dictionary-link');
 
 // 言語選択の「自動」（ブラウザの表示言語に従う）を表す<option>の値
 const AUTO_LANGUAGE = '';
@@ -50,13 +52,14 @@ async function initialize() {
   }
 
   chrome.storage.local.get(
-    { enabled: true, language: null, translateGlobalHeader: true, showOriginalOnHover: false },
+    { enabled: true, language: null, translateGlobalHeader: true, showOriginalOnHover: false, editOnAltClick: true },
     (items) => {
       toggle.checked = items.enabled;
       languageSelect.value = items.language || AUTO_LANGUAGE;
       updateStatus(items.enabled);
       globalHeaderToggle.checked = items.translateGlobalHeader;
       showOriginalToggle.checked = items.showOriginalOnHover;
+      altClickEditToggle.checked = items.editOnAltClick;
     }
   );
 }
@@ -84,14 +87,31 @@ showOriginalToggle.addEventListener('change', () => {
   chrome.storage.local.set({ showOriginalOnHover: showOriginalToggle.checked });
 });
 
+altClickEditToggle.addEventListener('change', () => {
+  chrome.storage.local.set({ editOnAltClick: altClickEditToggle.checked });
+});
+
+// ユーザー辞書はオプションページで管理する。openOptionsPageはChrome・Firefoxの
+// どちらでも、すでに開いているオプションページがあればそれを前面に出す
+userDictionaryLink.addEventListener('click', (event) => {
+  if (typeof chrome.runtime.openOptionsPage !== 'function') return;
+  event.preventDefault();
+  chrome.runtime.openOptionsPage();
+  window.close();
+});
+
 // ONでも「自動」で対応する辞書がなければ翻訳されないので、言語を選ぶよう案内する
+// data-stateは状態を示す点の色に使う（popup.htmlのCSSを参照）
 function updateStatus(enabled) {
   if (!enabled) {
     status.textContent = getMessage('translationDisabledStatus');
+    status.dataset.state = 'off';
   } else if (languageSelect.value === AUTO_LANGUAGE && autoLanguageUnsupported) {
     status.textContent = getMessage('unsupportedBrowserLanguageStatus');
+    status.dataset.state = 'warning';
   } else {
     status.textContent = getMessage('translationEnabledStatus');
+    status.dataset.state = 'on';
   }
 }
 

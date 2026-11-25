@@ -893,6 +893,34 @@
   // レコードだけを捨てて無駄な再走査（許可リスト祖先全体の再走査）を防ぐ
   const selfWrittenNodes = new Set();
 
+  // 拡張自身が書き込んだ訳文。次の走査で、表示中の訳文をあらためて辞書キーとして
+  // 引かないために使う。ユーザー辞書で「Code」の訳を「Settings」のように別のキーと
+  // 同じ文字列にすると、引き直したときに「設定」へ変わり、Alt+クリックの編集対象も
+  // 「Settings」へずれるため。GitHubが同じ箇所を原文で描き直したときは値が
+  // 変わるので、通常どおり翻訳される。
+  // タグを含む文の子テキストノードは、表示が変わらなかった（書き込まなかった）場合も
+  // 処理済みとしてここに入れる（理由はtranslateMixedContentを参照）
+  const writtenTexts = new WeakMap(); // テキストノード -> 書き込んだ（処理済みの）値
+  const writtenAttributes = new WeakMap(); // 要素 -> Map(属性名・'value' -> 書き込んだ値)
+  const writtenMixed = new WeakMap(); // タグを含む文の要素 -> 書き込んだ後のtextContent
+
+  function isOwnText(node) {
+    return writtenTexts.has(node) && writtenTexts.get(node) === node.nodeValue;
+  }
+
+  function rememberAttribute(el, name, value) {
+    let attributes = writtenAttributes.get(el);
+    if (!attributes) {
+      attributes = new Map();
+      writtenAttributes.set(el, attributes);
+    }
+    attributes.set(name, value);
+  }
+
+  function isOwnAttribute(el, name, value) {
+    return writtenAttributes.get(el)?.get(name) === value;
+  }
+
   // 値が変わるときだけ書き込む。nodeValueへの代入は同じ文字列でも
   // characterDataミューテーションを発火させる仕様のため、辞書に
   // "Wiki": "Wiki" のような自己マッピング（意図的に未翻訳の固有名詞）が
@@ -904,6 +932,7 @@
     if (node.nodeValue === value) return;
     node.nodeValue = value;
     selfWrittenNodes.add(node);
+    writtenTexts.set(node, value);
   }
 
   // ポップアップの「原文をツールチップで表示」がONのとき、翻訳した要素のtitle属性に
@@ -941,7 +970,8 @@
     return true;
   }
 
-  function recordOriginal(el, source, original, isCurrent) {
+  function recordOriginal(el, source, original, isCurrent, dictKey = original) {
+    trackSource(el, source, dictKey, isCurrent);
     if (!showOriginalOnHover || !el || !original) return;
     let record = originalTitles.get(el);
     if (record && el.getAttribute('title') !== record.writtenTitle) {
@@ -973,26 +1003,344 @@
   }
 
   // テキストノードの原文を、そのノードの親要素に記録する
-  function recordTextNodeOriginal(node, original) {
+  function recordTextNodeOriginal(node, original, dictKey = original) {
     const el = node.parentElement;
     const written = node.nodeValue;
-    recordOriginal(el, node, original, () => node.parentElement === el && node.nodeValue === written);
+    recordOriginal(el, node, original, () => node.parentElement === el && node.nodeValue === written, dictKey);
   }
 
+  // ==== Alt+クリックによる訳の編集 ====
+  //
+  // 翻訳した要素ごとに、表示中の訳文の辞書キーを記録する。title属性を使う
+  // 「原文をツールチップで表示」とは独立に、設定に関係なく常に記録する。
+  // slotは翻訳した箇所（テキストノード、または'value'・'placeholder'・'mixed'）
+  const translatedSources = new WeakMap();
+
+  function trackSource(el, slot, dictKey, isCurrent) {
+    if (!el || !dictKey) return;
+    let slots = translatedSources.get(el);
+    if (!slots) {
+      slots = new Map();
+      translatedSources.set(el, slots);
+    }
+    slots.set(slot, { dictKey, isCurrent });
+  }
+
+  // クリックされた位置から祖先をたどり、訳文が今も表示されている最も近い要素の辞書キーを返す
+  function findTranslatedKeys(target) {
+    for (let el = target instanceof Element ? target : target?.parentElement; el; el = el.parentElement) {
+      const slots = translatedSources.get(el);
+      if (!slots) continue;
+      const keys = [];
+      for (const [slot, { dictKey, isCurrent }] of slots) {
+        if (isCurrent()) keys.push(dictKey);
+        else slots.delete(slot);
+      }
+      if (keys.length > 0) return [...new Set(keys)];
+    }
+    return [];
+  }
+
+  // 編集ダイアログ。GitHubのCSSの影響を受けないようShadow DOMに描画し、
+  // ページのCSP（style-src）に左右されないよう、スタイルは<style>ではなくCSSOMで設定する
+  const EDITOR_PALETTE = {
+    light: { bg: '#ffffff', fg: '#1f2328', muted: '#59636e', border: '#d1d9e0', field: '#f6f8fa', primary: '#1f883d', primaryFg: '#ffffff', danger: '#d1242f', link: '#0969da' },
+    dark: { bg: '#151b23', fg: '#f0f6fc', muted: '#9198a1', border: '#3d444d', field: '#0d1117', primary: '#238636', primaryFg: '#ffffff', danger: '#f85149', link: '#4493f8' }
+  };
+
+  function editorTheme() {
+    const mode = document.documentElement.getAttribute('data-color-mode');
+    if (mode === 'dark') return EDITOR_PALETTE.dark;
+    if (mode === 'light') return EDITOR_PALETTE.light;
+    const prefersDark = typeof window.matchMedia === 'function' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? EDITOR_PALETTE.dark : EDITOR_PALETTE.light;
+  }
+
+  function createEl(tag, style = {}, props = {}) {
+    const el = document.createElement(tag);
+    Object.assign(el.style, style);
+    Object.assign(el, props);
+    return el;
+  }
+
+  let editorHost = null;
+  // openEditorを呼ぶたびに増やす。ユーザー辞書の読み込みを待つ間に次のAlt+クリックが
+  // あれば、古い呼び出しはダイアログを作らずに終える（2つ重なって片方が残らないように）
+  let editorSeq = 0;
+  // ダイアログを開く前にフォーカスがあった要素。閉じたらそこへ戻す
+  let focusBeforeEditor = null;
+
+  function closeEditor() {
+    if (!editorHost) return;
+    // 先にnullにする。取り除くとdialogのcloseイベントが発生し、ここへ再び入るため
+    const host = editorHost;
+    editorHost = null;
+    host.remove();
+    const previous = focusBeforeEditor;
+    focusBeforeEditor = null;
+    if (previous?.isConnected && typeof previous.focus === 'function') previous.focus();
+  }
+
+  // Tab・Shift+Tabでフォーカスがダイアログの外（GitHubのページ）へ出ないよう、端で反対側へ戻す
+  function trapFocus(event, shadow, panel) {
+    const focusables = [...panel.querySelectorAll('select, textarea, input, button')]
+      .filter((el) => !el.disabled);
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = shadow.activeElement;
+    if (event.shiftKey ? active === first || !focusables.includes(active) : active === last) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    }
+  }
+
+  /**
+   * @param {string[]} keys クリックした要素に表示中の訳文の辞書キー
+   * @param {string} language 言語コード
+   * @param {Record<string, string>} bundled 同梱辞書
+   */
+  async function openEditor(keys, language, bundled) {
+    const {
+      buildIssueUrl, getMessage, loadUserDictionary, saveUserEntries, updateUserEntry, validateNoCycle
+    } = globalThis.GitHubUITranslator;
+    const editable = keys.filter((key) => key in bundled);
+    if (editable.length === 0) return;
+    const seq = ++editorSeq;
+    const previousFocus = document.activeElement;
+
+    // ほかのタブやオプションページで保存された訳を表示するよう、開くたびに読み直す
+    const entries = { ...(await loadUserDictionary(language)) };
+    if (seq !== editorSeq) return;
+    closeEditor();
+    focusBeforeEditor = previousFocus;
+    const theme = editorTheme();
+    const font = '-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif';
+
+    editorHost = createEl('div', { all: 'initial' });
+    editorHost.setAttribute('data-github-ui-translator-editor', '');
+    const shadow = editorHost.attachShadow({ mode: 'open' });
+
+    // 背景は<dialog>にしてshowModal()で開く。GitHubがshowModal()で開いたダイアログの中の訳を
+    // Alt+クリックしたとき、通常の要素はトップレイヤーの外でinert（操作不可）になり、z-indexでも
+    // 前面に出せないため。ダイアログ自体を画面全体に広げ、半透明の背景として使う
+    const backdrop = createEl('dialog', {
+      position: 'fixed', inset: '0', zIndex: '2147483647', background: 'rgba(1, 4, 9, 0.5)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: font,
+      width: '100%', height: '100%', maxWidth: 'none', maxHeight: 'none',
+      margin: '0', padding: '0', border: 'none', boxSizing: 'border-box', color: 'inherit'
+    });
+    const panel = createEl('div', {
+      width: 'min(520px, calc(100vw - 32px))', maxHeight: 'calc(100vh - 32px)', overflow: 'auto',
+      boxSizing: 'border-box', padding: '16px', borderRadius: '12px', border: `1px solid ${theme.border}`,
+      background: theme.bg, color: theme.fg, fontSize: '14px', lineHeight: '1.5',
+      boxShadow: '0 8px 24px rgba(1, 4, 9, 0.3)'
+    });
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', getMessage('editorTitle'));
+
+    const heading = createEl('div', { fontWeight: '600', fontSize: '16px', margin: '0 0 12px' }, { textContent: getMessage('editorTitle') });
+    const label = (text) => createEl('div', { fontSize: '12px', color: theme.muted, margin: '8px 0 2px' }, { textContent: text });
+    const valueBox = () => createEl('div', {
+      padding: '6px 8px', borderRadius: '6px', background: theme.field, border: `1px solid ${theme.border}`,
+      wordBreak: 'break-word', whiteSpace: 'pre-wrap'
+    });
+
+    // 1つの要素に複数の訳文（ボタンのラベルとplaceholder等）があれば、編集する原文を選ばせる
+    const keySelect = createEl('select', {
+      width: '100%', padding: '4px 6px', borderRadius: '6px', border: `1px solid ${theme.border}`,
+      background: theme.field, color: theme.fg, font: 'inherit'
+    });
+    editable.forEach((key) => keySelect.appendChild(createEl('option', {}, { value: key, textContent: key })));
+    const sourceBox = valueBox();
+    const bundledBox = valueBox();
+    const textarea = createEl('textarea', {
+      width: '100%', boxSizing: 'border-box', minHeight: '64px', padding: '6px 8px', borderRadius: '6px',
+      border: `1px solid ${theme.border}`, background: theme.field, color: theme.fg, font: 'inherit', resize: 'vertical'
+    });
+    textarea.setAttribute('aria-label', getMessage('yourTranslationLabel'));
+    const keepRow = createEl('label', { display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0 0', cursor: 'pointer' });
+    const keepCheckbox = createEl('input', {}, { type: 'checkbox' });
+    keepRow.append(keepCheckbox, createEl('span', {}, { textContent: getMessage('keepEnglishLabel') }));
+    const errorBox = createEl('div', { color: theme.danger, fontSize: '12px', minHeight: '18px', margin: '4px 0 0' });
+    errorBox.setAttribute('role', 'alert');
+    const hint = createEl('div', { fontSize: '12px', color: theme.muted, margin: '4px 0 12px' }, { textContent: getMessage('editorHint') });
+
+    const button = (text, primary = false) => createEl('button', {
+      padding: '5px 12px', borderRadius: '6px', font: 'inherit', fontSize: '13px', cursor: 'pointer',
+      border: `1px solid ${primary ? 'transparent' : theme.border}`,
+      background: primary ? theme.primary : theme.field, color: primary ? theme.primaryFg : theme.fg
+    }, { type: 'button', textContent: text });
+    const issueButton = button(getMessage('suggestImprovementButton'));
+    const resetButton = button(getMessage('resetToBundledButton'));
+    const cancelButton = button(getMessage('cancelButton'));
+    const saveButton = button(getMessage('saveButton'), true);
+    const actions = createEl('div', { display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'flex-end' });
+    actions.append(issueButton, resetButton, cancelButton, saveButton);
+
+    panel.append(heading);
+    if (editable.length > 1) panel.append(label(getMessage('originalTextLabel')), keySelect);
+    else panel.append(label(getMessage('originalTextLabel')), sourceBox);
+    panel.append(
+      label(getMessage('bundledTranslationLabel')), bundledBox,
+      label(getMessage('yourTranslationLabel')), textarea,
+      keepRow, errorBox, hint, actions
+    );
+    backdrop.appendChild(panel);
+    shadow.appendChild(backdrop);
+
+    const currentKey = () => (editable.length > 1 ? keySelect.value : editable[0]);
+    function refresh() {
+      const key = currentKey();
+      const entry = entries[key];
+      sourceBox.textContent = key;
+      bundledBox.textContent = bundled[key];
+      keepCheckbox.checked = entry?.t === null;
+      textarea.value = entry && entry.t !== null ? entry.t : bundled[key];
+      textarea.disabled = keepCheckbox.checked;
+      resetButton.disabled = !entry;
+      resetButton.style.opacity = entry ? '1' : '0.5';
+      resetButton.style.cursor = entry ? 'pointer' : 'default';
+      errorBox.textContent = '';
+    }
+    keySelect.addEventListener('change', refresh);
+    keepCheckbox.addEventListener('change', () => {
+      textarea.disabled = keepCheckbox.checked;
+    });
+
+    function pendingValue() {
+      return keepCheckbox.checked ? null : textarea.value;
+    }
+
+    // 保存したらこのタブだけをリロードして反映する（ほかのタブはリロードしない。
+    // 理由はファイル末尾のstorage.onChangedを参照）。保存するのは編集した項目だけなので、
+    // ほかのタブやオプションページで同時に保存された別の項目は消えない。
+    // 保存に失敗したら（容量超過など）、ダイアログと入力を残してエラーを表示する
+    async function commit(value) {
+      const key = currentKey();
+      const result = updateUserEntry({}, key, bundled[key], value);
+      if (result.error) {
+        errorBox.textContent = getMessage(result.error);
+        return;
+      }
+      // ほかの自分の訳と循環して（A -> B -> A）反映されない訳は保存しない。
+      // ほかのタブで保存された訳も含めて確かめるため、読み直してから判定する
+      try {
+        const cycle = validateNoCycle(bundled, await loadUserDictionary(language), key, result.entries[key]);
+        if (cycle) {
+          errorBox.textContent = getMessage(cycle);
+          return;
+        }
+        await saveUserEntries(language, { [key]: result.entries[key] });
+      } catch (e) {
+        console.error('[GitHub UI Translator] 訳を保存できませんでした', e);
+        errorBox.textContent = getMessage('userDictSaveError');
+        return;
+      }
+      closeEditor();
+      location.reload();
+    }
+    saveButton.addEventListener('click', () => commit(pendingValue()));
+    resetButton.addEventListener('click', () => commit(undefined));
+    cancelButton.addEventListener('click', closeEditor);
+    issueButton.addEventListener('click', () => {
+      const key = currentKey();
+      const value = pendingValue();
+      const { normalizeTranslation, validateTranslation } = globalThis.GitHubUITranslator;
+      const suggested = value === null ? null : normalizeTranslation(value);
+      if (suggested !== null) {
+        const error = validateTranslation(key, suggested);
+        if (error) {
+          errorBox.textContent = getMessage(error);
+          return;
+        }
+      }
+      const url = buildIssueUrl(language, [{ source: key, current: bundled[key], suggested }], chrome.runtime.getManifest?.().version);
+      if (!url) {
+        errorBox.textContent = getMessage('issueTooLongError');
+        return;
+      }
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
+    // 背景のクリックで閉じるのは、押したときも背景だった場合だけにする。入力欄で文字を
+    // ドラッグ選択してパネルの外で離すと、clickは共通の祖先である背景で発生するため、
+    // targetだけで判定すると入力中の訳ごと閉じてしまう
+    let pressedOnBackdrop = false;
+    backdrop.addEventListener('mousedown', (event) => {
+      pressedOnBackdrop = event.target === backdrop;
+    });
+    backdrop.addEventListener('click', (event) => {
+      if (event.target === backdrop && pressedOnBackdrop) closeEditor();
+      pressedOnBackdrop = false;
+    });
+    // GitHubのキーボードショートカット（"s"で検索等）が入力中に反応しないよう、ダイアログ外へ伝えない
+    backdrop.addEventListener('keydown', (event) => {
+      event.stopPropagation();
+      // 日本語・中国語・韓国語の変換をEscで取り消したときは閉じない
+      // （SafariはisComposingがfalseのことがあるため、keyCode 229も確認する）
+      if (event.key === 'Escape' && !event.isComposing && event.keyCode !== 229) {
+        // keydownを取り消し、ブラウザーの閉じる要求（cancel）を起こさない。起こすと、編集画面を
+        // 閉じたあとで前面になったGitHubのモーダルまで同じEscapeで閉じてしまう
+        event.preventDefault();
+        closeEditor();
+      } else if (event.key === 'Tab') trapFocus(event, shadow, panel);
+    });
+    // Escapeでブラウザーがダイアログを閉じようとするとcancelが発生する。閉じるかどうかは上の
+    // keydownで決める（IMEの変換の取り消しでは閉じない）ので、ここでは止める。それでも
+    // ブラウザーが閉じた場合（連続したEscape等）は、closeを受けて後片付けする
+    backdrop.addEventListener('cancel', (event) => event.preventDefault());
+    backdrop.addEventListener('close', () => {
+      if (editorHost === host) closeEditor();
+    });
+
+    refresh();
+    const host = editorHost;
+    document.body.appendChild(host);
+    if (typeof backdrop.showModal === 'function') backdrop.showModal();
+    else backdrop.setAttribute('open', '');
+    // 「英語のまま表示」の項目では入力欄が無効でfocus()が効かず、フォーカスがGitHub側に残って
+    // Escapeも届かないため、そのときは「英語のまま表示」のチェックボックスへ入れる
+    (textarea.disabled ? keepCheckbox : textarea).focus();
+  }
+
+  function enableAltClickEditor(language, bundled) {
+    // キャプチャーで先に受け取り、リンクの遷移やAlt+クリックでのダウンロードを止める。
+    // 訳文を表示していない場所のAlt+クリックには何もしない
+    window.addEventListener('click', (event) => {
+      if (!event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.button !== 0) return;
+      if (editorHost && event.composedPath().includes(editorHost)) return;
+      const keys = findTranslatedKeys(event.target).filter((key) => key in bundled);
+      if (keys.length === 0) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openEditor(keys, language, bundled).catch((e) => {
+        console.error('[GitHub UI Translator] 編集ダイアログを開けませんでした', e);
+      });
+    }, true);
+  }
+
+  // 同梱辞書を読み込み、ユーザー辞書（オプションページやAlt+クリックで編集した訳）を
+  // 重ねる。同梱辞書はプロトタイプなしオブジェクトで返る（理由はshared.jsを参照）。
+  // ユーザー辞書が読めなくても、同梱辞書だけで翻訳を続ける
   async function loadDictionary(language) {
+    const { loadBundledDictionary, loadUserDictionary, mergeDictionaries } = globalThis.GitHubUITranslator;
+    let bundled;
     try {
-      const url = chrome.runtime.getURL(`dictionaries/${language}.json`);
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const text = await res.text();
-      const data = JSON.parse(globalThis.GitHubUITranslator.stripJsonComments(text));
-      // プロトタイプなしオブジェクトに詰め替える。通常オブジェクトだと画面上の
-      // テキストが "toString" や "hasOwnProperty" のときObject.prototypeの
-      // 継承プロパティが辞書ヒット扱いになり、テキスト破壊や例外の原因になる
-      return Object.assign(Object.create(null), data.translations || {});
+      bundled = await loadBundledDictionary(language);
     } catch (e) {
       console.error('[GitHub UI Translator] 辞書の読み込みに失敗しました', e);
-      return {};
+      return { dict: {}, bundled: {} };
+    }
+    try {
+      const { dictionary, rejected } = mergeDictionaries(bundled, await loadUserDictionary(language));
+      if (rejected.length > 0) {
+        console.warn('[GitHub UI Translator] 訳文が循環するため、ユーザー辞書の次の訳を無視しました', rejected);
+      }
+      return { dict: dictionary, bundled };
+    } catch (e) {
+      console.error('[GitHub UI Translator] ユーザー辞書の読み込みに失敗しました', e);
+      return { dict: bundled, bundled };
     }
   }
 
@@ -1002,7 +1350,7 @@
   async function getSettings() {
     const items = await new Promise((resolve) => {
       chrome.storage.local.get(
-        { enabled: true, language: null, translateGlobalHeader: true, showOriginalOnHover: false },
+        { enabled: true, language: null, translateGlobalHeader: true, showOriginalOnHover: false, editOnAltClick: true },
         (result) => resolve(result)
       );
     });
@@ -1021,6 +1369,15 @@
   const INLINE_TAG_PATTERN = /<([a-z]+)>([^<]*)<\/\1>/g;
 
   function translateMixedContent(el, dict) {
+    // 書き込んだ訳文のままなら引き直さない（理由はwrittenTextsを参照）。
+    // GitHubがリンク等のテキストノードを同じ文字列で作り直しても、文の表示は変わらないので
+    // 文全体の処理はしないが、新しいノードは処理済みとして記録し直す。記録しないと、
+    // 訳文の中で英語のまま残した "Learn more" などが、あとの個別の翻訳で訳されてしまう
+    if (writtenMixed.has(el) && writtenMixed.get(el) === el.textContent) {
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) writtenTexts.set(node, node.nodeValue);
+      return;
+    }
     // gaps[i]はi番目のインライン要素の直前にあるテキストノード群（末尾は最後の要素の後）
     const gaps = [[]];
     const inlines = [];
@@ -1078,11 +1435,26 @@
     // 訳文の文言を置く既存テキストノードがない位置があれば、書き換え前に諦める
     if (parts.some((part, i) => part.trim() && gaps[i].length === 0)) return;
 
+    const before = el.textContent;
     gaps.forEach((nodes, i) => nodes.forEach((node, j) => setNodeValue(node, j === 0 ? parts[i] : '')));
     inlines.forEach(({ node, text }, i) => setNodeValue(node, node.nodeValue.replace(text, () => pieces[i].text)));
-    // ツールチップにはタグを除いた文全体の原文を表示する
+    // 文全体として処理した子テキストノードは、あとの個別のテキストノードの翻訳から外す。
+    // 表示が変わらない（「英語のまま表示」・自己マッピングの）文でも外さないと、
+    // "… <a>Learn more</a>." の "Learn more" だけが単独のキーとして翻訳されてしまう
+    gaps.flat().concat(inlines.map(({ node }) => node))
+      .forEach((node) => writtenTexts.set(node, node.nodeValue));
     const written = el.textContent;
-    recordOriginal(el, 'mixed', normalizeText(key).replace(INLINE_TAG_PATTERN, '$2'), () => el.textContent === written);
+    const dictKey = normalizeText(key);
+    const isCurrent = () => el.textContent === written;
+    // 表示が変わらない（「英語のまま表示」にした文など）ときは、ツールチップは出さず、
+    // Alt+クリックで編集できるようキーだけを記録する
+    if (written === before) {
+      trackSource(el, 'mixed', dictKey, isCurrent);
+      return;
+    }
+    writtenMixed.set(el, written);
+    // ツールチップにはタグを除いた文全体の原文を表示する
+    recordOriginal(el, 'mixed', dictKey.replace(INLINE_TAG_PATTERN, '$2'), isCurrent, dictKey);
   }
 
   // テキストノード・属性値に共通の辞書引き。改行やインデントを含む複数行の値も
@@ -1092,18 +1464,26 @@
     return text.trim().replace(/\s+/g, ' ');
   }
 
-  function lookup(text, el, dict) {
+  // textを訳すときに引く辞書のキーを返す。なければnull。Alt+クリックで編集する項目は、
+  // 画面上の文字全体ではなくこのキーにする（"Target: main" は "Target:" の項目で訳すため）
+  function lookupKey(text, el, dict) {
     const key = normalizeText(text);
     if (!key) return null;
-    if (dict[key]) return dict[key];
+    if (dict[key]) return key;
     // リリース作成画面のTargetボタンは固定ラベルとユーザーが選択したブランチ名を
     // 1つの文字列（例: "Target: main"）に結合する。完全一致の原則を保ちつつ、
     // 用途を限定して固定の接頭辞だけを訳し、選択値は原文のまま保持する
-    if (key.startsWith('Target:') && dict['Target:'] && el.closest('.js-release-target-wrapper')) {
-      const match = key.match(/^Target:\s+(.+)$/);
-      if (match) return `${dict['Target:']} ${match[1]}`;
-    }
+    if (dict['Target:'] && /^Target:\s+.+$/.test(key) && el.closest('.js-release-target-wrapper')) return 'Target:';
     return null;
+  }
+
+  function lookup(text, el, dict) {
+    const key = lookupKey(text, el, dict);
+    if (key === null) return null;
+    const normalized = normalizeText(text);
+    if (key === normalized) return dict[key];
+    // "Target: main" -> "<Target:の訳> main"
+    return `${dict[key]} ${normalized.match(/^Target:\s+(.+)$/)[1]}`;
   }
 
   // 前後の空白は残したまま訳文に置き換えた値を返す。辞書に一致しなければnull。
@@ -1117,15 +1497,23 @@
   // 属性値の翻訳。書き込みは値が変わるときだけ（理由はsetNodeValueを参照）
   function translateAttribute(el, name, dict) {
     const value = el.getAttribute(name);
-    if (!value) return;
+    if (!value || isOwnAttribute(el, name, value)) return;
     const replacement = translateValue(value, el, dict);
-    if (replacement === null || replacement === value) return;
+    if (replacement === null) return;
+    if (replacement === value) {
+      // 自己マッピングや「英語のまま表示」の項目も、Alt+クリックで編集できるようキーを記録する
+      if (name === 'placeholder') {
+        trackSource(el, 'placeholder', lookupKey(value, el, dict), () => el.getAttribute('placeholder') === value);
+      }
+      return;
+    }
     el.setAttribute(name, replacement);
+    rememberAttribute(el, name, replacement);
     // placeholderは画面に表示されるため、テキストと同じく原文をツールチップに出す。
     // aria-labelはGitHub自身のツールチップに使われることが多く、titleと二重に
     // 表示されるため対象にしない
     if (name === 'placeholder') {
-      recordOriginal(el, 'placeholder', normalizeText(value), () => el.getAttribute('placeholder') === replacement);
+      recordOriginal(el, 'placeholder', normalizeText(value), () => el.getAttribute('placeholder') === replacement, lookupKey(value, el, dict));
     }
   }
 
@@ -1170,10 +1558,14 @@
     if (el.tagName === 'INPUT') {
       if (el.type !== 'submit' && el.type !== 'button' && el.type !== 'reset') return;
       const original = el.value;
-      const replacement = translateValue(original, el, dict);
+      const replacement = isOwnAttribute(el, 'value', original) ? null : translateValue(original, el, dict);
       if (replacement !== null && replacement !== original) {
         el.value = replacement;
-        recordOriginal(el, 'value', normalizeText(original), () => el.value === replacement);
+        rememberAttribute(el, 'value', replacement);
+        recordOriginal(el, 'value', normalizeText(original), () => el.value === replacement, lookupKey(original, el, dict));
+      } else if (replacement === original) {
+        // 自己マッピングや「英語のまま表示」の項目も、Alt+クリックで編集できるようキーを記録する
+        trackSource(el, 'value', lookupKey(original, el, dict), () => el.value === original);
       }
       translateAttribute(el, 'data-disable-with', dict);
       return;
@@ -1213,14 +1605,24 @@
     mixedCandidates.forEach((candidate) => translateMixedContent(candidate, dict));
 
     for (const textNode of textNodes) {
+      // 書き込んだ訳文のままなら引き直さない（理由はwrittenTextsを参照）
+      if (isOwnText(textNode)) continue;
       const replacement = translateValue(textNode.nodeValue, textNode.parentElement, dict);
       // 大半のテキストノードは辞書に載らないため、重い除外判定は辞書ヒット時だけ行う
       if (replacement === null || isExcludedElement(textNode.parentElement)) continue;
-      // 自己マッピング（"Wiki": "Wiki"）など、表示が変わらないものは原文を記録しない
-      if (replacement === textNode.nodeValue) continue;
+      // 自己マッピング（"Wiki": "Wiki"）など、表示が変わらないものは原文を記録しない。
+      // Alt+クリックでの訳の編集（「Wiki」を訳したい等）には使えるよう、キーだけは記録する
+      if (replacement === textNode.nodeValue) {
+        const parent = textNode.parentElement;
+        const written = textNode.nodeValue;
+        trackSource(parent, textNode, lookupKey(written, parent, dict), () => textNode.parentElement === parent && textNode.nodeValue === written);
+        continue;
+      }
       const original = normalizeText(textNode.nodeValue);
+      // ツールチップには画面上の原文全体を、Alt+クリックの編集には実際に引いた辞書キーを使う
+      const dictKey = lookupKey(textNode.nodeValue, textNode.parentElement, dict);
       setNodeValue(textNode, replacement);
-      recordTextNodeOriginal(textNode, original);
+      recordTextNodeOriginal(textNode, original, dictKey);
     }
   }
 
@@ -1240,14 +1642,16 @@
       enabled,
       language,
       translateGlobalHeader: globalHeaderEnabled,
-      showOriginalOnHover: originalOnHoverEnabled
+      showOriginalOnHover: originalOnHoverEnabled,
+      editOnAltClick
     } = await getSettings();
     if (!enabled || !language) return;
     translateGlobalHeader = globalHeaderEnabled;
     showOriginalOnHover = originalOnHoverEnabled;
 
-    const dict = await loadDictionary(language);
-    if (Object.keys(dict).length === 0) return;
+    const { dict, bundled } = await loadDictionary(language);
+    if (Object.keys(bundled).length === 0) return;
+    if (editOnAltClick) enableAltClickEditor(language, bundled);
     // 言語コード（ja、zh-CN、pt-BR等）はそのままBCP 47の言語タグとして使える
     relativeTimeLang = language;
 
@@ -1376,9 +1780,13 @@
   // 反映する。ポップアップ側からはリロードしない（GitHubのタブを探すには"tabs"権限か
   // ホスト権限が必要なため）。拡張機能の更新直後など、古いcontent.jsが残ったタブは
   // この通知を受け取れないので、ユーザーが手動で再読み込みするまで反映されない
+  // ユーザー辞書（userDict:<code>）の変更ではリロードしない。オプションページでは1行
+  // 編集するたびに保存するため、開いているGitHubのタブがすべて何度もリロードされ、
+  // 書きかけのコメントなどが失われるおそれがある。Alt+クリックで保存したタブだけは
+  // 保存後に自分でリロードし、ほかのタブには次に読み込んだときに反映する
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
-    const reloadKeys = ['enabled', 'language', 'translateGlobalHeader', 'showOriginalOnHover'];
+    const reloadKeys = ['enabled', 'language', 'translateGlobalHeader', 'showOriginalOnHover', 'editOnAltClick'];
     if (reloadKeys.some((key) => key in changes)) {
       location.reload();
     }

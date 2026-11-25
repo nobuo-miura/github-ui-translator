@@ -87,6 +87,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - 확장 프로그램을 업데이트하기 전부터 열려 있던 GitHub 탭은 자동으로 새로고침되지 않을 수 있습니다. 설정이 적용되지 않으면 탭을 직접 새로고침하세요.
 - 확장 프로그램 옵션 페이지(Chrome의 `chrome://extensions`, Edge의 `edge://extensions`, Firefox의 `about:addons`)에서 포함된 사전 정보와 확장 프로그램 버전을 확인할 수 있습니다.
 
+### 내 번역(사용자 사전)
+
+![옵션 페이지의 내 번역](docs/images/user-dictionary-ko.png)
+
+- GitHub에서 번역된 텍스트를 Alt+클릭(Mac에서는 Option+클릭)하면 편집기가 열립니다. 번역을 변경하거나, "영어로 표시(번역 안 함)"를 선택하거나, 기본 번역으로 되돌릴 수 있습니다. 저장하면 현재 탭이 다시 로드되며, 열려 있는 다른 GitHub 탭은 다시 로드하면 반영됩니다. 팝업에서 이 기능을 끌 수 있습니다.
+- 옵션 페이지(팝업의 "내 번역 관리"에서도 열 수 있음)에는 선택한 언어의 기본 사전 항목이 모두 나열됩니다. 검색, 편집, 편집한 항목만 보기, 초기화를 할 수 있습니다.
+- 내 번역은 기본 사전에 있는 항목만 덮어쓸 수 있으며 새 항목은 추가할 수 없습니다. 이 기기(`storage.local`)에만 저장됩니다. 백업하거나 다른 브라우저로 옮기려면 옵션 페이지의 내보내기/가져오기를 사용하세요.
+- "GitHub에서 제안"을 선택하면 제안 내용이 입력된 이 저장소의 번역 요청 양식이 열립니다(한 번에 1개 또는 선택한 최대 20개). 제안 내용은 페이지 URL에 포함되므로 양식을 여는 시점에 GitHub로 전송됩니다. 이슈는 양식을 확인하고 직접 제출해야만 생성되고 공개됩니다. 토큰이 필요 없으며, 보고 있던 페이지의 URL은 포함되지 않습니다.
+
 ## 사전 사용자 지정
 
 원하는 언어의 사전 파일을 직접 편집하여 번역을 추가하거나 변경할 수 있습니다. 예: `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json`, `dictionaries/ru.json`.

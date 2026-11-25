@@ -8,9 +8,6 @@
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
-  "translationLabel": {
-    "message": "Übersetzung"
-  },
   "translationToggleLabel": {
     "message": "Übersetzung aktivieren oder deaktivieren"
   },
@@ -73,9 +70,6 @@
   "entryCountColumn": {
     "message": "Einträge"
   },
-  "versionInfoHeading": {
-    "message": "Versionsinformationen"
-  },
   "dictionaryCount": {
     "message": "$COUNT$ Einträge",
     "placeholders": {
@@ -97,5 +91,196 @@
         "content": "$1"
       }
     }
+  },
+  "altClickEditLabel": {
+    "message": "Übersetzungen mit Alt+Klick bearbeiten"
+  },
+  "altClickEditToggleLabel": {
+    "message": "Bearbeiten von Übersetzungen mit Alt+Klick aktivieren oder deaktivieren"
+  },
+  "altClickEditHint": {
+    "message": "Alt+Klick (auf dem Mac Wahltaste+Klick) auf übersetzten Text, um die Übersetzung zu ändern oder eine Verbesserung vorzuschlagen."
+  },
+  "userDictionaryLink": {
+    "message": "Eigene Übersetzungen verwalten"
+  },
+  "editorTitle": {
+    "message": "Übersetzung bearbeiten"
+  },
+  "originalTextLabel": {
+    "message": "Englischer Originaltext"
+  },
+  "bundledTranslationLabel": {
+    "message": "Mitgelieferte Übersetzung"
+  },
+  "yourTranslationLabel": {
+    "message": "Deine Übersetzung"
+  },
+  "keepEnglishLabel": {
+    "message": "Auf Englisch anzeigen (nicht übersetzen)"
+  },
+  "editorHint": {
+    "message": "Beim Speichern wird dieser Tab neu geladen. In anderen geöffneten GitHub-Tabs wird die Änderung nach dem Neuladen übernommen. Deine Übersetzung wird nur auf diesem Gerät gespeichert. Alle eigenen Übersetzungen verwaltest du auf der Optionsseite der Erweiterung."
+  },
+  "suggestImprovementButton": {
+    "message": "Auf GitHub vorschlagen"
+  },
+  "resetToBundledButton": {
+    "message": "Auf mitgelieferte zurücksetzen"
+  },
+  "cancelButton": {
+    "message": "Abbrechen"
+  },
+  "saveButton": {
+    "message": "Speichern"
+  },
+  "issueTooLongError": {
+    "message": "Der Vorschlag ist zu lang, um ihn auf GitHub zu öffnen. Wähle weniger Texte aus."
+  },
+  "issueTooManyError": {
+    "message": "Du kannst bis zu $MAX$ Texte auf einmal vorschlagen.",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorEmpty": {
+    "message": "Gib eine Übersetzung ein."
+  },
+  "userDictErrorTooLong": {
+    "message": "Die Übersetzung ist zu lang."
+  },
+  "userDictErrorCodeText": {
+    "message": "Lass den Text in <code>…</code> wie im Original. Code wird auf der Seite nicht übersetzt."
+  },
+  "userDictErrorCycle": {
+    "message": "Diese Übersetzung würde mit einer anderen deiner Übersetzungen eine Schleife bilden (A → B → A), sodass keine von beiden verwendet wird. Wähle eine andere Übersetzung."
+  },
+  "userDictErrorCycleOnReset": {
+    "message": "Wenn du diesen Eintrag zurücksetzt, entsteht eine Schleife mit einer anderen deiner Übersetzungen, die dann nicht mehr verwendet wird. Ändere zuerst diese Übersetzung."
+  },
+  "unsavedEditHidden": {
+    "message": "Deine Übersetzung für „$SOURCE$“ wurde nicht gespeichert. Zeige den Eintrag an, korrigiere ihn oder setze ihn zurück und versuche es erneut.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorTags": {
+    "message": "Behalte dieselben Tags (z. B. <a>…</a>) in derselben Reihenfolge wie im Originaltext bei."
+  },
+  "userDictErrorTagPosition": {
+    "message": "An Stellen, an denen der Originaltext keinen Text hat (am Anfang, am Ende oder zwischen Tags), kann kein Text stehen. Formuliere die Übersetzung so um, dass diese Stellen leer bleiben."
+  },
+  "userDictSaveError": {
+    "message": "Deine Übersetzung konnte nicht gespeichert werden. Möglicherweise ist der Browserspeicher voll. Deine Eingabe bleibt erhalten."
+  },
+  "userDictionaryHeading": {
+    "message": "Eigene Übersetzungen"
+  },
+  "userDictionaryDescription": {
+    "message": "Ändere die mitgelieferten Übersetzungen nur für deinen Browser. Deine Übersetzungen werden auf diesem Gerät gespeichert und haben Vorrang vor dem mitgelieferten Wörterbuch. Lass ein Feld leer, um die mitgelieferte Übersetzung zu verwenden."
+  },
+  "searchPlaceholder": {
+    "message": "Originaltext oder Übersetzungen durchsuchen"
+  },
+  "editedOnlyLabel": {
+    "message": "Nur bearbeitete"
+  },
+  "selectAllLabel": {
+    "message": "Alle angezeigten bearbeiteten Texte auswählen"
+  },
+  "selectRowLabel": {
+    "message": "„$TEXT$“ auswählen",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "suggestSelectedButton": {
+    "message": "Ausgewählte auf GitHub vorschlagen ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "originalColumn": {
+    "message": "Original (Englisch)"
+  },
+  "bundledColumn": {
+    "message": "Mitgelieferte Übersetzung"
+  },
+  "yourTranslationColumn": {
+    "message": "Deine Übersetzung"
+  },
+  "keepEnglishColumn": {
+    "message": "Englisch lassen"
+  },
+  "suggestButton": {
+    "message": "Vorschlagen"
+  },
+  "resetButton": {
+    "message": "Zurücksetzen"
+  },
+  "bundledChangedNote": {
+    "message": "Die mitgelieferte Übersetzung hat sich seit deiner Bearbeitung geändert."
+  },
+  "showingFirstRows": {
+    "message": "Die ersten $SHOWN$ von $TOTAL$ Texten werden angezeigt. Suche, um die Liste einzugrenzen.",
+    "placeholders": {
+      "shown": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "noMatchingRows": {
+    "message": "Keine passenden Texte."
+  },
+  "savedStatus": {
+    "message": "Gespeichert. Lade geöffnete GitHub-Tabs neu, um die Änderung zu übernehmen."
+  },
+  "backupHeading": {
+    "message": "Sichern und wiederherstellen"
+  },
+  "exportButton": {
+    "message": "Exportieren"
+  },
+  "importButton": {
+    "message": "Importieren"
+  },
+  "resetAllButton": {
+    "message": "Alles für diese Sprache zurücksetzen"
+  },
+  "resetAllConfirm": {
+    "message": "Alle deine Übersetzungen für $LANGUAGE$ zurücksetzen? Dies kann nicht rückgängig gemacht werden.",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "backupNote": {
+    "message": "Beim Exportieren werden deine Übersetzungen für alle Sprachen als JSON-Datei gespeichert. Beim Importieren wird die Datei mit deinen aktuellen Übersetzungen zusammengeführt."
+  },
+  "importResult": {
+    "message": "$IMPORTED$ Texte importiert ($SKIPPED$ übersprungen).",
+    "placeholders": {
+      "imported": {
+        "content": "$1"
+      },
+      "skipped": {
+        "content": "$2"
+      }
+    }
+  },
+  "importError": {
+    "message": "Diese Datei konnte nicht importiert werden."
   }
 }

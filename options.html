@@ -2,38 +2,338 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title data-i18n="settingsTitle">GitHub UI Translator - Settings</title>
 <style>
+  /* 色はGitHub（Primer）の配色に合わせ、OSのダークモードに追従する */
+  :root {
+    --bg: #f6f8fa;
+    --surface: #ffffff;
+    --surface-muted: #f6f8fa;
+    --fg: #1f2328;
+    --muted: #59636e;
+    --border: #d1d9e0;
+    --border-muted: #d1d9e0b3;
+    --accent: #0969da;
+    --danger: #d1242f;
+    --danger-hover-bg: #ffebe9;
+    --edited-bg: #fff8c5;
+    --edited-bar: #d4a72c;
+    --attention: #9a6700;
+    --button-bg: #f6f8fa;
+    --button-hover-bg: #eff2f5;
+    --primary: #1f883d;
+    --primary-hover: #1c8139;
+    --focus: #0969da;
+    --shadow: 0 1px 0 #1f23280a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1117;
+      --surface: #151b23;
+      --surface-muted: #0d1117;
+      --fg: #f0f6fc;
+      --muted: #9198a1;
+      --border: #3d444d;
+      --border-muted: #3d444db3;
+      --accent: #4493f8;
+      --danger: #f85149;
+      --danger-hover-bg: #f851491a;
+      --edited-bg: #bb800914;
+      --edited-bar: #d29922;
+      --attention: #d29922;
+      --button-bg: #212830;
+      --button-hover-bg: #262c36;
+      --primary: #238636;
+      --primary-hover: #29903b;
+      --focus: #1f6feb;
+      --shadow: none;
+    }
+  }
+
+  * { box-sizing: border-box; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    max-width: 480px;
-    margin: 32px auto;
-    padding: 0 16px;
-    color: #1f2328;
-    background-color: #ffffff;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--fg);
+    background-color: var(--bg);
   }
-  h1 { font-size: 18px; }
-  h2 { font-size: 14px; margin-top: 24px; }
-  table { border-collapse: collapse; width: 100%; }
-  td, th {
-    text-align: left;
-    padding: 4px 8px;
-    border-bottom: 1px solid #d0d7de;
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+  /* ページ上部のヘッダー */
+  .page-header {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header .inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 16px 24px;
+  }
+  .page-header img { width: 32px; height: 32px; }
+  h1 { flex: 1; margin: 0; font-size: 20px; font-weight: 600; }
+  #version {
+    margin: 0;
+    padding: 2px 10px;
+    font-size: 12px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+  }
+
+  main {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  /* セクションはカードにまとめる */
+  .card {
+    margin-bottom: 24px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .card-header {
+    padding: 16px 20px 12px;
+  }
+  h2 { margin: 0; font-size: 16px; font-weight: 600; }
+  .description, .note {
+    margin: 4px 0 0;
     font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
   }
+  .card-body { padding: 0 20px 16px; }
+
+  /* 検索・絞り込みなどの操作列。表をスクロールしても上部に残す */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: var(--surface);
+    border-top: 1px solid var(--border-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  /* 長い言語（ドイツ語・フランス語等）でもプレースホルダーが切れないよう、余白より優先して広げる */
+  .toolbar .search {
+    flex: 3 1 280px;
+    min-width: 200px;
+  }
+  .toolbar .spacer { flex: 1; }
+  .checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  input[type="search"], input[type="text"], select {
+    height: 32px;
+    padding: 0 10px;
+    font: inherit;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--surface-muted);
+    color: var(--fg);
+  }
+  input[type="search"]:focus, input[type="text"]:focus, select:focus {
+    background-color: var(--surface);
+    border-color: var(--focus);
+    outline: 1px solid var(--focus);
+    outline-offset: -1px;
+  }
+  input[type="text"]:disabled { opacity: 0.5; }
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  input[type="checkbox"]:disabled { cursor: default; opacity: 0.4; }
+
+  button {
+    height: 28px;
+    padding: 0 12px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background-color: var(--button-bg);
+    color: var(--fg);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  button:hover:not(:disabled) { background-color: var(--button-hover-bg); }
+  button:disabled { cursor: default; opacity: 0.5; }
+  button.primary {
+    height: 32px;
+    border-color: transparent;
+    background-color: var(--primary);
+    color: #ffffff;
+  }
+  button.primary:hover:not(:disabled) { background-color: var(--primary-hover); }
+  button.danger { color: var(--danger); }
+  button.danger:hover:not(:disabled) {
+    background-color: var(--danger-hover-bg);
+    border-color: var(--danger);
+  }
+
+  .status { font-size: 12px; color: var(--muted); }
+
+  /* 表 */
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border-muted);
+  }
+  th {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    background-color: var(--surface-muted);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background-color: var(--surface-muted); }
+
+  #ud-table th:first-child, #ud-table td:first-child { width: 36px; padding-right: 0; }
+  #ud-table th:first-child, #ud-table td:first-child,
+  #ud-table th:nth-child(5), #ud-table td:nth-child(5) { text-align: center; }
+  #ud-table th:nth-child(2), #ud-table th:nth-child(3) { width: 24%; }
+  #ud-table th:nth-child(4) { width: 32%; }
+  #ud-table td.source {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    word-break: break-word;
+  }
+  #ud-table td:nth-child(3) { word-break: break-word; }
+  #ud-table input[type="text"] { width: 100%; min-width: 160px; }
+  /* 編集済みの行は左端の帯と背景色で示す */
+  #ud-table tr.edited td { background-color: var(--edited-bg); }
+  #ud-table tr.edited td:first-child { box-shadow: inset 3px 0 0 var(--edited-bar); }
+  #ud-table .note { color: var(--attention); font-size: 12px; }
+  .row-actions {
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+  .error {
+    margin-top: 4px;
+    color: var(--danger);
+    font-size: 12px;
+  }
+  .error:empty { display: none; }
+  #ud-more {
+    margin: 0;
+    padding: 12px 20px;
+    text-align: center;
+    border-top: 1px solid var(--border-muted);
+  }
+  #ud-more:empty { display: none; }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .actions .danger { margin-left: auto; }
+
+  #dict-info-table td:last-child, #dict-info-table th:last-child { text-align: right; }
+  #dict-info-table { border: 1px solid var(--border); border-radius: 8px; border-collapse: separate; border-spacing: 0; overflow: hidden; }
 </style>
 </head>
 <body>
-  <h1 data-i18n="settingsTitle">GitHub UI Translator - Settings</h1>
+  <header class="page-header">
+    <div class="inner">
+      <img src="icons/icon48.png" alt="">
+      <h1 data-i18n="settingsTitle">GitHub UI Translator - Settings</h1>
+      <p id="version"></p>
+    </div>
+  </header>
 
-  <h2 data-i18n="dictionaryInfoHeading">Dictionary information</h2>
-  <table>
-    <thead><tr><th data-i18n="languageColumn">Language</th><th data-i18n="entryCountColumn">Entries</th></tr></thead>
-    <tbody id="dict-info"></tbody>
-  </table>
+  <main>
+    <section class="card" aria-labelledby="ud-heading">
+      <div class="card-header">
+        <h2 id="ud-heading" data-i18n="userDictionaryHeading">Your translations</h2>
+        <p class="description" data-i18n="userDictionaryDescription">Change the bundled translations for your browser only. Your translations are saved on this device and take precedence over the bundled dictionary.</p>
+      </div>
+      <div class="toolbar">
+        <select id="ud-language" data-i18n-aria-label="languageLabel"></select>
+        <input type="search" class="search" id="ud-search" data-i18n-placeholder="searchPlaceholder" data-i18n-aria-label="searchPlaceholder">
+        <label class="checkbox-label"><input type="checkbox" id="ud-edited-only"> <span data-i18n="editedOnlyLabel">Edited only</span></label>
+        <span class="spacer"></span>
+        <span class="status" id="ud-status" role="status" aria-live="polite"></span>
+        <button type="button" class="primary" id="ud-suggest-selected" disabled></button>
+      </div>
+      <div class="table-wrap">
+        <table id="ud-table">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="ud-select-all" data-i18n-aria-label="selectAllLabel"></th>
+              <th data-i18n="originalColumn">Original (English)</th>
+              <th data-i18n="bundledColumn">Bundled translation</th>
+              <th data-i18n="yourTranslationColumn">Your translation</th>
+              <th data-i18n="keepEnglishColumn">Keep English</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="ud-rows"></tbody>
+        </table>
+      </div>
+      <p class="note" id="ud-more"></p>
+    </section>
 
-  <h2 data-i18n="versionInfoHeading">Version information</h2>
-  <p id="version"></p>
+    <section class="card" aria-labelledby="backup-heading">
+      <div class="card-header">
+        <h2 id="backup-heading" data-i18n="backupHeading">Back up and restore</h2>
+        <p class="note" data-i18n="backupNote">Export saves your translations for all languages as a JSON file. Importing merges the file into your current translations.</p>
+      </div>
+      <div class="card-body">
+        <div class="actions">
+          <button type="button" id="ud-export" data-i18n="exportButton">Export</button>
+          <button type="button" id="ud-import" data-i18n="importButton">Import</button>
+          <input type="file" id="ud-import-file" accept="application/json,.json" hidden>
+          <button type="button" class="danger" id="ud-reset-all" data-i18n="resetAllButton">Reset all for this language</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="dict-heading">
+      <div class="card-header">
+        <h2 id="dict-heading" data-i18n="dictionaryInfoHeading">Dictionary information</h2>
+      </div>
+      <div class="card-body">
+        <table id="dict-info-table">
+          <thead><tr><th data-i18n="languageColumn">Language</th><th data-i18n="entryCountColumn">Entries</th></tr></thead>
+          <tbody id="dict-info"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
   <script src="shared.js"></script>
   <script src="options.js"></script>

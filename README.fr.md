@@ -87,6 +87,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - Les onglets GitHub déjà ouverts avant une mise à jour de l’extension peuvent ne pas se recharger automatiquement. Si un paramètre n’est pas appliqué, rechargez l’onglet manuellement.
 - Ouvrez la page des options de l’extension (`chrome://extensions` dans Chrome, `edge://extensions` dans Edge ou `about:addons` dans Firefox) pour consulter les informations sur les dictionnaires inclus et la version de l’extension.
 
+### Vos propres traductions (dictionnaire utilisateur)
+
+![Vos traductions sur la page d’options](docs/images/user-dictionary-fr.png)
+
+- Faites Alt+clic (Option+clic sur Mac) sur un texte traduit de GitHub pour ouvrir un éditeur. Vous pouvez modifier la traduction, choisir « Afficher en anglais (ne pas traduire) » ou rétablir la traduction fournie. L’enregistrement recharge l’onglet actuel ; dans les autres onglets GitHub ouverts, la modification s’applique après rechargement. Cette fonction peut être désactivée dans la fenêtre contextuelle.
+- La page d’options (également accessible via « Gérer vos traductions » dans la fenêtre contextuelle) liste tous les textes fournis pour la langue sélectionnée. Vous pouvez rechercher, modifier, n’afficher que les textes modifiés et les réinitialiser.
+- Vos traductions remplacent uniquement des textes fournis existants ; elles ne peuvent pas en ajouter de nouveaux. Elles sont enregistrées uniquement sur cet appareil (`storage.local`). Utilisez Exporter / Importer sur la page d’options pour les sauvegarder ou les transférer vers un autre navigateur.
+- « Suggérer sur GitHub » ouvre le formulaire de demande de traduction de ce dépôt avec votre suggestion pré-remplie, un texte à la fois ou jusqu’à 20 textes sélectionnés en une fois. Votre suggestion figure dans l’URL de la page : elle est donc transmise à GitHub à l’ouverture du formulaire. Aucune issue n’est créée ni publiée tant que vous n’avez pas vérifié et soumis le formulaire vous-même. Aucun jeton n’est nécessaire et l’URL de la page consultée n’est pas incluse.
+
 ## Personnalisation du dictionnaire
 
 Vous pouvez ajouter ou modifier des traductions en éditant directement le dictionnaire de la langue concernée, par exemple `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` ou `dictionaries/ru.json`.

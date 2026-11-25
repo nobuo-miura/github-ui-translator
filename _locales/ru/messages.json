@@ -8,9 +8,6 @@
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
-  "translationLabel": {
-    "message": "Перевод"
-  },
   "translationToggleLabel": {
     "message": "Включить или отключить перевод"
   },
@@ -73,9 +70,6 @@
   "entryCountColumn": {
     "message": "Записи"
   },
-  "versionInfoHeading": {
-    "message": "Сведения о версии"
-  },
   "dictionaryCount": {
     "message": "Записей: $COUNT$",
     "placeholders": {
@@ -97,5 +91,196 @@
         "content": "$1"
       }
     }
+  },
+  "altClickEditLabel": {
+    "message": "Редактировать перевод по Alt+щелчку"
+  },
+  "altClickEditToggleLabel": {
+    "message": "Включить или отключить редактирование перевода по Alt+щелчку"
+  },
+  "altClickEditHint": {
+    "message": "Щёлкните переведённый текст, удерживая Alt (Option на Mac), чтобы изменить перевод или предложить улучшение."
+  },
+  "userDictionaryLink": {
+    "message": "Управление своими переводами"
+  },
+  "editorTitle": {
+    "message": "Редактирование перевода"
+  },
+  "originalTextLabel": {
+    "message": "Исходный текст на английском"
+  },
+  "bundledTranslationLabel": {
+    "message": "Встроенный перевод"
+  },
+  "yourTranslationLabel": {
+    "message": "Ваш перевод"
+  },
+  "keepEnglishLabel": {
+    "message": "Показывать на английском (не переводить)"
+  },
+  "editorHint": {
+    "message": "При сохранении эта вкладка перезагружается. В других открытых вкладках GitHub изменение появится после перезагрузки. Ваш перевод хранится только на этом устройстве. Управлять всеми своими переводами можно на странице параметров расширения."
+  },
+  "suggestImprovementButton": {
+    "message": "Предложить на GitHub"
+  },
+  "resetToBundledButton": {
+    "message": "Вернуть встроенный"
+  },
+  "cancelButton": {
+    "message": "Отмена"
+  },
+  "saveButton": {
+    "message": "Сохранить"
+  },
+  "issueTooLongError": {
+    "message": "Предложение слишком длинное, чтобы открыть его на GitHub. Выберите меньше строк."
+  },
+  "issueTooManyError": {
+    "message": "За один раз можно предложить не более $MAX$ строк.",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorEmpty": {
+    "message": "Введите перевод."
+  },
+  "userDictErrorTooLong": {
+    "message": "Перевод слишком длинный."
+  },
+  "userDictErrorCodeText": {
+    "message": "Оставьте текст внутри <code>…</code> как в оригинале. Код на странице не переводится."
+  },
+  "userDictErrorCycle": {
+    "message": "Этот перевод образует цикл с другим вашим переводом (A → B → A), и ни один из них не будет применён. Выберите другой перевод."
+  },
+  "userDictErrorCycleOnReset": {
+    "message": "Если сбросить этот элемент, он образует цикл с другим вашим переводом, и тот перестанет применяться. Сначала измените тот перевод."
+  },
+  "unsavedEditHidden": {
+    "message": "Ваш перевод для «$SOURCE$» не сохранён. Откройте этот элемент, исправьте или сбросьте его и повторите попытку.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorTags": {
+    "message": "Сохраните те же теги (например, <a>…</a>) в том же порядке, что и в исходном тексте."
+  },
+  "userDictErrorTagPosition": {
+    "message": "Нельзя добавлять текст там, где в оригинале его нет (в начале, в конце или между тегами). Перефразируйте перевод так, чтобы эти места остались пустыми."
+  },
+  "userDictSaveError": {
+    "message": "Не удалось сохранить перевод. Возможно, хранилище браузера заполнено. Введённый текст сохранён в поле."
+  },
+  "userDictionaryHeading": {
+    "message": "Ваши переводы"
+  },
+  "userDictionaryDescription": {
+    "message": "Изменяйте встроенные переводы только для своего браузера. Ваши переводы хранятся на этом устройстве и имеют приоритет над встроенным словарём. Оставьте поле пустым, чтобы использовать встроенный перевод."
+  },
+  "searchPlaceholder": {
+    "message": "Поиск по исходному тексту или переводам"
+  },
+  "editedOnlyLabel": {
+    "message": "Только изменённые"
+  },
+  "selectAllLabel": {
+    "message": "Выбрать все показанные изменённые строки"
+  },
+  "selectRowLabel": {
+    "message": "Выбрать «$TEXT$»",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "suggestSelectedButton": {
+    "message": "Предложить выбранные на GitHub ($COUNT$)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "originalColumn": {
+    "message": "Оригинал (английский)"
+  },
+  "bundledColumn": {
+    "message": "Встроенный перевод"
+  },
+  "yourTranslationColumn": {
+    "message": "Ваш перевод"
+  },
+  "keepEnglishColumn": {
+    "message": "Оставить на английском"
+  },
+  "suggestButton": {
+    "message": "Предложить"
+  },
+  "resetButton": {
+    "message": "Сбросить"
+  },
+  "bundledChangedNote": {
+    "message": "Встроенный перевод изменился после вашего редактирования."
+  },
+  "showingFirstRows": {
+    "message": "Показаны первые $SHOWN$ из $TOTAL$ строк. Воспользуйтесь поиском, чтобы сузить список.",
+    "placeholders": {
+      "shown": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "noMatchingRows": {
+    "message": "Совпадений нет."
+  },
+  "savedStatus": {
+    "message": "Сохранено. Перезагрузите открытые вкладки GitHub, чтобы применить изменение."
+  },
+  "backupHeading": {
+    "message": "Резервное копирование и восстановление"
+  },
+  "exportButton": {
+    "message": "Экспорт"
+  },
+  "importButton": {
+    "message": "Импорт"
+  },
+  "resetAllButton": {
+    "message": "Сбросить всё для этого языка"
+  },
+  "resetAllConfirm": {
+    "message": "Сбросить все ваши переводы для языка «$LANGUAGE$»? Это действие нельзя отменить.",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "backupNote": {
+    "message": "При экспорте ваши переводы для всех языков сохраняются в файл JSON. При импорте содержимое файла объединяется с текущими переводами."
+  },
+  "importResult": {
+    "message": "Импортировано строк: $IMPORTED$ (пропущено: $SKIPPED$).",
+    "placeholders": {
+      "imported": {
+        "content": "$1"
+      },
+      "skipped": {
+        "content": "$2"
+      }
+    }
+  },
+  "importError": {
+    "message": "Не удалось импортировать этот файл."
   }
 }

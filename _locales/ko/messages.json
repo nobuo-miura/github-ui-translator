@@ -8,9 +8,6 @@
   "actionTitle": {
     "message": "GitHub UI Translator"
   },
-  "translationLabel": {
-    "message": "번역"
-  },
   "translationToggleLabel": {
     "message": "번역 사용 또는 사용 안 함"
   },
@@ -73,9 +70,6 @@
   "entryCountColumn": {
     "message": "항목 수"
   },
-  "versionInfoHeading": {
-    "message": "버전 정보"
-  },
   "dictionaryCount": {
     "message": "$COUNT$개 항목",
     "placeholders": {
@@ -97,5 +91,196 @@
         "content": "$1"
       }
     }
+  },
+  "altClickEditLabel": {
+    "message": "Alt+클릭으로 번역 편집"
+  },
+  "altClickEditToggleLabel": {
+    "message": "Alt+클릭으로 번역 편집 사용 또는 사용 안 함"
+  },
+  "altClickEditHint": {
+    "message": "번역된 텍스트를 Alt+클릭(Mac에서는 Option+클릭)하면 번역을 변경하거나 개선을 제안할 수 있습니다."
+  },
+  "userDictionaryLink": {
+    "message": "내 번역 관리"
+  },
+  "editorTitle": {
+    "message": "번역 편집"
+  },
+  "originalTextLabel": {
+    "message": "영어 원문"
+  },
+  "bundledTranslationLabel": {
+    "message": "기본 번역"
+  },
+  "yourTranslationLabel": {
+    "message": "내 번역"
+  },
+  "keepEnglishLabel": {
+    "message": "영어로 표시(번역 안 함)"
+  },
+  "editorHint": {
+    "message": "저장하면 이 탭이 다시 로드됩니다. 열려 있는 다른 GitHub 탭은 다시 로드하면 반영됩니다. 내 번역은 이 기기에만 저장됩니다. 모든 번역을 관리하려면 확장 프로그램의 옵션 페이지를 여세요."
+  },
+  "suggestImprovementButton": {
+    "message": "GitHub에서 제안"
+  },
+  "resetToBundledButton": {
+    "message": "기본 번역으로 되돌리기"
+  },
+  "cancelButton": {
+    "message": "취소"
+  },
+  "saveButton": {
+    "message": "저장"
+  },
+  "issueTooLongError": {
+    "message": "GitHub에서 열기에는 내용이 너무 깁니다. 항목 수를 줄이세요."
+  },
+  "issueTooManyError": {
+    "message": "한 번에 최대 $MAX$개까지 제안할 수 있습니다.",
+    "placeholders": {
+      "max": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorEmpty": {
+    "message": "번역을 입력하세요."
+  },
+  "userDictErrorTooLong": {
+    "message": "번역이 너무 깁니다."
+  },
+  "userDictErrorCodeText": {
+    "message": "<code>…</code> 안의 글자는 원문 그대로 두세요. 페이지에서는 코드를 번역하지 않습니다."
+  },
+  "userDictErrorCycle": {
+    "message": "이 번역은 내 다른 번역과 순환되어(A → B → A) 둘 다 적용되지 않습니다. 다른 번역을 입력하세요."
+  },
+  "userDictErrorCycleOnReset": {
+    "message": "이 항목을 기본 번역으로 되돌리면 내 다른 번역과 순환되어 그 번역이 적용되지 않습니다. 먼저 그 번역을 변경하세요."
+  },
+  "unsavedEditHidden": {
+    "message": "\"$SOURCE$\"의 내 번역이 저장되지 않았습니다. 해당 항목을 표시해 수정하거나 초기화한 뒤 다시 시도하세요.",
+    "placeholders": {
+      "source": {
+        "content": "$1"
+      }
+    }
+  },
+  "userDictErrorTags": {
+    "message": "원문과 같은 태그(<a>…</a> 등)를 같은 순서로 유지하세요."
+  },
+  "userDictErrorTagPosition": {
+    "message": "원문에 글자가 없는 위치(문장의 시작·끝, 태그와 태그 사이)에는 번역문에서도 글자를 넣을 수 없습니다. 어순을 바꿔 그 위치를 비워 두세요."
+  },
+  "userDictSaveError": {
+    "message": "번역을 저장하지 못했습니다. 브라우저 저장 공간이 가득 찼을 수 있습니다. 입력한 내용은 그대로 남아 있습니다."
+  },
+  "userDictionaryHeading": {
+    "message": "내 번역"
+  },
+  "userDictionaryDescription": {
+    "message": "이 브라우저에서만 기본 번역을 변경합니다. 내 번역은 이 기기에 저장되며 기본 사전보다 우선합니다. 비워 두면 기본 번역을 사용합니다."
+  },
+  "searchPlaceholder": {
+    "message": "원문 또는 번역 검색"
+  },
+  "editedOnlyLabel": {
+    "message": "편집한 항목만"
+  },
+  "selectAllLabel": {
+    "message": "표시된 편집 항목 모두 선택"
+  },
+  "selectRowLabel": {
+    "message": "\"$TEXT$\" 선택",
+    "placeholders": {
+      "text": {
+        "content": "$1"
+      }
+    }
+  },
+  "suggestSelectedButton": {
+    "message": "선택한 번역을 GitHub에서 제안($COUNT$개)",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "originalColumn": {
+    "message": "원문(영어)"
+  },
+  "bundledColumn": {
+    "message": "기본 번역"
+  },
+  "yourTranslationColumn": {
+    "message": "내 번역"
+  },
+  "keepEnglishColumn": {
+    "message": "영어 유지"
+  },
+  "suggestButton": {
+    "message": "제안"
+  },
+  "resetButton": {
+    "message": "초기화"
+  },
+  "bundledChangedNote": {
+    "message": "편집한 후 기본 번역이 변경되었습니다."
+  },
+  "showingFirstRows": {
+    "message": "전체 $TOTAL$개 중 처음 $SHOWN$개를 표시합니다. 검색으로 범위를 좁히세요.",
+    "placeholders": {
+      "shown": {
+        "content": "$1"
+      },
+      "total": {
+        "content": "$2"
+      }
+    }
+  },
+  "noMatchingRows": {
+    "message": "일치하는 항목이 없습니다."
+  },
+  "savedStatus": {
+    "message": "저장했습니다. 열려 있는 GitHub 탭을 다시 로드하면 반영됩니다."
+  },
+  "backupHeading": {
+    "message": "백업 및 복원"
+  },
+  "exportButton": {
+    "message": "내보내기"
+  },
+  "importButton": {
+    "message": "가져오기"
+  },
+  "resetAllButton": {
+    "message": "이 언어의 번역 모두 초기화"
+  },
+  "resetAllConfirm": {
+    "message": "$LANGUAGE$의 내 번역을 모두 초기화할까요? 되돌릴 수 없습니다.",
+    "placeholders": {
+      "language": {
+        "content": "$1"
+      }
+    }
+  },
+  "backupNote": {
+    "message": "내보내기는 모든 언어의 번역을 JSON 파일로 저장합니다. 가져오기는 파일 내용을 현재 번역에 병합합니다."
+  },
+  "importResult": {
+    "message": "$IMPORTED$개를 가져왔습니다(건너뜀: $SKIPPED$개).",
+    "placeholders": {
+      "imported": {
+        "content": "$1"
+      },
+      "skipped": {
+        "content": "$2"
+      }
+    }
+  },
+  "importError": {
+    "message": "이 파일을 가져올 수 없습니다."
   }
 }

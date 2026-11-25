@@ -87,6 +87,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - Tabs that were already open before the extension was updated may not reload automatically. If a setting does not take effect, reload the tab manually.
 - Open the extension options page (`chrome://extensions` on Chrome, `edge://extensions` on Edge, or `about:addons` on Firefox) to view the bundled dictionary information and extension version.
 
+### Your own translations (user dictionary)
+
+![Your translations on the options page](docs/images/user-dictionary-en.png)
+
+- Alt+click (Option+click on Mac) translated text on GitHub to open an editor. You can change the translation, choose "Show in English (do not translate)", or reset it to the bundled translation. Saving reloads the current tab; other open GitHub tabs show the change after you reload them. This can be turned off in the popup.
+- The options page (also opened from "Manage your translations" in the popup) lists every bundled string for the selected language. You can search, edit, show only edited strings, and reset them.
+- Your translations override only existing bundled strings; they cannot add new strings. They are saved only on this device (`storage.local`). Use Export / Import on the options page to back them up or move them to another browser.
+- "Suggest on GitHub" opens this repository's translation request form with your suggestion filled in, one string at a time or up to 20 selected strings at once. Your suggestion is included in the page's URL, so it is sent to GitHub when the form opens. No issue is created or made public until you review the form and submit it yourself. No token is needed, and the URL of the page you were viewing is not included.
+
 ## Customizing the Dictionary
 
 You can add or change translations by editing the dictionary file for the language you want to change directly (e.g. `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json`, `dictionaries/ru.json`).

@@ -87,6 +87,15 @@ git clone https://github.com/nobuo-miura/github-ui-translator.git
 - GitHub-Tabs, die schon vor einem Update der Erweiterung geöffnet waren, werden möglicherweise nicht automatisch neu geladen. Wird eine Einstellung nicht übernommen, lade den Tab manuell neu.
 - Auf der Optionsseite der Erweiterung (`chrome://extensions` in Chrome, `edge://extensions` in Edge oder `about:addons` in Firefox) findest du Informationen zu den enthaltenen Wörterbüchern und zur Erweiterungsversion.
 
+### Eigene Übersetzungen (Benutzerwörterbuch)
+
+![Eigene Übersetzungen auf der Optionsseite](docs/images/user-dictionary-de.png)
+
+- Alt+Klick (auf dem Mac Wahltaste+Klick) auf übersetzten Text in GitHub öffnet einen Editor. Dort kannst du die Übersetzung ändern, „Auf Englisch anzeigen (nicht übersetzen)“ wählen oder zur mitgelieferten Übersetzung zurückkehren. Beim Speichern wird der aktuelle Tab neu geladen; in anderen geöffneten GitHub-Tabs wird die Änderung nach dem Neuladen übernommen. Die Funktion lässt sich im Popup ausschalten.
+- Die Optionsseite (auch über „Eigene Übersetzungen verwalten“ im Popup erreichbar) listet alle mitgelieferten Texte der gewählten Sprache auf. Du kannst suchen, bearbeiten, nur bearbeitete Texte anzeigen und sie zurücksetzen.
+- Eigene Übersetzungen überschreiben nur vorhandene mitgelieferte Texte; neue Texte können nicht hinzugefügt werden. Sie werden nur auf diesem Gerät gespeichert (`storage.local`). Mit Exportieren / Importieren auf der Optionsseite kannst du sie sichern oder in einen anderen Browser übernehmen.
+- „Auf GitHub vorschlagen“ öffnet das Formular für Übersetzungsanfragen dieses Repositorys mit deinem Vorschlag – einzeln oder bis zu 20 ausgewählte Texte auf einmal. Dein Vorschlag steht in der URL der Seite und wird daher beim Öffnen des Formulars an GitHub übertragen. Ein Issue wird erst erstellt und veröffentlicht, wenn du das Formular geprüft und selbst abgeschickt hast. Es ist kein Token nötig, und die URL der angezeigten Seite wird nicht übernommen.
+
 ## Wörterbuch anpassen
 
 Übersetzungen lassen sich hinzufügen oder ändern, indem du die Wörterbuchdatei der gewünschten Sprache direkt bearbeitest, zum Beispiel `dictionaries/ja.json`, `dictionaries/zh-CN.json`, `dictionaries/zh-TW.json`, `dictionaries/es.json`, `dictionaries/de.json`, `dictionaries/pt-BR.json`, `dictionaries/ko.json`, `dictionaries/fr.json` oder `dictionaries/ru.json`.
